@@ -1,10 +1,17 @@
 import pandas as pd
-
+import sqlite3
 import nltk
 from nltk import word_tokenize, pos_tag
 import inflect
 import argparse
-  
+
+
+def get_sql_table(database):
+    conn = sqlite3.connect(database)
+    df = pd.read_sql_query('SELECT * FROM ingredient', conn)
+    df.to_csv('ingredients.csv', index = False)
+    conn.close()
+
 
 def normalize(text):
     nltk.download('punkt')
@@ -15,24 +22,24 @@ def normalize(text):
     # Get rid of TJ's and any directions like ", divided"
     text = text.replace("TJ's", '').split(',')[0].split('(')[0].strip() 
 
-    # Get pos for each word
-    tokens = nltk.word_tokenize(text)
-    pos_tags = nltk.pos_tag(tokens)
+    # # Get pos for each word
+    # tokens = nltk.word_tokenize(text)
+    # pos_tags = nltk.pos_tag(tokens)
 
-    # Get all nouns
-    nouns = [word for word, pos in pos_tags if pos.startswith('NN')]
+    # # Get all nouns
+    # nouns = [word for word, pos in pos_tags if pos.startswith('NN')]
 
-    # Make all nouns singular  
-    p = inflect.engine()
-    singular_nouns = [p.singular_noun(word) or word for word in nouns]
+    # # Make all nouns singular  
+    # p = inflect.engine()
+    # singular_nouns = [p.singular_noun(word) or word for word in nouns]
 
-    # Pull out main noun
-    main_noun = singular_nouns[-1].lower()
+    # # Pull out main noun
+    # main_noun = singular_nouns[-1].lower()
     
-    return main_noun
+    return text # main_noun
 
-def normalize_csv(input_path, output_path, column = 'name'):
-    df = pd.read_csv(input_path)
+def normalize_csv(ingredients_file, output_path, column = 'name'):
+    df = pd.read_csv(ingredients_file)
 
     df['norm_name'] = df['name'].apply(lambda text: normalize(text))
 
@@ -42,9 +49,10 @@ def normalize_csv(input_path, output_path, column = 'name'):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Normalize product names from any CSV file')
-    parser.add_argument('input', help = 'Path to input CSV file')
+    parser.add_argument('input', help = 'Path to input database')
     parser.add_argument('output', help = 'Path to save normalized CSV')
     parser.add_argument('--column', default = 'name', help = "Column to normalize (default: 'name')")
     args = parser.parse_args()
 
-    normalize_csv(args.input, args.output, args.column)
+    get_sql_table('cookbook.db')
+    normalize_csv('ingredients.csv', args.output, args.column)
