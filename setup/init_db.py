@@ -1,7 +1,7 @@
 import sqlite3
 from pathlib import Path
 
-DB_FILE = Path("my_local_db.sqlite")
+DB_FILE = Path("team-no-food-waste-for-you.sqlite")
 
 def create_database():
     if DB_FILE.exists():
