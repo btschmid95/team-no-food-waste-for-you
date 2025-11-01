@@ -4,14 +4,16 @@ import nltk
 from nltk import word_tokenize, pos_tag
 import inflect
 import argparse
-
-
+  
 
 def normalize(text):
     nltk.download('punkt')
     nltk.download('punkt_tab')
     nltk.download('averaged_perceptron_tagger')
     nltk.download('averaged_perceptron_tagger_eng')
+
+    # Get rid of TJ's and any directions like ", divided"
+    text = text.replace("TJ's", '').split(',')[0].split('(')[0].strip() 
 
     # Get pos for each word
     tokens = nltk.word_tokenize(text)
