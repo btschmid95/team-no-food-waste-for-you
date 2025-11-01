@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
-import seaborn as sns
+from matplotlib.patches import Circle
 
 st.set_page_config(layout="wide", page_title="My Pantry Swarm Comparison")
 
@@ -25,6 +25,81 @@ def generate_random_pantry(products_df):
     pantry['days_to_expire'] = (pantry['expiration_date'] - pd.Timestamp.now()).dt.total_seconds() / 86400.0
     return pantry.reset_index(drop=True)
 
+def force_layout(
+    circles,
+    k_repel=0.45,
+    k_anchor=0.8,
+    k_gravity=0.5  ,
+    gravity_scale=5,  # power factor for radius influence
+    x_bias=0.05,
+    y_bias=2,
+    iterations=5000,
+    x_scale=0.35,
+    jitter=0.5,
+    center_boost=10
+):
+    """
+    Force-directed relaxation with directional bias and mass-weighted gravity.
+    - Temporarily compresses X by x_scale so overlaps are more likely to be found
+    - Adds small Y jitter to break perfect symmetry
+    - Repels overlapping circles (within same category)
+    - Applies mass-weighted gravity to pull larger circles toward their y0
+    - Restores X scale at the end
+    Adjust parameters to taste.
+    """
+    # compress x and jitter y to break symmetry
+    for c in circles:
+        c["x"] *= x_scale
+        c["y"] += np.random.uniform(-jitter, jitter)
+
+    for _ in range(iterations):
+        # Repulsion between overlapping circles (only within same category)
+        for i in range(len(circles)):
+            for j in range(i + 1, len(circles)):
+                ci, cj = circles[i], circles[j]
+                if ci["cat"] != cj["cat"]:
+                    continue
+                dx = ci["x"] - cj["x"]
+                dy = ci["y"] - cj["y"]
+                dist = np.hypot(dx, dy)
+                min_dist = ci["r"] + cj["r"]
+                if dist < min_dist and dist > 1e-6:
+                    overlap = (min_dist - dist)
+                    overlap_frac = (min_dist - dist) / min_dist
+                    base_force = k_repel * (overlap_frac ** 2)
+
+                    # Boost if one center lies inside another
+                    if dist < min(ci["r"], cj["r"]):
+                        base_force *= center_boost**(3/2)
+
+
+                    nx, ny = dx / dist, dy / dist
+                    # bias movement more in Y than X (x_bias small keeps them near x0)
+                    ci["x"] += nx * base_force * 0.5 * x_bias
+                    ci["y"] += ny * base_force * 0.5 * y_bias
+                    cj["x"] -= nx * base_force * 0.5 * x_bias
+                    cj["y"] -= ny * base_force * 0.5 * y_bias
+
+        # Gentle gravity pull toward category baseline (mass-weighted)
+        for c in circles:
+            g = k_gravity * (c["r"] ** gravity_scale)
+            c["y"] += (c["y0"] - c["y"]) * g
+
+        # Weak anchor back to original X (keep near x0)
+        for c in circles:
+            c["x"] += (c["x0"] - c["x"]) * k_anchor
+
+    # Restore X scaling
+    for c in circles:
+        c["x"] /= x_scale
+
+def set_equal_aspect(ax, xlim, ylim, margin=0.08):
+    x_range = xlim[1] - xlim[0]
+    y_range = ylim[1] - ylim[0]
+    ax.set_xlim(xlim[0] - margin * x_range, xlim[1] + margin * x_range)
+    ax.set_ylim(ylim[0] - margin * y_range, ylim[1] + margin * y_range)
+    ax.set_aspect('equal', adjustable='datalim')
+
 if st.button("Generate Random Pantry"):
     st.session_state['pantry'] = generate_random_pantry(products_df)
 
@@ -43,42 +118,72 @@ with tab1:
 with tab2:
     cutoff_days = 3
     if not pantry_df.empty:
-        fig, ax = plt.subplots(figsize=(12,6))
-
-        df_sorted = pantry_df.sort_values(['days_to_expire','quantity'], ascending=[False, False]).copy()
-        positions = []
+        # create sorted df (you can adjust sorting strategy)
+        df_sorted = pantry_df.sort_values(['days_to_expire', 'quantity'], ascending=[False, False]).copy()
         max_quantity = df_sorted['quantity'].max()
-        category_starts = {"Meat, Seafood & Plant-Based": 1, "Fresh Fruits & Veggies": 2}
 
-        for idx, row in df_sorted.iterrows():
-            x = row['days_to_expire']
-            r = row['quantity'] / 2 
-            y_cat = category_starts[row['category']]
-            y = y_cat * max_quantity
+        # spacing between category baseline lines (increase for more vertical room)
+        y_spacing = 40
+        unique_cats = df_sorted['category'].unique()
+        category_offsets = {cat: i * y_spacing for i, cat in enumerate(unique_cats)}
 
-            positions.append((x, y, r))
-            df_sorted.loc[idx, 'x_pos'] = x
-            df_sorted.loc[idx, 'y_pos'] = y
+        # create circles list
+        circles = []
+        for _, row in df_sorted.iterrows():
+            x0 = row['days_to_expire']
+            y0 = category_offsets[row['category']]
+            circles.append({
+                "x": x0,
+                "y": y0,
+                "x0": x0,
+                "y0": y0,
+                "r": row['quantity'] / 3.0,  # scale radius for visuals
+                "cat": row['category'],
+                "label": row.get('product_name', '')
+            })
 
-        df_sorted['s'] = np.pi * (df_sorted['quantity'])**2
-
-        ax.scatter(
-            df_sorted['x_pos'], df_sorted['y_pos'],
-            s=df_sorted['s'],
-            c=pd.factorize(df_sorted['category'])[0],
-            alpha=0.7
+        # run force relax
+        force_layout(
+            circles,
+            k_repel=0.4,
+            k_anchor=0.02,
+            k_gravity=0.05,
+            gravity_scale=1.2,
+            x_bias=0.02,
+            y_bias=2,
+            iterations=600,
+            x_scale=0.35,
+            jitter=0.45
         )
 
-        y_min = df_sorted['y_pos'].min()
-        y_max = df_sorted['y_pos'].max()
-        padding = 15
-        ax.set_ylim(y_min - padding, y_max + padding)
+        # Plot
+        fig, ax = plt.subplots(figsize=(12, 7))
+        for c in circles:
+            circ = Circle((c["x"], c["y"]), c["r"], alpha=0.6,
+                          color=f"C{list(category_offsets.keys()).index(c['cat']) % 10}")
+            ax.add_patch(circ)
+            # optional label:
+            # ax.text(c["x"], c["y"], c["label"], ha='center', va='center', fontsize=6)
+
+        # axes limits and aspect
+        xlim = (0, max(df_sorted['days_to_expire'].max() + 2, 10))
+        ylim = (-10, (len(category_offsets)) * y_spacing + 30)
+        set_equal_aspect(ax, xlim, ylim)
+
         ax.invert_xaxis()
-        ax.axvline(cutoff_days, color='red', linestyle='--', label=f'{cutoff_days}-day cutoff')
         ax.set_xlabel("Days until Expiration")
-        ax.set_ylabel("Y Position / Category Cluster")
-        ax.set_title("Pantry Expiration visual")
+        ax.set_ylabel("Category Cluster")
+        ax.set_title("Pantry Expiration (Force-Directed Bubble Layout)")
         ax.grid(True)
+
+        # category labels on the right
+        x_label_pos = xlim[1] + 1
+        for cat, offset in category_offsets.items():
+            ax.text(x_label_pos, offset, cat, va='center', fontsize=10, fontweight='bold')
+
+        # cutoff line (optional)
+        ax.axvline(cutoff_days, color='red', linestyle='--', label=f'{cutoff_days}-day cutoff')
+
         st.pyplot(fig)
     else:
         st.info("Generate your pantry to see the plot.")
