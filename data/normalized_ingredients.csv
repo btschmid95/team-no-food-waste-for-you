@@ -1,0 +1,2596 @@
+ingredient_id,ingredient_name,norm_name
+0,TJ’s Salted Butter,Butter
+1,TJ’s Fresh Garlic,Garlic
+2,TJ’s Fresh Ginger,Ginger
+3,"TJ’s Jasmine Rice, rinsed",Jasmine Rice
+4,water,water
+5,TJ’s Chicken Broth Concentrate packets,Chicken Broth
+6,"TJ’s Green Onion, thinly sliced on a bias",Green Onion
+7,TJ’s Pork Tenderloin,Pork Tenderloin
+8,TJ’s Mushroom & Company Multipurpose Umami Seasoning Blend,Mushroom Company Multipurpose Umami Seasoning Blend
+9,"TJ’s Avocado Oil, divided",Avocado Oil
+10,"TJ’s Teeny Tiny Potatoes, sliced in half, lengthwise",Potatoes
+11,"TJ’s Unsalted Butter, softened",Butter
+12,TJ’s Honey,Honey
+13,TJ’s Avocado Oil,Avocado Oil
+14,"TJ’s Baby Shanghai Bok Choy, washed and sliced in half lengthwise",Baby Shanghai Bok Choy
+15,TJ’s Organic Coconut Aminos,Coconut Aminos
+16,TJ’s Organic Toasted Sesame Oil,Sesame Oil
+17,"TJ’s Crispy Garlic, to garnish",Crispy Garlic
+18,"TJ’s Yellow Potato, thinly sliced using a mandoline or knife",Yellow Potato
+19,"TJ’s Extra Virgin Olive Oil, divided",Extra Virgin Olive Oil
+20,TJ’s Seasoning Salute,Salute
+21,TJ’s Sea Salt,Sea Salt
+22,"TJ’s Trimmed Leeks, cut into thin rounds",Leeks
+23,"TJ’s Pie Crust, thawed according to package instructions",Pie Crust
+24,TJ’s Shredded Unexpected Cheddar,Cheddar
+25,TJ’s Large Egg,Egg
+26,TJ’s Organic Crescent Rolls,Crescent Rolls
+27,"TJ’s New Zealand Sharp Cheddar Cheese (or your favorite TJ's Sharp Cheddar Cheese), sliced into thin planks",New Zealand Sharp Cheddar Cheese
+28,TJ’s Apple Pie Spread,Apple Pie Spread
+29,"TJ’s Apple Chip Duo, crushed",Apple Chip Duo
+30,"TJ’s Egg, beaten",Egg
+31,"TJ’s Unsalted Butter, for greasing pan",Butter
+32,TJ’s Large Eggs,Eggs
+33,TJ’s Brown Sugat Oat Creamer,Brown Sugat Oat Creamer
+34,"TJ’s Sliced Apple Cinnamon Sourdough Bread, each slice cut in half widthwise",Sliced Apple Cinnamon Sourdough Bread
+35,"TJ’s Apple (your favorite varietal), chopped",Apple
+36,"TJ’s Fleur de Sel Caramel Sauce, for drizzling",Fleur Sel Caramel Sauce
+37,TJ’s Extra Virgin Olive Oil,Extra Virgin Olive Oil
+38,"TJ’s Fresh Fennel bulb, cut into thick slices, reserve the fronds",Fennel bulb
+39,"TJ’s Lemon, sliced into thick rounds",Lemon
+40,"TJ’s Orange, sliced into thick rounds",Orange
+41,"TJ’s Fresh Garlic, skin on",Garlic
+42,TJ’s Rainbow Peppercorns,Rainbow Peppercorns
+43,TJ’s All Natural Bone-In Skin-On Chicken Thighs,Bone-In Skin-On Chicken Thighs
+44,"TJ's Frenched, Bone-In, Center-Cut Pork Loin Chops",Frenched
+45,"TJ's Soyaki, divided",Soyaki
+46,"TJ's Pineapple, cut into wedges",Pineapple
+47,TJ's Prosciutto Wrapped Fresh Mozzarella Cheese sticks,Prosciutto Wrapped Mozzarella Cheese sticks
+48,"TJ’s Zucchini, sliced into thin planks",Zucchini
+49,TJ’s Crunchy Sesame Sunflower Seeds Pepitas Salsa Macha,Crunchy Sesame Sunflower Seeds Pepitas Salsa Macha
+50,"TJ’s Authentic Greek Feta In Brine, crumbled",Authentic Greek Feta Brine
+51,TJ’s Lemon,Lemon
+52,"TJ’s Cauliflower, sliced into thick planks, core intact",Cauliflower
+53,TJ’s Hot Honey Mustard Dressing,Hot Honey Mustard Dressing
+54,"TJ’s Heirloom Tomatoes, sliced into thick rounds",Heirloom Tomatoes
+55,TJ’s Organic Ranch Dressing,Ranch
+56,TJ’s Japanese Style Panko Breadcrumbs,Japanese Style Panko Breadcrumbs
+57,TJ’s Black Peppercorns,Black Peppercorns
+58,TJ’s 100% Canola Oil,Canola Oil
+59,TJ’s Traditional Whole Milk Ricotta Cheese,Traditional Whole Milk Ricotta Cheese
+60,"TJ’s Steamed & Peeled Baby Beets, warmed according to package instructions, if desired, and sliced into thin rounds",Steamed Peeled Baby Beets
+61,"TJ’s Raw Pistachio Nutmeats, roughly chopped",Pistachio Nutmeats
+62,"TJ’s Extra Virgin Olive Oil, for drizzling",Extra Virgin Olive Oil
+63,TJ’s Spaghetti,Spaghetti
+64,"TJ’s Organic Silken Tofu, drained",Silken Tofu
+65,"TJ’s Nutritional Yeast, plus more for sprinkling",Nutritional Yeast
+66,TJ’s White Miso Paste,White Miso Paste
+67,TJ’s Lemons,Lemons
+68,"TJ’s Black Peppercorns, plus more for serving",Black Peppercorns
+69,"TJ’s Tiny Fruity Cuties, divided",Fruity Cuties
+70,TJ’s Pitted Amarena Cherries with Stems in Syrup,Amarena Cherries Stems Syrup
+71,TJ’s French Vanilla Ice Cream,French Vanilla Ice Cream
+72,TJ’s Whole Milk,Whole Milk
+73,TJ’s Whipped Cream,Whipped Cream
+74,TJ’s Cornbread Mix,Cornbread Mix
+75,TJ’s All-Purpose Flour,All-Purpose Flour
+76,"TJ’s French Vanilla Ice Cream, plus plenty more for scooping",French Vanilla Ice Cream
+77,TJ’s Multi-Floral & Clover Honey,Multi-Floral Clover Honey
+78,"TJ’s Gochujang, for rolling",Gochujang
+79,(eight ounce) bag TJ’s Strawberry & Watermelon Marshmallows,Strawberry Watermelon Marshmallows
+80,TJ’s Strawberry Yogurt O’s,Strawberry Yogurt O ’ s
+81,"TJ’s Frozen Pie Crusts, thawed at room temperature for 2 hours",Frozen Pie Crusts
+82,"TJ’s Berries, (we use a mix of fresh Blueberries, Raspberries, and Blackberries)",Berries
+83,TJ’s Organic Cane Sugar,Cane Sugar
+84,"TJ’s All-Purpose Flour, plus more for dusting",All-Purpose Flour
+85,"TJ’s Unsalted Butter, cubed",Butter
+86,"TJ’s Lemon, plus 2 tablespoons juice",Lemon
+87,TJ’s Fresh Thyme,Thyme
+88,"TJ’s Heavy Cream, for brushing on crust; and to whip up for topping (optional but encouraged!)",Heavy Cream
+89,"TJ’s Turbinado Raw Cane Sugar, for sprinkling",Turbinado Cane Sugar
+90,TJ's Creamy Salted Almond Butter,Creamy Salted Almond Butter
+91,TJ’s Lime,Lime
+92,TJ’s Organic Blue Agave Syrup,Blue Agave Syrup
+93,TJ’s Organic Crushed Red Pepper,Red Pepper
+94,TJ’s Chile Lime Seasoning Blend,Chile Lime Seasoning Blend
+95,"TJ’s Lime, sliced into wedges",Lime
+96,"TJ’s Jalapeño, thinly sliced",Jalapeño
+97,TJ’s Mango Cream Bars,Mango Cream Bars
+98,TJ’s Lime Sparkling Water,Lime Sparkling Water
+99,"TJ’s Ciabatta Demi-Baguette, sliced in half lengthwise, then cut in half widthwise, on a bias, to make two sandwiches",Ciabatta Demi-Baguette
+100,"TJ’s Triple Creme Brie, cut into 8 slices",Triple Creme Brie
+101,"TJ’s Bacon, cooked according to package instructions",Bacon
+102,TJ’s Apple,Apple
+103,TJ’s Carne Asada Authentica,Carne Asada Authentica
+104,TJ’s Baby Lettuce Mix,Baby Lettuce Mix
+105,"TJ’s Roasted Corn, prepared according to package instructions",Corn
+106,TJ’s Mini Grape Tomatoes,Mini Grape Tomatoes
+107,Cheese,Cheese
+108,"TJ’s Red Onion, thinly sliced",Red Onion
+109,TJ’s Cilantro Dressing,Cilantro Dressing
+110,TJ’s Olive Oil,Olive Oil
+111,"TJ’s Angus Chuck, Brisket, & Sirloin 1/3 lb. Ground Beef Patties",Angus Chuck
+112,"TJ’s Triple Cream Soft Ripened Cambozola® Blue Cheese, sliced into rectangles",Triple Cream Soft Cambozola® Blue Cheese
+113,TJ’s Brioche Buns,Brioche Buns
+114,TJ’s Fig Butter,Fig Butter
+115,TJ’s Arugula,Arugula
+116,"TJ’s Zucchini, stems removed and sliced lengthwise into thin planks",Zucchini
+117,TJ’s Part Skim Ricotta,Part Skim Ricotta
+118,TJ’s Grated Pecorino Romano & Parmesan Cheese Blend,Pecorino Romano Parmesan Cheese Blend
+119,TJ’s Fresh Basil,Basil
+120,(24.3 ounces) TJ’s Caro Sugo Italian Tomato Basil Pasta Sauce,Caro Sugo Italian Tomato Basil Pasta Sauce
+121,TJ’s Shredded Mozzarella Cheese,Shredded Mozzarella Cheese
+122,TJ’s Baby Broccoli,Baby Broccoli
+123,TJ’s Creamy Dreamy Hummus,Creamy Dreamy Hummus
+124,TJ’s Crumbled Feta Cheese with Mediterranean Herbs,Feta Cheese Mediterranean Herbs
+125,"TJ’s Chevre Goat's Milk Cheese, sliced into 6 medallions, then chilled until ready to use",Chevre Goat Milk Cheese
+126,TJ’s Green Goddess Spice Blend,Green Goddess Spice Blend
+127,TJ’s Organic Extra Virgin Olive Oil Spray,Extra Virgin Olive Oil Spray
+128,TJ’s Homestyle Angus Beef Meatballs,Homestyle Angus Beef Meatballs
+129,TJ’s Marinara Sauce,Marinara Sauce
+130,"TJ’s Sandwich Rolls, sliced lengthwise, leaving one edge intact",Sandwich Rolls
+131,TJ’s Sliced Provolone,Sliced Provolone
+132,TJ’s Organic Shredded Green & Red Cabbage with Orange Carrots,Shredded Green Red Cabbage Orange Carrots
+133,"TJ’s Yellow Onion, thinly sliced",Yellow Onion
+134,TJ’s Hot & Sweet Jalapeño Peppers,Hot Sweet Jalapeño Peppers
+135,TJ’s Raw Apple Cider Vinegar,Apple Cider Vinegar
+136,TJ’s Organic Oregano,Oregano
+137,TJ’s Organic Tofu,Tofu
+138,TJ’s Organic Ground Turmeric,Ground Turmeric
+139,TJ’s California Garlic Powder,California Garlic Powder
+140,TJ’s California Onion Powder,California Onion Powder
+141,TJ’s Black Pepper,Black Pepper
+142,TJ’s Nutritional Yeast,Nutritional Yeast
+143,"TJ’s Organic Mini Flour Tortillas, warmed",Mini Flour Tortillas
+144,"TJ’s Avocados, sliced",Avocados
+145,TJ’s Pico de Gallo,Pico Gallo
+146,TJ’s Cilantro,Cilantro
+147,"TJ’s Limes, sliced into wedges",Limes
+148,TJ’s Organic Baby Lettuce,Baby Lettuce
+149,"TJ’s Blood Oranges, peeled and sliced into thin rounds",Blood Oranges
+150,"TJ’s Fennel, thinly sliced",Fennel
+151,"TJ’s Avocado, skin removed and sliced",Avocado
+152,"TJ’s Roasted & Salted Pecan Halves, roughly chopped",Roasted Salted Pecan Halves
+153,TJ’s Organic Crumbled Feta Cheese,Crumbled Feta Cheese
+154,TJ’s Balsamic Vinaigrette,Balsamic Vinaigrette
+155,TJ's Lentils,Lentils
+156,TJ’s Taco Seasoning Mix,Taco Seasoning Mix
+157,TJ’s Corn Tortillas,Corn Tortillas
+158,"TJ’s Bell Peppers, one color or an array)",Bell Peppers
+159,TJ’s Cilantro Salad Dressing,Cilantro Salad Dressing
+160,"TJ’s Fresh Cilantro leaves, for garnish",Cilantro leaves
+161,(12 ounces) TJ's Organic Red Cherry Tomatoes,Red Cherry Tomatoes
+162,TJ's Olive Oil,Olive Oil
+163,TJ's Sea Salt,Sea Salt
+164,"TJ's Organic White Quinoa, prepared according to package instructions",White Quinoa
+165,TJ's Thai Style Yellow Curry Sauce,Thai Style Yellow Curry Sauce
+166,"TJ's Organic Garbanzo Beans, drained",Garbanzo Beans
+167,TJ's Organic Baby Spinach,Baby Spinach
+168,"TJ's Bagels, sliced in half",Bagels
+169,TJ's Whipped Cream Cheese,Whipped Cream Cheese
+170,TJ's Wild Sockeye Smoked Salmon,Wild Sockeye Smoked Salmon
+171,"TJ's Red Onion, very thinly sliced",Red Onion
+172,"TJ's Persian Cucumbers, thinly sliced",Persian Cucumbers
+173,"TJ's Capers, drained",Capers
+174,"TJ's Fresh Dill, for garnish",Dill
+175,"TJ's Lemon, sliced into wedges",Lemon
+176,TJ’s Freeze Dried Fig Slices,Freeze Dried Fig Slices
+177,"TJ’s Unexpected Cheddar, sliced into bite-sized rectangles",Cheddar
+178,"TJ’s Fresh Thyme, to garnish",Thyme
+179,TJ’s Organic Unfiltered Apple Juice,Apple Juice
+180,TJ’s Rolled Oats,Oats
+181,"TJ's Apple (your favorite varietal), chopped into small cubes",Apple
+182,TJ’s Organic Ground Cinnamon,Ground Cinnamon
+183,Oil,Oil
+184,"Onion, diced",Onion
+185,"Potatoes, peeled and cubed",Potatoes
+186,TJ's Pearled Couscous,Pearled Couscous
+187,TJ's Low Sodium Vegetable Broth,Low Sodium Vegetable Broth
+188,TJ's Taco Seasoning,Taco
+189,TJ's Organic Tuscan Kale,Tuscan Kale
+190,"TJ's Salt & Pepper, to taste",Salt Pepper
+191,TJ’s crusty bread,crusty bread
+192,"TJ’s Shiitake Mushrooms, sliced",Shiitake Mushrooms
+193,TJ’s Miso Ramen Cup,Miso Ramen Cup
+194,"TJ’s Baby Bok Choy, sliced in half and roughly chopped",Baby Bok Choy
+195,"TJ’s Furikake, for sprinkling",Furikake
+196,"TJ’s Green Onion, thinly sliced",Green Onion
+197,TJ’s Mirepoix,Mirepoix
+198,"TJ’s Garlic, smashed",Garlic
+199,TJ’s Organic Free Range Chicken Broth,Free Range Chicken Broth
+200,"TJ’s Parmesan, optional",Parmesan
+201,TJ’s Spinach Tortellini,Spinach Tortellini
+202,"TJ’s Parmesan, to serve",Parmesan
+203,"TJ's Fresh Parsley, for ganish",Parsley
+204,TJ's Extra Virgin Olive Oil,Extra Virgin Olive Oil
+205,"TJ’s Pizza Dough, left to sit at room temperature for 20 minutes",Pizza Dough
+206,"TJ's Unbleached Enriched All-Purpose Flour, for dusting",All-Purpose Flour
+207,"TJ’s Yangnyeom Sauce, plus more for drizzling",Yangnyeom Sauce
+208,TJ’s Shredded Pepper Jack Cheese,Shredded Pepper Jack Cheese
+209,"TJ’s Spicy Chicken Nuggets, sliced into thirds",Spicy Chicken Nuggets
+210,"TJ’s Cilantro, leaved plucked from the stems, to garnish",Cilantro
+211,TJ’s Double Cream Brie,Double Cream Brie
+212,"TJ’s Walnuts, roughly chopped",Walnuts
+213,"TJ’s Fresh Thyme, destemmed and chopped",Thyme
+214,"TJ’s Honey, plus more for drizzling",Honey
+215,"TJ's crackers or a TJ's Organic Baguette, for serving",crackers Baguette
+216,"TJ’s Pecorino Romano Cheese, plus more for serving",Pecorino Romano Cheese
+217,"TJ’s Large Eggs, plus 2 yolks",Eggs
+218,TJ’s Organic Spaghetti Triangoletti Pasta,Spaghetti Triangoletti Pasta
+219,"TJ’s Uncured Apple Smoked Bacon, chopped into thin strips and cooked until crispy (ensure this step is complete before the pasta water comes to a boil)",Apple Smoked Bacon
+220,TJ’s Fontina Cheese,Fontina Cheese
+221,"TJ’s Shrimp Scampi, prepared according to package instructions",Shrimp Scampi
+222,"TJ’s Lemon, one half zested, the other half quartered and thinly sliced",Lemon
+223,TJ’s Organic Raw Apple Cider Vinegar,Apple Cider Vinegar
+224,TJ's Rainbow Peppercorns,Rainbow Peppercorns
+225,TJ’s Joe's Diner Mac n' Cheese,Joe Diner Mac n Cheese
+226,TJ’s Pepper Jack Cheese Blend,Pepper Jack Cheese Blend
+227,TJ’s Tortilla Chips,Tortilla Chips
+228,TJ’s Hot Pico de Gallo,Hot Pico Gallo
+229,"TJ’s Green Onions, chopped",Green Onions
+230,TJ's Organic Free Range Chicken Broth,Free Range Chicken Broth
+231,TJ's Mediterranean Style Orzo Pasta Salad,Mediterranean Style Orzo Pasta Salad
+232,"TJ's Lemon Pepper Grilled Chicken, sliced into bite-sized pieces",Lemon Pepper Grilled Chicken
+233,TJ’s Organic Non-Dairy Unsweetened Coconut Beverage,Non-Dairy Unsweetened Coconut Beverage
+234,TJ’s Organic Chia Seeds,Chia Seeds
+235,TJ’s Organic Raspberries,Raspberries
+236,"TJ's Milk, heated to 110-115°F",Milk
+237,"TJ's Organic Powdered Cane Sugar, plus more for dusting",Powdered Cane Sugar
+238,Yeast,Yeast
+239,"TJ's Unbleached Enriched All-Purpose Flour, plus more for dusting",All-Purpose Flour
+240,TJ's Large Egg,Egg
+241,TJ's Organic Pure Bourbon Vanilla Extract,Pure Bourbon Vanilla Extract
+242,"TJ's Unsalted Butter, melted",Butter
+243,TJ's Canola Oil,Canola Oil
+244,"filling! Try TJ's Strawberry or Raspberry Preserves, TJ's Cocoa Almond Spread, or TJ's Lemon Curd",filling Try Strawberry Raspberry Preserves
+245,tool: Piping bag or squeeze bottle,tool Piping squeeze
+246,TJ’s Eggs,Eggs
+247,TJ’s Egg Nog,Egg Nog
+248,TJ’s Organic Brown Sugar,Brown Sugar
+249,TJ’s Organic Pure Bourbon Vanilla Extract,Pure Bourbon Vanilla Extract
+250,"TJ’s Ground Nutmeg, plus more to serve",Ground Nutmeg
+251,TJ’s Braided & Sliced Brioche,Braided Sliced Brioche
+252,"TJ’s Maple Syrup, to serve",Maple Syrup
+253,"TJ’s Whipped Cream, to serve",Whipped Cream
+254,TJ's Premium Vanilla Ice Cream,Premium Vanilla Ice Cream
+255,TJ's Egg Nog (seasonal),Egg Nog
+256,TJ's Ground Nutmeg,Ground Nutmeg
+257,"TJ's Ground Cinnamon, plus a sprinkle for garnish",Ground Cinnamon
+258,TJ's Cinnamon Sticks,Cinnamon Sticks
+259,TJ's Strained Thick & Creamy Plain Greek Yogurt,Thick Creamy Plain Greek Yogurt
+260,TJ's Cuban Style Citrusy Garlic Seasoning Blend,Cuban Style Citrusy Garlic Seasoning Blend
+261,TJ's Smoked Paprika,Paprika
+262,TJ's Lemon,Lemon
+263,TJ's All Natural Chicken Breast Tenders,Chicken Breast Tenders
+264,"TJ's Oil or Oil Spray, for greasing the grill grates",Oil Oil Spray
+265,"TJ's Cilantro, chopped, for garnish",Cilantro
+266,"TJ's Persian Cucumber, sliced into thin coins",Persian Cucumber
+267,"TJ's Unsalted Butter, for greasing pan",Butter
+268,(26.5 oz) TJ's Panettone,Panettone
+269,TJ's Egg Nog,Egg Nog
+270,"TJ's Organic Powdered Cane Sugar, for dusting",Powdered Cane Sugar
+271,TJ’s Organic Biscuits,Biscuits
+272,TJ’s Cotswold® Double Gloucester with Chive and Onion,Cotswold® Double Gloucester Chive Onion
+273,TJ's Chives,Chives
+274,"TJ's Garlic, smashed",Garlic
+275,"TJ's Orange, peeled and sliced into thin strips",Orange
+276,TJ's Rosemary,Rosemary
+277,"TJ's Manchego Cheese, cut into bite-sized cubes",Manchego Cheese
+278,"TJ's Shredded Hash Browns, thawed",Shredded Hash Browns
+279,TJ's Condensed Cream of Portabella Mushroom Soup,Condensed Cream Portabella Mushroom Soup
+280,(6 ounces) TJ's Shredded Sharp Cheddar,Sharp Cheddar
+281,"TJ's Fully Cooked Uncured Bacon, prepared according to package instructions then chopped",Uncured Bacon
+282,"TJ's Chives, finely diced, divided",Chives
+283,TJ's Sea Salt & TJ's Pepper,Sea Salt Pepper
+284,"TJ's Turkey and Stuffing Seasoned Kettle Chips, crushed",Turkey Stuffing Seasoned Kettle Chips
+285,TJ's Sour Cream,Sour Cream
+286,TJ's Triple Ginger Brew (seasonal),Triple Ginger Brew
+287,TJ's 100% Orange Juice,Orange Juice
+288,Ice,Ice
+289,"TJ's Organic Whole Fresh Cranberries (seasonal), rinsed",Whole Cranberries
+290,"TJ's Organic Sugar, divided (for optional step)",Sugar
+291,(for optional step),
+292,"TJ's Mint, for garnish",Mint
+293,"TJ's Navel Orange, sliced, for garnish",Navel Orange
+294,"TJ's Unsalted Butter, softened",Butter
+295,"TJ's Fresh Rosemary, destemmed",Rosemary
+296,"TJ's Fresh Thyme, destemmed",Thyme
+297,"TJ's Fresh Sage, destemmed",Sage
+298,TJ’s Organic Canola Oil Spray,Canola Oil Spray
+299,TJ’s French Green Beans,French Green Beans
+300,"TJ’s Red Onion, cut into ¼-inch thick slices",Red Onion
+301,"TJ’s Garlic Cloves, roughly chopped",Garlic Cloves
+302,TJ’s Sweet Chili Sauce,Sweet Chili Sauce
+303,"TJ’s Dry Roasted & Salted Almonds, chopped",Dry Roasted Salted Almonds
+304,TJ's Crunchy Chili Onion,Crunchy Chili Onion
+305,TJ's Whole Milk Vanilla Bean Greek Yogurt,Whole Milk Vanilla Bean Greek Yogurt
+306,TJ's Honey,Honey
+307,"TJ's Pumpkin Pie Spice (seasonal), plus more for sprinkling",Pumpkin Pie Spice
+308,"TJ's Apple varietal, sliced",Apple varietal
+309,TJ’s Buttermilk Protein Pancake Mix,Buttermilk Protein Pancake Mix
+310,TJ’s No Sugar Added Dark Chocolate Chips,Sugar Added Dark Chocolate Chips
+311,TJ’s Strawberries,Strawberries
+312,"TJ’s Vegan Heavy Whipping Cream Alternative, whipped according to package instructions, or TJ’s Heavy Whipping Cream whipped to soft peak-stage",Vegan Heavy Whipping Cream Alternative
+313,"TJ’s Olive Oil, divided",Olive Oil
+314,TJ’s Ground Turkey,Ground Turkey
+315,"TJ’s Capellini pasta, cook according to package instructions",Capellini pasta
+316,"TJ’s Leek, sliced",Leek
+317,"TJ’s Carrots of Many Colors, thinly sliced on a bias",Carrots Many Colors
+318,"TJ’s Grower’s Reserve Chardonnay, or your favorite dry white TJ’s wine",Grower ’ Reserve Chardonnay
+319,TJ’s Thyme leaves,Thyme leaves
+320,"TJ’s Sea Salt, to taste",Sea Salt
+321,"TJ’s Black Peppercorns, to taste",Black Peppercorns
+322,TJ’s Clarified Butter,Clarified Butter
+323,"TJ’s Mushroom & Company Multipurpose Umami Seasoning Blend, plus more for sprinkling",Mushroom Company Multipurpose Umami Seasoning Blend
+324,TJ’s Organic Olive Oil Popcorn,Olive Oil Popcorn
+325,TJ’s Parmesan,Parmesan
+326,"TJ’s Organic Polenta, sliced into ½-inch rounds",Polenta
+327,"TJ’s Silver Goat Cheese Log, sliced into 4 ½-inch rounds",Silver Goat Cheese Log
+328,"TJ’s Organic Mixed Medley Cherry Tomatoes, sliced in half",Mixed Medley Cherry Tomatoes
+329,TJ’s Shiitake Mushrooms,Shiitake Mushrooms
+330,"TJ’s Red Onion, cut into half moons",Red Onion
+331,"TJ’s Red Bell Pepper, cut into strips",Red Bell Pepper
+332,TJ’s 21 Seasoning Salute,Salute
+333,TJ’s Enchilada Sauce,Enchilada Sauce
+334,TJ’s Carb Savvy Tortillas,Carb Savvy Tortillas
+335,"TJ’s Black Beans, drained",Black Beans
+336,TJ’s Shredded 3 Cheese Blend,Cheese Blend
+337,"TJ’s Jalapeño Sauce, optional",Jalapeño Sauce
+338,TJ’s Unsalted Butter,Butter
+339,TJ’s String Cheese sticks,Cheese sticks
+340,TJ’s Organic Mini Flour Tortillas,Mini Flour Tortillas
+341,TJ’s Fresh Strawberry Preserves,Strawberry Preserves
+342,TJ’ Olive Oil,TJ ’ Olive Oil
+343,"TJ’s Gluten Free Baguette, cut into ½-inch slices",Gluten Free Baguette
+344,TJ’s Pre-Sliced Fresh Mozzarella Cheese Log,Pre-Sliced Mozzarella Cheese Log
+345,TJ’s Chimichurri Sauce,Chimichurri Sauce
+346,"TJ’s Almond Paste, broken up into pieces",Almond Paste
+347,TJ’s Blanched Almond Flour,Almond Flour
+348,TJ’s Egg,Egg
+349,TJ’s Raw Sliced Almonds,Sliced Almonds
+350,"TJ’s Dark Chocolate, chopped and melted",Dark Chocolate
+351,"TJ’s Delicata Squash (depending on size), sliced in half lengthwise, seeds removed",Delicata Squash
+352,TJ’s Mushroom Risotto,Mushroom Risotto
+353,"TJ’s Organic Tuscan Kale, destemmed",Tuscan Kale
+354,TJ’s Unsalted Dry Toasted Pecan Pieces,Dry Pecan Pieces
+355,TJ’s Sweetened Dried Cranberries,Dried Cranberries
+356,"TJ’s Black Pepper Toscano Cheese, divided",Black Pepper Toscano Cheese
+357,TJ’s Glaze,Glaze
+358,TJ's Organic French Baguette,French Baguette
+359,TJ's Pizza Sauce,Pizza Sauce
+360,TJ's Pizza Seasoned Shredded Toscano Cheese,Pizza Seasoned Shredded Toscano Cheese
+361,TJ's Sliced Uncured Pepperoni,Sliced Uncured Pepperoni
+362,TJ's Spiced Cider (seasonal),Spiced Cider
+363,1.5 ounces (1 shot) of your favorite TJ's Bourbon Whiskey,Bourbon Whiskey
+364,TJ's Mandarin,Mandarin
+365,"TJ's Organic Cinnamon Stick, for garnish (optional)",Cinnamon Stick
+366,"TJ’s Wild Caught Cod Fillets, about 1 to 1 ½ pounds",Wild Caught Cod Fillets
+367,"TJ’s Unsalted Butter, melted and divided",Butter
+368,"TJ’s Golden Rounds Crackers, crushed",Golden Crackers
+369,TJ’s Aglio Olio Garlicky & Spicy Seasoning Blend,Aglio Olio Garlicky Spicy Seasoning Blend
+370,"TJ’s Lemon, sliced into wedges",Lemon
+371,TJ’s Heavy Cream,Heavy Cream
+372,TJ’s Organic Maple Butter,Maple Butter
+373,"TJ’s 10 Minute Farro, cooked according to package instructions",Minute Farro
+374,"TJ’s Sweet Italian Chicken Sausage, casings removed",Sweet Italian Chicken Sausage
+375,TJ’s Yellow Onion,Yellow Onion
+376,"TJ’s Garlic, chopped",Garlic
+377,"TJ’s Apple (your favorite variety), diced",Apple
+378,"TJ’s Organic Ground Black Pepper, to taste",Ground Black Pepper
+379,"TJ’s Organic Crushed Red Pepper, to taste",Red Pepper
+380,"TJ’s Grated Parmesan Cheese, to serve",Parmesan Cheese
+381,"TJ’s Granny Smith Apples, thinly sliced",Granny Smith Apples
+382,TJ’s Fleur de Sel Caramel Sauce,Fleur Sel Caramel Sauce
+383,"TJ’s Graham Cracker Squares, crushed",Graham Cracker Squares
+384,"TJ’s Roasted & Unsalted Peanuts, chopped",Roasted Unsalted Peanuts
+385,"TJ’s Organic Ground Cinnamon, for dusting",Ground Cinnamon
+386,TJ’s Cut Butternut Squash,Cut Butternut Squash
+387,"TJ’s Salted Butter, melted",Butter
+388,TJ’s Maple Syrup,Maple Syrup
+389,TJ’s Fresh Rosemary,Rosemary
+390,TJ’s Salt,Salt
+391,TJ’s Raw California Walnut Baking Pieces,California Walnut Baking Pieces
+392,"TJ’s Unsalted Butter Quarters, chopped into cubes",Butter Quarters
+393,"TJ’s Mashed Sweet Potatoes, prepared according to package instructions",Mashed Sweet Potatoes
+394,"Pecans, chopped",Pecans
+395,TJ’s Red Onion,Red Onion
+396,"TJ’s Limes, juiced",Limes
+397,"TJ’s Farfalle Pasta, cooked according to package instructions, then rinse with cold water",Farfalle Pasta
+398,"TJ’s Black Beans, drained and rinsed",Black Beans
+399,"TJ’s Organic Super Sweet Cut Corn, thawed from frozen",Super Sweet Cut Corn
+400,"TJ’s Cotija Cheese, crumbled",Cotija Cheese
+401,"TJ’s Cilantro, chopped, to garnish",Cilantro
+402,TJ’s Low Sodium Soy Sauce,Low Sodium Soy Sauce
+403,TJ’s Rice Vinegar,Rice Vinegar
+404,TJ’s Organic Sugar,Sugar
+405,TJ’s Organic Pasture Raised Large Brown Eggs,Pasture Brown Eggs
+406,TJ's Sriracha Sauce,Sriracha Sauce
+407,TJ's Nori Komi Furikake Japanese Multi-Purpose Seasoning,Nori Komi Furikake Japanese Multi-Purpose Seasoning
+408,"tablespoons, plus 1/2 teaspoon TJ’s Avocado Oil, divided",tablespoons
+409,TJ’s Hamburger Buns,Hamburger Buns
+410,TJ’s Ground Beef Patties 80% Lean/20% Fat,Ground Beef Patties Lean/ Fat
+411,TJ’s Organic American Singles,American Singles
+412,TJ’s Organic Ketchup,Ketchup
+413,TJ’s Fire Roasted Peppers & Onions,Fire Roasted Peppers Onions
+414,TJ’s Grilled Chicken Strips,Chicken Strips
+415,TJ’s Oil Spray,Oil Spray
+416,TJ’s Roasted Corn,Corn
+417,"TJ’s Frozen Organic Jasmine Rice, prepared according to package instructions",Frozen Jasmine Rice
+418,"TJ’s Avocados, thinly sliced",Avocados
+419,"TJ’s Limes, cut into wedges",Limes
+420,TJ's Frozen Strawberries,Frozen Strawberries
+421,TJ's Organic Hemp Vanilla Protein Powder,Hemp Vanilla Protein Powder
+422,"TJ's Banana, peeled",Banana
+423,TJ's Organic Unsweetened Vanilla Almond Beverage,Vanilla Almond Beverage
+424,"TJ's Peanut Butter with Honey, plus more for drizzling",Peanut Butter Honey
+425,TJ's Peanut Butter Protein Granola,Peanut Butter Protein Granola
+426,"TJ's Fresh Strawberries, hulled & thinly sliced, for garnish (optional)",Strawberries
+427,TJ’s Speculoos Cookies,Speculoos Cookies
+428,"TJ’s Unsalted Butter, melted",Butter
+429,"TJ’s Chocolate Brooklyn Babka, chopped into bite-sized pieces",Chocolate Brooklyn Babka
+430,TJ’s Organic Powdered Cane Sugar,Powdered Cane Sugar
+431,"TJ’s Double Chocolate Wafer Cookies, crushed, plus a few whole cookies to garnish",Double Chocolate Wafer Cookies
+432,TJ’s Almond Chipotle Dip,Almond Chipotle Dip
+433,TJ's Organic Blue Agave Syrup,Blue Agave Syrup
+434,TJ’s Brioche Hot Dog Buns,Brioche Hot Dog Buns
+435,"TJ’s Eggs, cracked and scrambled",Eggs
+436,TJ’s Organic American Singles Cheese,American Singles Cheese
+437,"TJ’s Uncured Apple Smoked Bacon, cooked then chopped into bite-sized pieces",Apple Smoked Bacon
+438,"TJ’s Habanero Hot Sauce, to serve",Habanero Hot Sauce
+439,TJ’s Organic Riced Cauliflower,Riced Cauliflower
+440,"TJ’s Garlic, finely chopped",Garlic
+441,"TJ’s Fresh Parsley, finely chopped",Parsley
+442,TJ’s Parmesan Cheese,Parmesan Cheese
+443,TJ’s Stracciatella Burrata Filling,Stracciatella Burrata Filling
+444,TJ’s Frozen Strawberries,Frozen Strawberries
+445,"TJ’ Sea Salt, to taste",TJ ’ Sea Salt
+446,"TJ’s Ciabatta Demi Baguette, sliced into rounds and toasted",Ciabatta Demi Baguette
+447,TJ’s Organic Mayonnaise,Mayonnaise
+448,TJ’s Sour Cream,Sour Cream
+449,"TJ’s Chile Lime Seasoning Blend, plus more for garnish",Chile Lime Seasoning Blend
+450,"TJ’s Fresh Corn on the Cob, husks and silks removed",Cob
+451,"TJ’s Fresh Cilantro, for garnish",Cilantro
+452,"TJ’s Lime, sliced into wedges for garnish",Lime
+453,"TJ’s Portabella Mushrooms (12659), cleaned and thinly sliced",Portabella Mushrooms
+454,"TJ’s Yellow onion, thinly sliced",Yellow onion
+455,TJ’s Barbecue Sauce,Barbecue Sauce
+456,TJ’s Brioche Hamburger Bun,Brioche Hamburger Bun
+457,"TJ’s Organic Coleslaw Kit, tossed with the included salad dressing",Coleslaw Kit
+458,TJ’s Thai Style Red Curry Sauce,Thai Style Red Curry Sauce
+459,TJ's All Natural Chicken Drumsticks,Chicken Drumsticks
+460,"TJ's Honey Sesame Cashews, chopped",Honey Sesame Cashews
+461,"TJ’s Green Onions, to garnish",Green Onions
+462,"TJ’s Fresh Cilantro, to garnish",Cilantro
+463,"TJ’s Everything but the Bagel Cheddar Cheese, grated",Everything Bagel Cheddar Cheese
+464,"TJ’s Egg, cracked and whisked",Egg
+465,TJ’s Gochujang Paste,Gochujang Paste
+466,"TJ’s Frozen Beef Bulgogi, heated according to package instructions, reserve 1 tablespoon of juices after heating",Frozen Beef Bulgogi
+467,"TJ’s Little Gem Lettuce, cored, leaves washed and dried",Little Gem Lettuce
+468,"TJ’s Frozen Jasmine Rice, heated according to package instructions",Frozen Jasmine Rice
+469,"TJ’s Kimchi, to serve",Kimchi
+470,"TJ’s Chickepea Fusilli Pasta, cooked according to package instructions",Chickepea Fusilli Pasta
+471,"TJ’s Marinated Grilled Artichoke Halves, drained",Artichoke Halves
+472,TJ’s Red Bell Pepper,Red Bell Pepper
+473,"TJ’s Jumbo Pitted Greek Kalamata Olive, sliced",Jumbo Pitted Greek Kalamata Olive
+474,"(seven sticks) TJ’s Prosciutto Wrapped Fresh Mozzarella Cheese sticks, chopped into bite-sized pieces",Prosciutto Wrapped Mozzarella Cheese sticks
+475,"TJ’s Balsamic Vinaigrette, divided",Balsamic Vinaigrette
+476,TJ’s Unbleached All-Purpose Flour,All-Purpose Flour
+477,TJ’s Ranch Seasoning Blend,Ranch Seasoning Blend
+478,"TJ’s Kosher Dill Pickle Chips, drained and pat dry",Kosher Dill Pickle Chips
+479,TJ’s Organic Canola Oil,Canola Oil
+480,"TJ’s Buttermilk Ranch Dressing, for dipping",Buttermilk Ranch Dressing
+481,TJ’s Super Premium French Vanilla Ice Cream,Super Premium French Vanilla Ice Cream
+482,"TJ’s Roasted & Salted Rosemary Marcona Almonds, chopped",Roasted Salted Rosemary Marcona Almonds
+483,"TJ’s Fresh Rosemary, chopped",Rosemary
+484,TJ’s Non-Dairy Oat Beverage,Non-Dairy Oat Beverage
+485,TJ’s Frozen Blueberries,Frozen Blueberries
+486,TJ’s Spinach,Spinach
+487,TJ’s Raw Whole Cashews,Whole Cashews
+488,TJ’s Organic Flaxseed Meal,Meal
+489,"TJ’s Ciabatta Demi-Baguette, sliced into thin rounds",Ciabatta Demi-Baguette
+490,TJ’s Wild Caught Boneless Grilled Sardines in Olive Oil,Wild Caught Boneless Grilled Sardines Olive Oil
+491,TJ’s Grecian Style Eggplant with Tomatoes & Onions,Grecian Style Eggplant Tomatoes Onions
+492,TJ’s Traditional Olive Tapenade,Traditional Olive Tapenade
+493,"TJ’s Fresh Parsley, roughly chopped",Parsley
+494,TJ’s Lemon Curd,Lemon Curd
+495,TJ’s Small Curd Cottage Cheese,Small Curd Cottage Cheese
+496,"TJ’s Meyer Lemon Cookie Thins, gently crushed into irregular-sized pieces",Meyer Lemon Cookie Thins
+497,"TJ’s Dry Roasted & Salted Almonds, roughly chopped",Dry Roasted Salted Almonds
+498,"(1 pound) TJ’s Teeny Tiny Potatoes, sliced into 1-inch rounds",Potatoes
+499,TJ’s Lemon Pesto Sauce,Lemon Pesto Sauce
+500,"TJ’s Mint, to serve",Mint
+501,"TJ’s Fully Cooked Traditional Carnitas, heated according to package instructions, then shredded",Cooked Traditional Carnitas
+502,TJ’s Sonora Style Flour Tortillas,Sonora Style Flour Tortillas
+503,TJ’s Cowboy Caviar,Cowboy Caviar
+504,TJ’s Organic Unsweetened Flake Coconut,Flake Coconut
+505,TJ’s Cold Pressed Pineapple Juice,Cold Pineapple Juice
+506,TJ’s Pineapple,Pineapple
+507,TJ’s Premium French Vanilla Ice Cream,Premium French Vanilla Ice Cream
+508,"TJ’s Whipped Cream Can, to top",Whipped Cream
+509,"TJ’s Dry Roasted & Salted Macadamias, coarsely chopped",Dry Roasted Salted Macadamias
+510,"TJ’s Lime, cut into wedges",Lime
+511,TJ’s Espada Pequeña Mezcal,Espada Pequeña Mezcal
+512,TJ’s Limeade,Limeade
+513,"TJ’s Organic 3 Grain Tempeh, cut crosswise into 16 equal pieces",Grain Tempeh
+514,"TJ’s Reduced Sodium Soy Sauce, plus more for drizzling",Reduced Sodium Soy Sauce
+515,TJ’s Riced Cauliflower Stir Fry,Riced Cauliflower Stir Fry
+516,"TJ’s High Protein Super Firm Organic Tofu, sliced into four cutlets",High Protein Super Firm Tofu
+517,TJ’s Soyaki Sauce (plus more for serving),Soyaki Sauce
+518,Beverage,Beverage
+519,TJ’s Avocado Spray Oil,Avocado Spray Oil
+520,"TJ’s Rice (Brown or White), to serve",Rice
+521,"Sautéed TJ’s Shredded Green Cabbage or Cut Napa Cabbage, to serve",Sautéed Shredded Green Cabbage Cut Napa Cabbage
+522,"TJ’s Green Onions, thinly sliced",Green Onions
+523,"Joe's Organic Tricolor Quinoa, dry",Joe Tricolor Quinoa
+524,TJ's Cowboy Caviar Salsa,Cowboy Caviar Salsa
+525,TJ's Organic Diced & Fire Roasted Tomatoes,Diced Fire Tomatoes
+526,"TJ's Mexican Blend Shredded Cheese, divided",Mexican Blend Shredded Cheese
+527,"Spray, to grease pan",Spray
+528,"TJ’s Avocado, pitted, peeled, and chopped",Avocado
+529,"TJ’s Cilantro, for garnish",Cilantro
+530,"TJ's Sour Cream, to serve",Sour Cream
+531,"TJ’s Salted Butter, melted (see pro-tip)",Butter
+532,TJ’s Brownie Truffle Baking Mix,Brownie Truffle Baking Mix
+533,TJ’s 100% Colombian Instant Coffee granules,Colombian Instant Coffee granules
+534,TJ’s Heavy Whipping Cream,Heavy Whipping Cream
+535,(1 cup) TJ’s Mascarpone,Mascarpone
+536,TJ’s Bourbon Vanilla Bean Paste,Bourbon Vanilla Bean Paste
+537,TJ’s Organic Couscous,Couscous
+538,"TJ’s Sea Salt, plus more to taste",Sea Salt
+539,TJ’s Greek Chickpeas with Parsley & Cumin,Greek Chickpeas Parsley Cumin
+540,"TJ’s Kalamata Olives, sliced",Kalamata Olives
+541,"TJ’s Mini Pearl Grape Tomatoes, sliced",Mini Pearl Grape Tomatoes
+542,"TJ’s Persian Cucumbers, sliced",Persian Cucumbers
+543,TJ’s Fresh Parsley,Parsley
+544,"TJ’s Fresh Rosemary, divided",Rosemary
+545,TJ’s Gin,Gin
+546,TJ’s Organic 100% Sicilian Lemon Juice,Sicilian Lemon Juice
+547,TJ’s Italian Sparkling Mineral Water,Italian Sparkling Mineral Water
+548,"TJ’s Red Onion, sliced",Red Onion
+549,"TJ’s Garlic, minced",Garlic
+550,"TJ’s Organic Sugar Plum Tomatoes, divided",Sugar Plum Tomatoes
+551,TJ’s Baby Spinach,Baby Spinach
+552,"TJ’s Fresh Chives, Basil, Dill, & Parsley, divided",Chives
+553,TJ’s Ground Black Pepper,Ground Black Pepper
+554,"TJ’s Feta Cheese, crumbled and divided",Feta Cheese
+555,TJ’s Buttermilk Pancake & Baking Mix,Buttermilk Pancake Baking Mix
+556,"TJ’s Whole Milk, plus 2 teaspoons for the frosting",Whole Milk
+557,TJ’s Canola Oil,Canola Oil
+558,"TJ’s Single Serve Matcha Green Tea Packets, divided",Single Serve Matcha Green Tea
+559,TJ’s Organic Powdered Sugar,Sugar
+560,TJ’s Sliced Prosciutto,Sliced Prosciutto
+561,TJ’s Sliced Sourdough Bread,Sliced Sourdough Bread
+562,TJ’s New Zealand Organic Sliced Cheddar Cheese,New Zealand Sliced Cheddar Cheese
+563,TJ’s Rosemary,Rosemary
+564,"TJ’s Glaze, for drizzling",Glaze
+565,TJ's Rigatoni Pasta,Rigatoni Pasta
+566,"TJ's Garlic, minced",Garlic
+567,"TJ’s Lemon, divided",Lemon
+568,TJ's Organic Tomato Paste,Tomato Paste
+569,TJ's Italian Bomba Hot Pepper Sauce,Italian Bomba Hot Pepper Sauce
+570,"TJ’s Shaved Parmesan Romano & Asiago Cheeses, to serve",Parmesan Romano Asiago Cheeses
+571,"TJ’s Basil, to garnish",Basil
+572,"TJ’s Sea Scallops (limited), thawed according to package ‘quick thaw’ instruction",Sea Scallops
+573,"TJ’s Sea Salt, to season",Sea Salt
+574,"TJ’s Clarified Butter (Ghee), divided",Clarified Butter
+575,"TJ’s Lemon, sliced into rounds",Lemon
+576,TJ’s Organic Hummus,Hummus
+577,TJ’s Plain Greek Yogurt,Plain Greek Yogurt
+578,TJ’s Traditional Tunisian Harissa,Tunisian Harissa
+579,"TJ’s Tomatoes, sliced into rounds",Tomatoes
+580,"TJ’s Feta Cheese, crumbled",Feta Cheese
+581,"TJ’s Parsley, finely chopped",Parsley
+582,"TJ’s Pita Chips and TJ’s Pita Bread, for dipping",Pita Chips Pita Bread
+583,TJ’s Spicy Honey Sauce,Spicy Honey Sauce
+584,"TJ’s Organic French Baguette, your favorite TJ’s Crackers, or slices of your favorite TJ’s Apple, to serve",French Baguette
+585,"Water, for double boiler",Water
+586,"TJ’s Oat Chocolate Bars, broken into smaller pieces, reserving 2 squares for garnish",Oat Chocolate Bars
+587,TJ’s Vegan Heavy Whipping Cream Alternative,Vegan Heavy Whipping Cream Alternative
+588,TJ’s Part Skim Ricotta Cheese,Part Skim Ricotta Cheese
+589,"TJ’s Meyer Lemons (seasonal), divided",Meyer Lemons
+590,"TJ’s Powdered Sugar, plus more for dusting",Sugar
+591,TJ’s Egg Wraps,Egg Wraps
+592,"TJ’s Honey, for drizzling",Honey
+593,TJ’s All Natural Shaved Beef Steak,Shaved Beef Steak
+594,"TJ’s Sea Salt, plus more for seasoning Shaved Beef",Sea Salt
+595,"TJ's Milk, divided",Milk
+596,TJ’s Dijon Mustard,Dijon Mustard
+597,TJ’s Cheddar Gruyère Mélange Cheese,Cheddar Gruyère Mélange Cheese
+598,"TJ’s Brioche Buns, toasted",Brioche Buns
+599,TJ’s Very Cherry Berry Blend,Cherry Berry Blend
+600,TJ’s Black Cherry Vanilla Sparkling Water,Black Cherry Vanilla Sparkling Water
+601,TJ’s Grated Parmesan Cheese,Parmesan Cheese
+602,"TJ’s Focaccia Bread with Roasted Tomato & Parmesan, toasted, for dipping",Focaccia Bread Roasted Tomato Parmesan
+603,"TJ’s Colossal Garlic-Stuffed Olives, drained",Colossal Garlic-Stuffed Olives
+604,"(1 stick) TJ’s Unsalted Butter, at room temperature",Butter
+605,TJ’s Cheddar Cheese with Caramelized Onions,Cheddar Cheese Caramelized Onions
+606,TJ’s Unbleached Enriched All-Purpose Flour,All-Purpose Flour
+607,"bites: 1 teaspoon TJ’s Smoked Paprika, plus more for garnish",bites teaspoon Paprika
+608,bites: 1 tablespoon chopped TJ’s Fresh Thyme (plus a few sprigs for garnish) and 1 teaspoon TJ’s Organic Ground Black Pepper,bites tablespoon Thyme teaspoon Ground Black Pepper
+609,TJ’s Pretzel Slims,Pretzel Slims
+610,TJ’s Uncured Pastrami,Pastrami
+611,TJ’s Shredded Swiss & Gruyere Cheese Blend,Shredded Swiss Gruyere Cheese Blend
+612,TJ’s Sauerkraut,Sauerkraut
+613,"TJ’s Magnifisauce, for drizzling",Magnifisauce
+614,TJ’s Corn Tortilla,Corn Tortilla
+615,"TJ’s Beef Birria, prepared according to package instructions",Beef Birria
+616,TJ’s Shredded Mozzarella,Mozzarella
+617,"TJ’s White Onion, chopped",White Onion
+618,"TJ’s Cilantro Bunch, chopped",Cilantro Bunch
+619,TJ’s Organic Coconut Aminos Seasoning Sauce,Coconut Aminos Seasoning Sauce
+620,"TJ’s Garlic, peeled and finely minced",Garlic
+621,"Dill, divided (reserve a few fronds for garnish)",Dill
+622,"(1¼ or 1½ pounds) TJ’s Boneless Skinless Fresh Atlantic Salmon Fillet, cut into 4 portions",Boneless Skinless Atlantic Salmon Fillet
+623,TJ’s Organic Persian Cucumbers,Persian Cucumbers
+624,TJ’s Organic Apple Cider Vinegar,Apple Cider Vinegar
+625,"TJ’s Red Onion, very thinly sliced",Red Onion
+626,"TJ’s Unsalted Butter, cut into small cubes",Butter
+627,"TJ’s Frozen Brown or Jasmine Rice, cooked according to package directions",Frozen Brown Jasmine Rice
+628,(for shaking),
+629,"TJ's vodka, chilled",vodka
+630,TJ's Blue Cheese Stuffed Chalkidiki Olives,Blue Cheese Stuffed Chalkidiki Olives
+631,(optional),
+632,TJ’s Coconut Aminos,Coconut Aminos
+633,TJ’s Crunchy Chili Onion,Crunchy Chili Onion
+634,TJ’s Garlic,Garlic
+635,TJ’s Ginger,Ginger
+636,TJ’s Agave,Agave
+637,"TJ’s Organic Baguette, sliced",Baguette
+638,TJ’s Prosciutto,Prosciutto
+639,"TJ’s Chevre Fine Herbs Goat Cheese, sliced into rounds",Chevre Fine Herbs Goat Cheese
+640,"TJ’s Figs or TJ’s Organic Turkish Dried Figs, sliced in half",Figs Dried Figs
+641,"TJ’s Sage, leaves removed",Sage
+642,TJ’s Organic Medjool Dates,Medjool Dates
+643,TJ’s Dolce Creamy Gorgonzola Style Cheese or TJ’s Cambozola Blue Cheese,Dolce Creamy Gorgonzola Style Cheese Cambozola Blue Cheese
+644,"TJ’s Puff Pastry (two sheets), thawed according to package instructions",Puff Pastry
+645,TJ’s Cranberry Chevre Goat Cheese,Cranberry Chevre Goat Cheese
+646,"TJ’s Thyme, to garnish",Thyme
+647,TJ’s Salmon Fillet (about 1 pound),Salmon Fillet
+648,TJ’s Salmon Rub Seasoning Blend,Salmon Rub Seasoning Blend
+649,TJ’s Rice Orzo Pilaf Mix,Rice Orzo Pilaf Mix
+650,TJ’s Salted Butter Quarters,Butter Quarters
+651,"TJ’s Yellow Onion, chopped",Yellow Onion
+652,"TJ’s Sweet Potato, chopped",Sweet Potato
+653,"TJ’s Kale, chopped",Kale
+654,TJ’s Raw Pecans Halves,Pecans Halves
+655,(4 cups) TJ’s Organic Hearty Vegetable Broth,Hearty Vegetable Broth
+656,TJ’s Unsalted Butter Quarters,Butter Quarters
+657,(16 ounces) TJ’s Orzo,Orzo
+658,(20 ounces) TJ’s Cut Butternut Squash,Cut Butternut Squash
+659,TJ’s Cacio e Pepe Pasta Sauce,Cacio e Pepe Pasta Sauce
+660,"(8.8 ounces) TJ’s Gluten Free Tagliatelle Pasta, cooked according to package instructions, reserving one cup of pasta water",Gluten Free Tagliatelle Pasta
+661,"TJ’s Wild Uncooked Argentinian Shrimp, thawed and patted dry",Wild Uncooked Argentinian Shrimp
+662,TJ’s Red Pepper Flakes,Red Pepper Flakes
+663,TJ’s White Wine,White Wine
+664,TJ’s Roasted Garlic Marinara Sauce,Garlic Marinara Sauce
+665,TJ’s Organic Chicken Nuggets,Chicken Nuggets
+666,TJ’s refrigerated ravioli,ravioli
+667,TJ’s Fresh Mozzarella Cheese Log,Mozzarella Cheese Log
+668,"(or 1 pound) TJ’s Raw Uncooked Argentinian Red Shrimp, thawed according to package instructions and patted dry",Argentinian Red Shrimp
+669,"TJ’s Gluten Free Egg Fettucine Pasta, cooked according to package instructions",Gluten Free Egg Fettucine Pasta
+670,TJ’s Organic White Quinoa,White Quinoa
+671,(about 2 cups) TJ’s Organic Coconut Milk,Coconut Milk
+672,"TJ’s Lime, plus half a lime reserved",Lime
+673,TJ’s Organic Plain Cream Cheese Spread,Plain Cream Cheese Spread
+674,"TJ’s Olive and Herbs Mixed Nuts, finely chopped",Herbs Mixed Nuts
+675,"TJ’s Celery, chopped into 3-inch pieces for dipping",Celery
+676,"TJ’s Fig & Olive Crisps, for dipping",Fig Olive Crisps
+677,"TJ’s Unsalted Butter, melted and cooled (plus additional butter to grease the pan)",Butter
+678,TJ’s Pumpkin Bread & Muffin Mix,Pumpkin Bread Muffin Mix
+679,TJ’s Pure Bourbon Vanilla Extract,Pure Bourbon Vanilla Extract
+680,TJ’s Pumpkin Pie Spice (optional),Pumpkin Pie Spice
+681,(six ounce) bag TJ’s Mini Maple Flavored Marshmallows,Mini Maple Flavored Marshmallows
+682,TJ’s Movie Theater Popcorn,Movie Theater Popcorn
+683,"TJ’s Gala Apples, thinly sliced",Gala Apples
+684,TJ’s Creamy Salted Peanut Butter,Creamy Salted Peanut Butter
+685,"TJ’s 3 pack Dark Chocolate (or 1/4 cup of your favorite TJ’s chocolate), chopped",Dark Chocolate
+686,TJ’s Sourdough Sliced Bread,Sourdough Sliced Bread
+687,TJ’s Ranch Seasoning,Ranch
+688,"TJ’s Romaine Hearts, cut in half lengthwise",Romaine Hearts
+689,"TJ’s Uncured Apple Smoked Bacon, cooked according to package instructions, then roughly chopped",Apple Smoked Bacon
+690,"TJ’s Mini Heirloom Tomatoes, sliced in half",Mini Heirloom Tomatoes
+691,"TJ’s Buttermilk Ranch Dressing, to serve",Buttermilk Ranch Dressing
+692,Skewers,Skewers
+693,TJ’s Watermelon,Watermelon
+694,TJ’s Cantaloupe,Cantaloupe
+695,"TJ’s Oil, for grill grates",Oil
+696,"TJ’s Chile Lime Seasoning Blend, to taste",Chile Lime Seasoning Blend
+697,"TJ’s Garlic Spread Dip, plus more for dipping",Garlic Spread Dip
+698,"TJ’s Grilled Pitted Green Olives, plus 3 tablespoons of oil, divided",Green Olives
+699,"TJ’s Zucchini, sliced into half-moons",Zucchini
+700,"TJ’s Organic Baby Spinach, roughly chopped",Baby Spinach
+701,"TJ’s Rice Medley, cooked according to package instructions",Rice Medley
+702,(30 cookies) of TJ’s Chocolate Vanilla Creme Joe-Joe's Sandwich Cookies,Chocolate Vanilla Creme Joe-Joe Sandwich Cookies
+703,"TJ’s Organic Pure Bourbon Vanilla Extract, divided",Pure Bourbon Vanilla Extract
+704,"(8 ounces) TJ’s Cream Cheese, at room temperature",Cream Cheese
+705,"TJ’s Unsalted Butter, softened at room temperature",Butter
+706,"TJ’s Shallot, sliced into thin rings",Shallot
+707,TJ’s Yogurt,Yogurt
+708,TJ’s Sri Lankan Organic Mango Chutney,Sri Lankan Mango Chutney
+709,"TJ’s Peaches (about 6-7 peaches), sliced",Peaches
+710,"TJ’s Organic Sugar, depending on the sweetness of the peaches",Sugar
+711,"TJ’s Just the Clusters Vanilla Almond Granola, lightly crushed",Clusters Vanilla Almond Granola
+712,"TJ’s Salted Butter Quarters, melted",Butter Quarters
+713,TJ’s Freeze-Dried Strawberries,Strawberries
+714,TJ’s Mascarpone Cheese,Mascarpone Cheese
+715,"TJ’s Organic Cane Sugar, divided",Cane Sugar
+716,TJ’s Chocolate Chip Pain Au Lait,Chocolate Chip Pain Au Lait
+717,TJ’s Matcha Green Tea,Matcha Green Tea
+718,TJ’s Sweet Potatoes,Sweet Potatoes
+719,TJ’s Avocado Oil or TJ’s Olive Oil,Avocado Oil Olive Oil
+720,TJ’s Sweet & Spicy Pecans,Sweet Spicy Pecans
+721,"TJ’s Eggs and 2 Egg Yolks, whisked together",Eggs Egg Yolks
+722,"TJ’s Cave Aged Switzerland Le Gruyère Cheese, grated",Cave Aged Switzerland Le Gruyère Cheese
+723,"TJ’s Uncured Black Forest Ham, sliced into ½ inch ribbons",Uncured Black Forest Ham
+724,"TJ’s Black Pepper, to taste",Black Pepper
+725,TJ's Lemons (about 2 lemons),Lemons
+726,TJ's Garlic,Garlic
+727,TJ's Organic Arugula,Arugula
+728,"(1 pound) TJ’s Mini Heirloom Tomatoes, sliced in half",Mini Heirloom Tomatoes
+729,TJ's Burrata,Burrata
+730,"TJ's Glaze, to serve",Glaze
+731,"TJ’s Baby Corn, chopped into thirds",Baby Corn
+732,"TJ’s Organic Heirloom Medley Cherry Tomatoes, sliced in half",Heirloom Medley Cherry Tomatoes
+733,"TJ’s Avocados, diced",Avocados
+734,TJ’s Organic Cilantro,Cilantro
+735,TJ’s Crumbled Feta,Feta
+736,TJ’s Smoked Paprika,Paprika
+737,TJ’s Organic Plain Yogurt,Plain Yogurt
+738,TJ”s Sea Salt,TJ ” Sea Salt
+739,TJ’s Peri-Peri Sauce,Peri-Peri Sauce
+740,(1.5 lbs.) TJ’s Dutch Yellow Baby Potatoes,Dutch Yellow Baby Potatoes
+741,"TJ’s Celery, thinly sliced (about 1 cup total), leaves reserved",Celery
+742,"TJ’s Yellow or Red Bell Pepper, diced",Yellow Red Bell Pepper
+743,"TJ’s Vegetable Root Chips or TJ's Ode to the Classic Potato Chip, for garnish",Vegetable Root Chips Ode Classic Potato Chip
+744,TJ’s Corn Tortillas (12 in pack),Corn Tortillas
+745,"TJ’s Avocados, sliced in half and pit removed",Avocados
+746,TJ’s Soy Chorizo,Soy Chorizo
+747,TJ’s Dairy Free Shredded Spicy Mexican Style Blend Cheese Alternative,Dairy Free Shredded Spicy Mexican Style Blend Cheese Alternative
+748,TJ’s Salsa,Salsa
+749,"(1 lb.) TJ’s Organic Spaghetti alla Chitarra Pasta, cooked according to package instructions",Spaghetti alla Chitarra Pasta
+750,reserved,reserved
+751,"(or 8 tablespoons) TJ’s Salted Butter Quarters, divided",Butter Quarters
+752,TJ’s Organic Raw Apple Cider Vinegar or TJ's Rice Vinegar,Apple Cider Vinegar Rice Vinegar
+753,"TJ’s Cheese Tortellini, cooked according to package instructions and cooled",Cheese Tortellini
+754,"TJ’s Green Bell Peppers, cored and diced",Green Bell Peppers
+755,"TJ’s Tomato, sliced in half",Tomato
+756,"TJ’s Salami, diced",Salami
+757,TJ’s Fresh Mozzarella Pearls,Mozzarella Pearls
+758,TJ’s Organic Italian Dressing,Italian Dressing
+759,"TJ’s Speculoos Cookies, divided",Speculoos Cookies
+760,TJ’s Coffee Bean Blast Ice Cream,Coffee Bean Blast Ice Cream
+761,TJ’s Speculoos Cookie Butter,Speculoos Cookie Butter
+762,TJ’s Speculoos Cookie Butter Ice Cream,Speculoos Cookie Butter Ice Cream
+763,Pan,Pan
+764,"TJ’s Sea Salt & Ground Black Pepper, to taste",Sea Salt Ground Black Pepper
+765,"TJ’s Olive Oil, plus more for greasing the grill",Olive Oil
+766,"TJ’s Carolina Gold Barbeque Sauce (or your favorite TJ’s BBQ Sauce), divided, plus more for serving",Carolina Gold Barbeque Sauce
+767,"TJ’s Cinnamon Graham Crackers, broken into smaller pieces",Cinnamon Graham Crackers
+768,TJ’s Spiced Chai Black Tea Concentrate,Spiced Chai Black Tea
+769,"TJ’s Red Onion, chopped",Red Onion
+770,"TJ’s Red Bell Pepper, chopped",Red Bell Pepper
+771,TJ’s Banana,Banana
+772,"TJ’s Salted Almond Butter, for drizzling",Almond Butter
+773,"TJ’s Organic Raspberry Preserves, for drizzling",Raspberry Preserves
+774,"TJ’s Dark Chocolate Bark with Almond, Pretzel, & Sea Salt, broken into smaller pieces",Dark Chocolate Bark Almond
+775,paper,paper
+776,foil,foil
+777,ice,ice
+778,TJ’s Tequila,Tequila
+779,TJ’s Organic Jalapeño Limeade,Jalapeño Limeade
+780,"TJ’s Jalapeño, sliced to garnish",Jalapeño
+781,TJ’s Sliced Muenster Cheese,Sliced Muenster Cheese
+782,"TJ’s Kimchi, roughly chopped",Kimchi
+783,TJ’s Sliced Provolone Cheese,Sliced Provolone Cheese
+784,"TJ’s Coconut Oil Spray, to grease pan",Coconut Oil Spray
+785,TJ’s Blondie Bar Baking Mix,Blondie Bar Baking Mix
+786,"TJ’s Old Fashioned Blister Peanuts, chopped",Old Blister Peanuts
+787,"TJ’s Unsalted Butter, divided",Butter
+788,"TJ’s Heavy Cream, divided",Heavy Cream
+789,"TJ’s Bananas, sliced",Bananas
+790,TJ’s Organic 73% Dark Chocolate Bar (about 2.5 Bars) OR your favorite TJ’s Dark Chocolate),Dark Chocolate Bar OR Dark Chocolate
+791,"TJ’s Milk Chocolate Peanut Butter Cups, unwrapped and frozen",Milk Chocolate Peanut Butter Cups
+792,"TJ’s Organic Tri-Color Bell Peppers (or available colors), sliced into strips",Tri-Color Bell Peppers
+793,"TJ’s Red Onion, sliced into strips",Red Onion
+794,"TJ’s Portabella Mushroom, sliced into thick strips",Portabella Mushroom
+795,TJ’s Cuban Style Citrusy Garlic Seasoning Blend,Cuban Style Citrusy Garlic Seasoning Blend
+796,"TJ’s Flour Tortillas, for serving",Tortillas
+797,"TJ’s Avocado, sliced",Avocado
+798,"TJ’s Cilantro, roughly chopped",Cilantro
+799,"TJ’s Organic Persian Cucumbers, thinly sliced into coins and patted dry",Persian Cucumbers
+800,(8 ounces) TJ’s Whipped Cream Cheese,Whipped Cream Cheese
+801,"TJ’s Dill, finely chopped",Dill
+802,"TJ’s Chives, finely chopped",Chives
+803,"TJ’s Sliced White Bread, crusts removed",Sliced White Bread
+804,"TJ’s Organic Mafalda Corta Pasta, cooked according to package instructions",Mafalda Corta Pasta
+805,TJ’s Asparagus (chopped into thirds),Asparagus
+806,TJ’s Bruschetta Sauce,Bruschetta Sauce
+807,"TJ’s Ciliegine Whole Milk Fresh Mozzarella, drained",Ciliegine Whole Milk Mozzarella
+808,"TJ’s Fresh Basil, for garnish",Basil
+809,"TJ’s Organic Red Lentil Sedanini, cooked according to package instructions and drained",Red Lentil Sedanini
+810,"TJ’s Marinated Artichoke Hearts, oil reserved",Artichoke Hearts
+811,TJ’s Vegan Cream Cheese,Vegan Cream Cheese
+812,"TJ’s Shredded Parmesan Cheese Alternative, to serve",Parmesan Cheese Alternative
+813,"TJ’s Unsalted Butter Quarters, divided",Butter Quarters
+814,TJ’s Organic Fresh Thyme,Thyme
+815,"TJ’s Sea Salt, divided",Sea Salt
+816,TJ’s Raw Milk Cave Aged Le Gruyère,Milk Cave Aged Le Gruyère
+817,TJ’s Organic Sugar Plum Grape Tomatoes,Sugar Plum Grape Tomatoes
+818,"TJ’s Black Peppercorns, plus more to taste",Black Peppercorns
+819,TJ’s Asparagus,Asparagus
+820,"TJ’s Chevre Goat Cheese Log, crumbled into bite-sized pieces",Chevre Goat Cheese Log
+821,"TJ’s herbs, stems removed",herbs
+822,TJ’s Authentic Lemon Curd,Authentic Lemon Curd
+823,"TJ’s berries, if using strawberries, slice in half",berries
+824,"& 1 tablespoon TJ’s Organic Cane Sugar, divided",tablespoon Cane Sugar
+825,"Sugar, for sprinkling",Sugar
+826,"TJ’s Organic Fresh Mint, for garnish",Mint
+827,"TJ's Strawberries, cleaned, dried and hulled",Strawberries
+828,TJ's Glaze,Glaze
+829,TJ’s Organic Baby Spinach (1 package),Baby Spinach
+830,"TJ's Chevre Log with Honey, crumbled",Chevre Log Honey
+831,"(12oz) TJ's Asparagus, trimmed",Asparagus
+832,TJ's Apple Cider Vinegar,Apple Cider Vinegar
+833,TJ's Large Eggs,Eggs
+834,TJ's Potato Pancakes (Latkes),Potato Pancakes
+835,taste,taste
+836,TJ's Cornbread Mix,Cornbread Mix
+837,TJ's Cultured Lowfat Buttermilk,Cultured Lowfat Buttermilk
+838,"(1/2 cup) TJ's Unsalted Butter, melted",Butter
+839,TJ's Eggs,Eggs
+840,TJ’s Everything but the Elote Seasoning Blend,Everything Elote Seasoning Blend
+841,"TJ’s Fresh Jalapeños, deseeded and diced (use gloves!)",Jalapeños
+842,TJ’s Honey (for garnish),Honey
+843,TJ’s Salted Butter (for garnish),Butter
+844,TJ’s milk,milk
+845,TJ’s Organic Creamy Salted Valencia Peanut Butter,Creamy Salted Valencia Peanut Butter
+846,TJ’s Gluten Free Rolled Oats,Gluten Free Oats
+847,TJ’s berry,berry
+848,TJ’s Strawberry Preserves (about two tablespoons),Strawberry Preserves
+849,TJ’s Basil Leaves,Basil Leaves
+850,TJ’s Vodka,Vodka
+851,TJ’s Lemon (or whatever citrus you have on hand),Lemon
+852,TJ’s Sparkling Water,Water
+853,TJ’s Aioli Garlic Mustard Sauce (about two tablespoons),Aioli Garlic Mustard Sauce
+854,TJ’s Rice Vinegar (or whatever TJ’s vinegar you have on hand),Rice Vinegar
+855,TJ’s honey,honey
+856,"TJ’s Shallot, chopped",Shallot
+857,TJ’s Truly Tortilla Chips White Corn,Tortilla Chips White Corn
+858,"TJ’s Spicy Buffalo Cheddar, grated",Spicy Buffalo Cheddar
+859,"TJ’s Grilled Chicken Strips, cut into cubes",Chicken Strips
+860,"TJ’s Hot & Sweet Jalapeños, drained",Hot Sweet Jalapeños
+861,"TJ’s Cilantro leaves, to garnish",Cilantro leaves
+862,"TJ’s Organic Biscuits, cut into quarters",Biscuits
+863,"TJ’s BBQ Teriyaki Chicken, sauce reserved for another use",BBQ Teriyaki Chicken
+864,"TJ's Jumbo Yellow Onion, trimmed and cut into large chunks",Jumbo Yellow Onion
+865,TJ's Corned Beef Brisket (seasonal),Beef Brisket
+866,Stout,Stout
+867,(1.5 pounds) Organic Mini Potato Medley OR Red Potatoes,Mini Potato Medley OR Red Potatoes
+868,TJ's Organic Cut & Peeled Carrots,Cut Peeled Carrots
+869,"TJ's Green Cabbage, trimmed and cut into wedges",Green Cabbage
+870,"TJ's Whole Grain Mustard Dijon, for serving",Whole Grain Mustard Dijon
+871,TJ's Everything But The Bagel Sesame Seasoning Blend,Everything Bagel Sesame Seasoning Blend
+872,"TJ's Sliced Swiss Cheese, sliced in half",Sliced Swiss Cheese
+873,"TJ's Organic Uncured Black Forest Ham, sliced in half",Uncured Black Forest Ham
+874,"TJ’s Cut Butternut Squash or 1 ¼ pounds of your favorite TJ’s squash, peeled and cubed",Cut Butternut Squash ¼ squash
+875,TJ’s olive oil,olive oil
+876,"TJ’s tortillas, warmed",tortillas
+877,TJ’s Organic Shredded Green and Red Cabbage with Orange Carrots,Red Cabbage Orange Carrots
+878,"TJ’s Traditional Style Fat Free Refried Beans, warmed according to package instructions",Traditional Style Fat Free Refried Beans
+879,TJ’s Pineapple Salsa,Pineapple Salsa
+880,"TJ’s Limes, sliced into wedges for serving",Limes
+881,"TJ’s Cilantro, chopped for garnish",Cilantro
+882,"(or 8 ounces) TJ’s Pappardelle Pasta, cooked according to package directions then drained",Pappardelle Pasta
+883,TJ’s Solid White Albacore Tuna in Olive Oil,Solid White Albacore Tuna Olive Oil
+884,TJ’s Red Chili Flakes,Red Chili Flakes
+885,"TJ’s Dill, chopped",Dill
+886,"TJ’s Lemon, zested and juiced",Lemon
+887,TJ’s Unexpected Cheddar Cheese Spread,Cheddar Cheese Spread
+888,"TJ’s Sweet & Spicy Pecans, roughly chopped",Sweet Spicy Pecans
+889,TJ’s Organic Thyme leaves,Thyme leaves
+890,"TJ’s Organic French Baguette, sliced and toasted",French Baguette
+891,"TJ’s Sweet Italian Pork Sausages, casings removed",Sweet Italian Pork Sausages
+892,TJ’s Pizza Crust,Pizza Crust
+893,TJ’s Calabrian Chili Spicy Pasta Sauce,Calabrian Chili Spicy Pasta Sauce
+894,TJ’s Whole Milk Ricotta Cheese,Whole Milk Ricotta Cheese
+895,"TJ’s Avocado Spray, for greasing tin",Avocado Spray
+896,(less than one bag) TJ’s Potato Tots,Potato Tots
+897,"TJ’s Trimmed Leeks, ends trimmed, quartered lengthwise & roughly chopped",Leeks
+898,TJ’s Turkey Bacon,Turkey Bacon
+899,"TJ’s Pepper, to taste",Pepper
+900,TJ’s Chevre Fine Herbs Goat Cheese,Chevre Fine Herbs Goat Cheese
+901,TJ’s All Natural Lean Ground Beef,Lean Ground Beef
+902,TJ’s Organic Crushed Fire Roasted Tomatoes,Crushed Fire Tomatoes
+903,"TJ’s Fancy Shredded Mexican Style Cheese Blend, plus more for garnish",Fancy Mexican Style Cheese Blend
+904,"TJ’s Salted Butter, melted and cooled",Butter
+905,"TJ’s Salsa, for dipping",Salsa
+906,"TJ’s Guacamole, for dipping,",Guacamole
+907,"TJ’s Sour Cream, for dipping",Sour Cream
+908,"TJ’s Iceberg Lettuce, shredded, to serve",Iceberg Lettuce
+909,"TJ’s Cilantro, to serve",Cilantro
+910,"TJ’s Garlic, thinly sliced",Garlic
+911,"TJ’s Fire Roasted Red Peppers, chopped",Fire Roasted Red Peppers
+912,"TJ’s Bread, with 2 ½ inch hole cut in the center (reserve the removed bread)",Bread
+913,"TJ’s Parsley, chopped",Parsley
+914,TJ’s Organic Apricot Preserves,Apricot Preserves
+915,TJ’s Aioli Garlic Mustard Sauce,Aioli Garlic Mustard Sauce
+916,"TJ's Yellow Onion, diced",Yellow Onion
+917,"TJ's Zucchini, chopped",Zucchini
+918,(14 oz) TJ's Diced Tomatoes,Diced Tomatoes
+919,"TJ's Fully Cooked Garlic & Herb Chicken Sausage, sliced into coins",Cooked Garlic Herb Chicken Sausage
+920,"TJ's Small Whole Green Lentils, rinsed and drained",Small Whole Green Lentils
+921,TJ's Organic Free Range Chicken Stock,Free Range Chicken Stock
+922,"TJ's Grated Parmesan, lemon & chopped fresh herbs for garnish (optional)",Parmesan
+923,TJ’s Unbleached Enriched All Purpose Flour,Enriched All Purpose Flour
+924,TJ’s Baking Soda,Soda
+925,TJ’s Baking Powder,Powder
+926,"(2 sticks) TJ’s Unsalted Butter, softened to room temperature",Butter
+927,TJ’s Powdered Sugar,Sugar
+928,TJ’s Oranges,Oranges
+929,TJ’s Beefless Beef,Beefless Beef
+930,TJ's Mushroom Medley,Mushroom Medley
+931,TJ’s Tomato Paste,Tomato Paste
+932,TJ’s Organic Hearty Vegetable Broth,Hearty Vegetable Broth
+933,TJ’s Petite Peas,Peas
+934,"TJ’s Mashed Potatoes (frozen), prepared according to package instructions",Potatoes
+935,"TJ's Jumbo White Onions, sliced in 1/4-inch slices",Jumbo White Onions
+936,TJ's Buttermilk,Buttermilk
+937,"TJ's Sea Salt Fine Crystals, plus more to taste",Sea Salt Fine Crystals
+938,TJ's All Purpose Flour,Purpose Flour
+939,TJ's Everything but the Bagel Seasoning Blend,Everything Bagel Seasoning Blend
+940,TJ's 100% Canola Oil or Organic High-Oleic Sunflower Oil,Canola Oil High-Oleic Sunflower Oil
+941,TJ's Everything but the Bagel Greek Style Yogurt Dip (optional),Everything Bagel Greek Style Yogurt Dip
+942,"TJ’s Pollo Asado, cooked according to the package instructions, then diced (10 minutes)",Pollo Asado
+943,TJ’s Tortillas,Tortillas
+944,TJ’s White Onion,White Onion
+945,"TJ’s Potato Pancakes, cooked according to preferred package heating instructions",Potato Pancakes
+946,"TJ’s Pepper Jack Slices, torn into quarters",Pepper Jack Slices
+947,"TJ’s Soy Chorizo, cooked according to package instructions",Soy Chorizo
+948,"TJ’s Cilantro, to garnish",Cilantro
+949,TJ's Bourbon (we used TJ's Kentucky Bourbon),Bourbon
+950,TJ's Winter Wassail Punch,Winter Wassail Punch
+951,"TJ's Navel Orange, thinly sliced",Navel Orange
+952,"TJ's Fresh Cranberries or Pomegranate Seeds, plus more for garnish",Cranberries Pomegranate Seeds
+953,(or mini bundt pan),
+954,TJ's Dried Cranberries,Dried Cranberries
+955,TJ's Organic Turkey Bone Broth or Organic Free Range Chicken Broth,Turkey Bone Broth Free Range Chicken Broth
+956,TJ's Unsalted Butter,Butter
+957,TJ's Mirepoix,Mirepoix
+958,TJ's Cornbread Stuffing Mix,Cornbread Stuffing Mix
+959,"TJ's Organic Peeled & Cooked Chestnuts, coarsely chopped",Peeled Cooked Chestnuts
+960,TJ's Ground Black Pepper,Ground Black Pepper
+961,TJ's Organic Jumbo Cinnamon Rolls with Vanilla Icing,Jumbo Cinnamon Rolls Vanilla
+962,TJ's Organic Reduced Sugar Strawberry Preserves,Sugar Strawberry Preserves
+963,TJ's Creamy Salted Peanut Butter,Creamy Salted Peanut Butter
+964,"TJ’s Shallots, peeled and finely diced",Shallots
+965,"TJ’s Garlic Cloves, peeled & finely minced",Garlic Cloves
+966,TJ’s Organic Garlic Flavored Extra Virgin Olive Oil,Garlic Flavored Extra Virgin Olive Oil
+967,TJ’s Black Garlic,Black Garlic
+968,TJ’s Turkey Flavored Gravy,Turkey Flavored Gravy
+969,TJ’s Balsamic Glaze or your favorite TJ’s Balsamic Vinegar,Balsamic Glaze Balsamic Vinegar
+970,"TJ’s Sea Salt & Freshly Ground Black Pepper, to taste",Sea Salt Freshly Ground Black Pepper
+971,TJ’s Butter,Butter
+972,"TJ’s Yellow Onion, peeled and thinly sliced",Yellow Onion
+973,TJ’s Mushroom & Co. Multipurpose Umami Seasoning,Mushroom Co. Multipurpose Umami
+974,TJ’s Potato Tots,Potato Tots
+975,"(8 oz) TJ’s All Natural Fresh Mozzarella Log, cut into large dice",Mozzarella Log
+976,"TJ’s Green onions, for garnish",Green onions
+977,"TJ’s Garlic cloves, peeled and finely minced",Garlic cloves
+978,(or other dry white wine),
+979,TJ’s Whole Grain Dijon Mustard,Whole Grain Dijon Mustard
+980,"TJ’s Fresh Chives, sliced",Chives
+981,TJ’s Organic French Baguette,French Baguette
+982,TJ’s Syrah Soaked Toscano Cheese Spread & Dip,Syrah Soaked Toscano Cheese Spread Dip
+983,TJ’s Parsley,Parsley
+984,TJ’s Brioche Hot Dog Buns (8 buns in the pack),Brioche Hot Dog Buns
+985,TJ’s Whipped Cream Cheese,Whipped Cream Cheese
+986,TJ’s Cranberry Sauce,Cranberry Sauce
+987,TJ’s Grilled Chicken Strips or leftover Thanksgiving turkey,Chicken Strips Thanksgiving turkey
+988,"TJ’s Thanksgiving Stuffing Seasoned Kettle Chips, gently crushed",Seasoned Kettle Chips
+989,TJ’s Organic Heavy Cream,Heavy Cream
+990,TJ’s Organic Dark Chocolate Bar 73%,Dark Chocolate Bar
+991,"TJ’s Eggs, egg whites reserved for another use",Eggs
+992,"TJ’s Portuguese Flor de Sal, for sprinkling",Portuguese Flor Sal
+993,Boursin® Garlic & Fine Herbs Gournay Cheese,Boursin® Garlic Fine Herbs Gournay Cheese
+994,TJ’s Salami,Salami
+995,"TJ’s Honeycrisp Apple, thinly sliced",Honeycrisp Apple
+996,"TJ’s Unbleached Enriched All-Purpose Flour, for dusting",All-Purpose Flour
+997,"TJ’s All Butter Puff Pastry Sheets, thawed according to package instruction",Butter Puff Pastry Sheets
+998,"TJ’s Cocoa Almond Spread, divided",Cocoa Almond Spread
+999,"TJ’s Organic Powdered Sugar, for dusting",Sugar
+1000,"TJ’s Vegan Kale, Cashew, & Basil Pesto",Vegan Kale
+1001,"TJ’s Grape Tomatoes, thinly sliced",Grape Tomatoes
+1002,TJ’s Vegan Mayo Spread & Dressing,Vegan Mayo Spread Dressing
+1003,"TJ’s Habanero Hot Sauce, depending on your preferred spice level",Habanero Hot Sauce
+1004,TJ’s Gluten Free Breaded Shrimp,Gluten Free Breaded Shrimp
+1005,"TJ’s Limes, quartered",Limes
+1006,"TJ’s Cilantro leaves, for garnish",Cilantro leaves
+1007,"TJ’s Solid White Albacore Tuna, drained",Solid White Albacore Tuna
+1008,TJ’s Red Pepper Spread,Red Pepper Spread
+1009,"Olives, chopped",Olives
+1010,"TJ’s Golden Rounds Crackers, for serving",Golden Crackers
+1011,"TJ’s Thai Lime & Chile Cashews, chopped",Thai Lime Chile Cashews
+1012,TJ’s Gnocchi,Gnocchi
+1013,TJ’s English Peas,English Peas
+1014,TJ’s Whole Milk Ricotta,Whole Milk Ricotta
+1015,"13"" x 18"" sheet pan, lined with aluminum foil",sheet pan
+1016,TJ’s All Natural Chicken Drumsticks (6 drumsticks),Chicken Drumsticks
+1017,TJ’s Organic Breadcrumbs,Breadcrumbs
+1018,TJ’s Carrots of Many Colors (about 6 carrots),Carrots Many Colors
+1019,TJ’s Brussels Sprouts,Brussels Sprouts
+1020,TJ’s Salt & Pepper to taste,Salt Pepper
+1021,TJ’s Organic Ranch Dressing (optional),Ranch
+1022,TJ’s Fresh herbs (optional),herbs
+1023,"TJ’s Organic Firm Tofu, cut into ¼-inch thick strips",Firm Tofu
+1024,"TJ’s Eggplant, cut into ½-inch cubes",Eggplant
+1025,"TJ’s Onion, cut into wedges",Onion
+1026,"TJ’s Shiitake Mushrooms, cut into halves or quarters, depending on size",Shiitake Mushrooms
+1027,TJ’s Gochujang,Gochujang
+1028,"TJ's Furikake Seasoning, to taste",Furikake
+1029,"TJ's Green Onions, sliced thin",Green Onions
+1030,TJ’s BBQ Cut Fresh Atlantic Salmon (2 fillets),BBQ Cut Atlantic Salmon
+1031,"TJ’s Fennel Bulb, cored and sliced",Fennel Bulb
+1032,"TJ’s Baby Red Potatoes, sliced into thin rounds",Baby Red Potatoes
+1033,"TJ’s Shishito Peppers, stems removed",Shishito Peppers
+1034,"TJ’s Lemon, cut into 4 wedges",Lemon
+1035,"TJ’s Chimichurri Sauce, to serve",Chimichurri Sauce
+1036,TJ’s Unsweetened Cocoa Powder,Cocoa Powder
+1037,"TJ’s Unsalted Butter, softened to room temperature",Butter
+1038,TJ’s Organic Cane Granulated Sugar,Cane Sugar
+1039,"TJ’s Large Egg, room temperature",Egg
+1040,TJ’s Semi-Sweet Chocolate Chunks (seasonal),Semi-Sweet Chocolate Chunks
+1041,"(half the bag) TJ’s Organic Carrots of Many Colors, peeled and quartered lengthwise",Carrots Many Colors
+1042,TJ’s Soy Sauce,Soy Sauce
+1043,TJ’s Green Onion,Green Onion
+1044,"TJ’s Persian Cucumber, sliced into matchsticks",Persian Cucumber
+1045,"TJ’s Yellow Bell Pepper, sliced into matchsticks",Yellow Bell Pepper
+1046,TJ’s Shredded Carrots,Shredded Carrots
+1047,"TJ’s Sriracha Flavored Baked Tofu, cut into six planks",Sriracha Flavored Baked Tofu
+1048,TJ’s Egg Wrap,Egg Wrap
+1049,"TJ’s Fig Butter, divided",Fig Butter
+1050,"TJ’s Tapas Cheese Sampler, one of each",Tapas Cheese Sampler
+1051,TJ’s Envy Apple,Envy Apple
+1052,TJ’s Organic Arugula,Arugula
+1053,"TJ’s Mascarpone, plus a dollop for serving",Mascarpone
+1054,"TJ’s Fresh Strawberries, sliced",Strawberries
+1055,"TJ’s Cinnamon Graham Cracker, crushed",Cinnamon Graham Cracker
+1056,5.3 oz. tub TJ’s Greek Nonfat Plain Yogurt,Greek Nonfat Plain Yogurt
+1057,TJ’s Hothouse Cucumber,Hothouse Cucumber
+1058,TJ’s Jalapeño,Jalapeño
+1059,TJ’s Cumin (optional),Cumin
+1060,TJ's Organic Cane Sugar (optional),Cane Sugar
+1061,oz. pkg. TJ’s Vegetable Biryani,pkg Vegetable Biryani
+1062,TJ’s Cilantro (optional),Cilantro
+1063,"TJ’s Garlic Cloves, minced",Garlic Cloves
+1064,"TJ’s Kale, larger stems removed",Kale
+1065,pkg. TJ’s Mini Pearl Grape Tomatoes,pkg Mini Pearl Grape Tomatoes
+1066,TJ’s Giant Baked Beans in Tomato Sauce,Giant Beans Tomato Sauce
+1067,pkg. TJ’s Penne Rigate,pkg Penne Rigate
+1068,TJ’s salt & pepper to taste,salt pepper
+1069,TJ’s Parmesan (optional),Parmesan
+1070,TJ’s Pimento Cheese Spread,Pimento Cheese Spread
+1071,TJ’s Sourdough Bread,Sourdough Bread
+1072,"TJ’s Hot & Sweet Jalapeños, to taste",Hot Sweet Jalapeños
+1073,"TJ’s butter, divided",butter
+1074,TJ’s Chicken Cilantro Mini Wontons,Chicken Cilantro Mini Wontons
+1075,"TJ’s Baby Bok Choy, chopped into quarters",Baby Bok Choy
+1076,TJ’s Organic Broccoli Slaw,Broccoli Slaw
+1077,TJ’s General Tsao Stir Fry Sauce,General Tsao Stir Fry Sauce
+1078,TJ’s Rice (optional),Rice
+1079,TJ’s Ruby Red Grapefruit Juice,Ruby Red Grapefruit Juice
+1080,TJ’s Fresh Limes (reserve 2 wedges for garnish),Limes
+1081,TJ’s Tequila Blanco,Tequila Blanco
+1082,TJ's Chile Lime Seasoning Blend,Chile Lime Seasoning Blend
+1083,TJ’s Whole Greek Yogurt,Greek Yogurt
+1084,TJ’s Yellow Curry Sauce,Yellow Curry Sauce
+1085,TJ’s Organic Spicy Honey Sauce,Spicy Honey Sauce
+1086,"Cilantro, chopped",Cilantro
+1087,TJ’s Breaded Chicken Tenderloin Breasts,Chicken Tenderloin Breasts
+1088,"TJ’s Salted Butter, softened to room temperature",Butter
+1089,"TJ’s Organic Spicy Honey Sauce, plus more for drizzling 1 box TJ’s Belgian Waffles",Spicy Honey Sauce
+1090,"TJ’s Yellow Peaches, sliced",Yellow Peaches
+1091,"TJ’s Fresh Thyme, stems removed",Thyme
+1092,"TJ’s Spicy Honey Sauce, divided, plus more for drizzling",Spicy Honey Sauce
+1093,TJ’s Fresh Lemon wedge,Lemon wedge
+1094,TJ’s Multigrain Bread,Multigrain Bread
+1095,"TJ’s Garlic & Jalapeño Stuffed Olives, drained",Garlic Jalapeño Stuffed Olives
+1096,"TJ’s Organic Pepper Jack, cut into cubes",Pepper Jack
+1097,"TJ’s Uncured Salame di Parma Mild Salami, folded into quarters",Salame di Parma Mild Salami
+1098,"Baguette, toasted and cubed",Baguette
+1099,TJ’s Fresh Basil leaves,Basil leaves
+1100,TJ’s Grape Tomatoes,Grape Tomatoes
+1101,"Sauce, for dipping or drizzling",Sauce
+1102,assembly,assembly
+1103,"TJ’s Zucchini, chopped into thin half moons",Zucchini
+1104,TJ’s Organic Diced & Fire Roasted Tomatoes,Diced Fire Tomatoes
+1105,TJ’s Eggplant Garlic Spread,Eggplant Garlic Spread
+1106,TJ’s Organic Crushed Red Pepper Flakes,Red Pepper Flakes
+1107,TJ’s Dried Organic Oregano,Dried Oregano
+1108,"TJ’s Penne Rigate, prepared according to the package instructions and reserve 1 cup pasta water",Penne Rigate
+1109,"TJ’s Salt, to taste",Salt
+1110,"TJ’s Grated Parmesan Cheese, for sprinkling",Parmesan Cheese
+1111,"TJ’s Fully Cooked Pork Belly, sliced lengthwise",Cooked Pork Belly
+1112,TJ’s Cumin,Cumin
+1113,TJ’s Shredded Green Cabbage,Green Cabbage
+1114,"TJ’s Cilantro bunch, leaves removed from stems",Cilantro bunch
+1115,"TJ’s Lime, juiced",Lime
+1116,"TJ’s Avocado slices or Avocado’s Number Guacamole, for serving",Avocado slices Avocado ’ Number Guacamole
+1117,"tsp. TJ’s Canola Oil or Sunflower Oil, to grease pan",tsp Canola Oil Sunflower Oil
+1118,TJ’s Mascarpone,Mascarpone
+1119,TJ’s Strawberry Preserves,Strawberry Preserves
+1120,TJ’s Cage-Free 100% Liquid Egg Whites,Cage-Free Liquid Egg Whites
+1121,"TJ’s Honey Roasted Peanuts, divided",Honey Roasted Peanuts
+1122,TJ’s Freeze Dried Strawberries,Freeze Dried Strawberries
+1123,TJ’s Fresh Strawberries,Strawberries
+1124,TJ’s Canola Oil Spray,Canola Oil Spray
+1125,"TJ’s Sweet Apple Chicken Sausage, sliced",Sweet Apple Chicken Sausage
+1126,TJ’s Milk,Milk
+1127,TJ’s Garlic Powder,Garlic Powder
+1128,"TJ’s Ciabatta Demi Baguette, cut into bite-sized pieces (or 5 cups)",Ciabatta Demi Baguette
+1129,"TJ’s Baby Broccoli, chopped, bottoms of stems discarded",Baby Broccoli
+1130,"TJ’s Farfalle, cooked according to the package instructions; reserve ½ cup pasta water",Farfalle
+1131,TJ’s Buffalo Style Chicken Dip,Buffalo Style Chicken Dip
+1132,"TJ’s Celery, plus leaves for garnish",Celery
+1133,TJ’s Buttermilk,Buttermilk
+1134,TJ’s 4 oz. Whole Milk Yogurt Cups,Whole Milk Yogurt Cups
+1135,sticks,sticks
+1136,TJ’s Organic Red Wine Vinegar,Red Wine Vinegar
+1137,TJ’s Pecorino Romano and Parmesan Blend,Pecorino Romano Parmesan Blend
+1138,TJ’s Avocado Oil Spray,Avocado Oil Spray
+1139,Kale,Kale
+1140,"TJ’s Ground Pepper, to taste",Ground Pepper
+1141,"TJ’s Grilled Chicken Strips, chopped",Chicken Strips
+1142,pkg. TJ’s Italian Style Turkey Meatloaf,pkg Italian Style Turkey Meatloaf
+1143,TJ’s Olive Oil Spray,Olive Oil Spray
+1144,TJ’s Bruschetta,Bruschetta
+1145,"TJ’s Mozzarella Slices, cut into fourths",Mozzarella Slices
+1146,TJ’s Sweet Pull Apart Aloha Rolls,Sweet Pull Apart Aloha Rolls
+1147,TJ's Crispy Jalapeño Pieces,Crispy Jalapeño Pieces
+1148,"TJ's Basil leaves, cut into chiffonade",Basil leaves
+1149,toothpicks,toothpicks
+1150,pkg. TJ’s Gyro Slices*,pkg Gyro Slices *
+1151,"TJ’s Organic Sugar Plum Grape Tomatoes, sliced",Sugar Plum Grape Tomatoes
+1152,TJ’s Herbed Tahini Sauce,Herbed Tahini Sauce
+1153,Water,Water
+1154,TJ’s Tzatziki,Tzatziki
+1155,TJ’s Sriracha Sauce,Sriracha Sauce
+1156,"TJ’s 50% Less Salt Roasted & Salted Peanuts, crushed",Less Salt Roasted Salted Peanuts
+1157,TJ’s Organic Fresh Ginger,Ginger
+1158,TJ’s Cayenne,Cayenne
+1159,TJ’s Pepper,Pepper
+1160,"TJ’s Sweet Potato, peeled & cubed",Sweet Potato
+1161,TJ’s Low Sodium Vegetable Broth,Low Sodium Vegetable Broth
+1162,TJ’s Shredded Kale,Kale
+1163,"TJ’s Half Salt Peanuts, chopped",Half Salt Peanuts
+1164,lb. TJ's All Natural Ground Chicken,Ground Chicken
+1165,TJ's Jumbo White Onion,Jumbo White Onion
+1166,TJ's Taco Seasoning Mix,Taco Seasoning Mix
+1167,15.5 oz. can TJ's Organic Kidney Beans,Kidney Beans
+1168,14.5 oz. can TJ's Diced & Fire Roasted Organic Tomatoes with Green Chiles,Diced Fire Tomatoes Green Chiles
+1169,Tbsp. TJ's Organic Tomato Paste,Tbsp Tomato Paste
+1170,TJ's Olive Oil of your choice,Olive Oil choice
+1171,TJ's Salt & Pepper,Salt Pepper
+1172,oz. pkg. TJ's Battered Fish Nuggets,pkg Battered Fish Nuggets
+1173,5.3 oz. container TJ's Plain Greek Whole Milk Yogurt,Plain Greek Whole Milk Yogurt
+1174,TJ's Lime,Lime
+1175,oz. pkg. TJ's Organic Broccoli Slaw,pkg Broccoli Slaw
+1176,pkg. TJ's Corn Tortillas,pkg Corn Tortillas
+1177,TJ's Jumbo Sweet Onion,Jumbo Sweet Onion
+1178,TJ's Yellow Bell Pepper,Yellow Bell Pepper
+1179,oz. pkg. TJ's Uncured Bavarian Bratwurst,pkg Uncured Bavarian Bratwurst
+1180,oz. TJ's Linguine,. Linguine
+1181,oz. can Simpler Times Pilsner or Lager,Simpler Times Pilsner Lager
+1182,oz. pkg. TJ's Plain Pizza Dough,pkg Plain Pizza Dough
+1183,oz. jar of TJ's Fat Free Pizza Sauce,Fat Free Pizza Sauce
+1184,oz. TJ's All Natural Fresh Mozzarella Cheese,Mozzarella Cheese
+1185,pkg. Volpi or Citerrio Sliced Pepperoni,pkg Volpi Citerrio Sliced Pepperoni
+1186,TJ's Flour,Flour
+1187,oz. pkg. TJ's Organic 3 Grain Tempeh,pkg Grain Tempeh
+1188,oz. pkg. TJ's Ready Veggies,pkg Ready Veggies
+1189,oz. bottle TJ's Thai Style Red Curry Sauce,Thai Style Red Curry Sauce
+1190,TJ's Green Bell Pepper,Green Bell Pepper
+1191,"TJ's Garlic, to taste",Garlic
+1192,oz. pkg. TJ's Soy Chorizo,pkg Soy Chorizo
+1193,TJ's Ciabatta Rolls,Ciabatta Rolls
+1194,oz. pkg. TJ's Wild Arugula,pkg Wild Arugula
+1195,TJ's Olive Oil or Butter,Olive Oil Butter
+1196,TJ’s Madeleine Cookies,Madeleine Cookies
+1197,"TJ’s Freeze Dried Strawberries, crushed",Freeze Dried Strawberries
+1198,TJ’s Dry Roasted & Salted Pistachio Nutmeats finely chopped,Dry Roasted Salted Pistachio Nutmeats
+1199,TJ’s Gluten Free Organic Rolled Oats with Ancient Grains & Seeds,Gluten Free Oats Ancient Grains Seeds
+1200,TJ’s Unsweetened Applesauce,Applesauce
+1201,TJ’s Ground Cinnamon,Ground Cinnamon
+1202,TJ’s berries (optional),berries
+1203,TJ’s Organic Fusilli Corti Bucati,Fusilli Corti Bucati
+1204,"TJ’s Yellow Onion, finely chopped",Yellow Onion
+1205,"TJ’s Garlic, peeled and finely chopped",Garlic
+1206,"TJ’s Whole Carrots, peeled and medium chopped",Whole Carrots
+1207,"TJ’s Celery, medium chopped",Celery
+1208,"TJ’s Fire Roasted Bell Peppers, drained and medium chopped",Fire Roasted Bell Peppers
+1209,TJ’s Organic Low Sodium Vegetable Broth,Low Sodium Vegetable Broth
+1210,"TJ’s Unbleached Enriched All-Purpose Flour, plus more for shaping the cookies",All-Purpose Flour
+1211,"TJ’s Unsalted Butter, room temperature",Butter
+1212,Seeds,Seeds
+1213,TJ’s Organic Garbanzo Beans,Garbanzo Beans
+1214,juice,juice
+1215,"TJ’s 100% Colombian Instant Coffee, plus more for dusting",Colombian Instant Coffee
+1216,"TJ’s Matcha Green Tea, plus more for dusting",Matcha Green Tea
+1217,"TJ’s Calrose Rice, cooked according to package instructions",Calrose Rice
+1218,TJ’s Everything but the Bagel Seasoned Smoked Salmon,Everything Bagel Seasoned Smoked Salmon
+1219,"TJ’s Persian Cucumbers, cut into thin medallions",Persian Cucumbers
+1220,"TJ’s Roasted Seaweed, cut into bite-size strips",Seaweed
+1221,"TJ’s Green Dragon Hot Sauce, for drizzling",Green Dragon Hot Sauce
+1222,"TJ’s Organic White Quinoa, cooked according to the package instruction",White Quinoa
+1223,"TJ’s Sweet Potato, diced",Sweet Potato
+1224,TJ’s Organic Spinach,Spinach
+1225,TJ’s Green Goddess Dressing,Green Goddess Dressing
+1226,TJ’s Organic Crumbled Feta,Feta
+1227,TJ’s Raw Slivered Almonds,Slivered Almonds
+1228,TJ’s Hash Brown Patties,Hash Brown Patties
+1229,TJ’s Organic Shredded Kale,Kale
+1230,"TJ’s Chili Onion Crunch, for drizzling",Chili Onion Crunch
+1231,TJ’s Marinated Artichoke,Artichoke
+1232,TJ’s Peeled Garlic,Garlic
+1233,"TJ’s Jumbo Pitted Greek Kalamata Olives, drained and halved lengthwise",Jumbo Pitted Greek Kalamata Olives
+1234,"Paste, drained and halved crosswise",Paste
+1235,"TJ’s Capers, drained",Capers
+1236,TJ’s Organic Marinara Sauce,Marinara Sauce
+1237,TJ’s Crumbled Feta Cheese,Crumbled Feta Cheese
+1238,"TJ’s Organic French Baguette, sliced and toasted for dipping",French Baguette
+1239,"TJ's Organic Dried & Pitted Deglet Noor Dates, roughly chopped",Dried Pitted Deglet Noor Dates
+1240,TJ's Whole Milk,Whole Milk
+1241,TJ's Super Premium French Vanilla Ice Cream,Super Premium French Vanilla Ice Cream
+1242,TJ’s Cornbread Stuffing Mix,Cornbread Stuffing Mix
+1243,TJ’s Dried Cranberries,Dried Cranberries
+1244,TJ's Fully Cooked Turkey Meatballs,Cooked Turkey Meatballs
+1245,"TJ’s Turkey Gravy, for serving",Turkey Gravy
+1246,TJ's Organic Coconut Milk,Coconut Milk
+1247,TJ's White Chocolate Chips (seasonal),White Chocolate Chips
+1248,Cinnamon,Cinnamon
+1249,TJ's Whipped Cream (optional),Whipped Cream
+1250,"TJ's Honeycrisp or Granny Smith Apples, peeled, corred, & sliced approx. 1/4-inch thick (about 12 cups)",Honeycrisp Granny Smith Apples
+1251,"TJ's Organic Brown Sugar, divided",Brown Sugar
+1252,"TJ's Gluten Free All Purpose Flour, divided",Gluten Free All Purpose Flour
+1253,TJ's Spiced Chai Black Tea Concentrate,Spiced Chai Black Tea
+1254,TJ's Gluten Free Rolled Oats,Gluten Free Oats
+1255,TJ's Pumpkin Pie Spice*,Pumpkin Pie Spice *
+1256,TJ's Organic Virgin Coconut Oil (room temperature),Virgin Coconut Oil
+1257,"TJ's Caramel Sauce, for serving (optional, but encouraged!)",Caramel Sauce
+1258,TJ's Murasaki Sweet Potatoes (double quantity if potatoes are on the smaller side),Murasaki Sweet Potatoes
+1259,TJ's Legume & Spinach Salad,Legume Spinach Salad
+1260,TJ's Crumbled Goat Cheese (optional),Goat Cheese
+1261,"TJ’s Sea Salt, plus more for garnish",Sea Salt
+1262,"(2 sticks) TJ’s Unsalted Butter, room temperature",Butter
+1263,"TJ’s Large Eggs, room temperature",Eggs
+1264,TJ’s Caramel Sea Salt Baking Chips,Caramel Sea Salt Baking Chips
+1265,"TJ's Unsalted Butter, to grease pan",Butter
+1266,TJ's Heavy Whipping Cream,Heavy Whipping Cream
+1267,TJ's Organic Cane Sugar,Cane Sugar
+1268,TJ's Semi-Sweet Chocolate Chips,Semi-Sweet Chocolate Chips
+1269,TJ's Egg,Egg
+1270,TJ's French Baguette (about half of a baguette),French Baguette
+1271,"cream, for serving (optional)",cream
+1272,TJ's Fresh Mint,Mint
+1273,"TJ's Strawberries, rinsed & hulled",Strawberries
+1274,oz. TJ's Kentucky Bourbon Straight Whiskey,Kentucky Bourbon Straight Whiskey
+1275,oz. TJ's Organic Strawberry Lemonade,Strawberry
+1276,TJ's Southwestern Chopped Salad Kit,Southwestern Chopped Salad Kit
+1277,"TJ's Organic Black Beans, drained & rinsed",Black Beans
+1278,TJ's Teeny Tiny Avocados,Avocados
+1279,TJ's Sea Salt (optional),Sea Salt
+1280,TJ's Stone Hearth Baked French Bread,Stone Hearth Baked French Bread
+1281,TJ's Red Pepper Spread,Red Pepper Spread
+1282,TJ's Organic Uncured Black Forest Ham,Uncured Black Forest Ham
+1283,TJ's Sliced Swiss Cheese,Sliced Swiss Cheese
+1284,TJ's Microgreens or Organic Arugula,Microgreens Arugula
+1285,TJ's Organic Sweet Bread & Butter Pickle Chips (optional),Sweet Bread Butter Pickle Chips
+1286,TJ's Whole Grain Mustard,Whole Grain Mustard
+1287,TJ's Salsa Autentica,Salsa Autentica
+1288,"TJ's Whole Kernel Corn, drained",Whole Kernel Corn
+1289,"TJ's Organic Black Beans, drained",Black Beans
+1290,"TJ's Premium Chunk White Chicken, drained",Premium Chunk White Chicken
+1291,TJ's Tortilla Chips,Tortilla Chips
+1292,"TJ's Avocado, , Cilantro, and Lime for garnish",Avocado
+1293,TJ's Raw Almonds,Almonds
+1294,TJ's Organic Flaxseed Meal,Meal
+1295,(10-12) TJ's Organic Pitted Medjool Dates,Medjool Dates
+1296,TJ's Rolled Oats,Oats
+1297,"TJ's Semi-Sweet Chocolate Chips, chopped",Semi-Sweet Chocolate Chips
+1298,TJ's Organic Unsweetened Coconut Chips,Coconut Chips
+1299,TJ’s Organic Coconut Milk,Coconut Milk
+1300,TJ's Fresh Squeezed Limeade,Limeade
+1301,"TJ's Fresh Lime, sliced",Lime
+1302,(16 oz.) TJ's Organic Sour Cream,Sour Cream
+1303,TJ's 21 Seasoning Salute,Salute
+1304,TJ's Iceberg Lettuce,Iceberg Lettuce
+1305,"TJ's Roma Tomatoes, chopped (discard juicy pulp)",Roma Tomatoes
+1306,TJ's Crumbled Blue Cheese,Blue Cheese
+1307,"Bacon, cooked & chopped",Bacon
+1308,"TJ's Fresh Chives, for garnish",Chives
+1309,TJ's Tortilla Chips for dipping (we especially like Quinoa & Black Bean Tortilla Chips here),Tortilla Chips
+1310,TJ's Organic Cole Slaw Kit,Cole Slaw Kit
+1311,TJ's Raw Sliced Almonds,Sliced Almonds
+1312,"TJ's Organic Fresh Mint, torn into pieces",Mint
+1313,"TJ's Peach, thinly sliced",Peach
+1314,oz. TJ’s White Rum Of The Gods,White Rum Gods
+1315,TJ’s Fresh Lime,Lime
+1316,oz. TJ’s Sparkling Coconut Water with Yuzu,Coconut Water Yuzu
+1317,TJ’s Cayenne Pepper,Cayenne Pepper
+1318,oz. TJ’s Blanco Tequila,Blanco Tequila
+1319,TJ’s Fresh Lemon (plus a lemon slice for garnish),Lemon
+1320,oz. TJ’s Organic Sparkling Lemon + Strawberry Apple Cider Vinegar Beverage,Lemon + Strawberry Apple Cider Vinegar Beverage
+1321,oz. TJ's Kentucky Bourbon,Kentucky Bourbon
+1322,TJ's Organic Blue Agave syrup (optional),Blue Agave syrup
+1323,oz. TJ’s Sparkling Black Tea & Peach Juice Beverage,Black Tea Peach Juice Beverage
+1324,oz. TJ’s Texas Vodka,Texas Vodka
+1325,TJ’s Fresh Lemon,Lemon
+1326,oz. TJ’s Sparkling Strawberry Juice Beverage,Strawberry Juice Beverage
+1327,"TJ's Fresh Strawberries, for garnish",Strawberries
+1328,+ 1 tablespoon your favorite TJ’s Extra Virgin Olive Oil,Extra Virgin Olive Oil
+1329,TJ's Red Chili Pepper,Red Chili Pepper
+1330,TJ's Grated Parmesan Cheese,Parmesan Cheese
+1331,"TJ's Organic French Baguette or your favorite TJ's bread, warmed & sliced",French Baguette bread
+1332,TJ's Freeze Dried Strawberries,Freeze Dried Strawberries
+1333,(16 oz) TJ's Heavy Whipping Cream,Heavy Whipping Cream
+1334,TJ's Organic Powdered Sugar,Sugar
+1335,"TJ's Key Lime Pie, thawed according to package directions",Key Lime Pie
+1336,TJ’s Mini Watermelon,Mini Watermelon
+1337,TJ’s Fresh Squeezed Lemonade,Lemonade
+1338,TJ’s Branzino Fillets,Branzino Fillets
+1339,TJ’s Pearled Couscous,Pearled Couscous
+1340,"(10 oz.) TJ’s Organic Cherry Tomatoes, halved",Cherry Tomatoes
+1341,"TJ’s Green Onions, thinly sliced (white & light green parts only)",Green Onions
+1342,"TJ’s Organic Kalamata Olives, roughly chopped",Kalamata Olives
+1343,TJ’s Lemon (reserve 4 lemon wedges for serving),Lemon
+1344,TJ’s Sea Salt & Black Pepper,Sea Salt Black Pepper
+1345,TJ’s Fresh Organic Thyme,Thyme
+1346,(12” by 18”) and 2 baking sheets,sheets
+1347,"TJ’s Vegan Banana Bread, cut into 8 slices",Vegan Banana Bread
+1348,"TJ’s Bananas, peeled and sliced into coins",Bananas
+1349,TJ’s Walnut Baking Pieces,Walnut Baking Pieces
+1350,TJ’s Blanc de Blancs French Sparkling Wine,Blanc Blancs French Sparkling Wine
+1351,TJ’s Organic Orange Strawberry Banana Juice,Orange Strawberry Banana Juice
+1352,"TJ’s Canola Oil Spray or Coconut Oil Spray, to grease pan",Canola Oil Spray Coconut Oil Spray
+1353,"TJ’s Bananas, ripe but firm",Bananas
+1354,TJ’s Banana Bread Mix,Banana Bread Mix
+1355,"TJ’s All-Purpose Flour, plus more for dusting pan",All-Purpose Flour
+1356,"TJ’s Fresh or Frozen Raspberries, plus a few more for garnish",Frozen Raspberries
+1357,TJ’s 72% Cacao Dark Chocolate Chips,Cacao Dark Chocolate Chips
+1358,TJ’s Banana & Almond Butter Protein Smoothie Beverage,Banana Almond Butter Protein Smoothie Beverage
+1359,TJ’s Cold Brew Coffee Concentrate (do not dilute),Cold Brew Coffee
+1360,"TJ’s Banana, peeled and frozen",Banana
+1361,"TJ’s Dark Chocolate Covered Espresso Beans, crushed",Dark Chocolate Covered Espresso Beans
+1362,TJ's Magnifisauce,Magnifisauce
+1363,TJ's Organic Shredded Cabbage & Carrots,Shredded Cabbage Carrots
+1364,TJ's Burgers or Meatless Patties of your choice,Burgers Meatless Patties choice
+1365,TJ's Sea Salt & Pepper,Sea Salt Pepper
+1366,TJ's Burger Buns,Burger Buns
+1367,TJ's Handsome Cut Fries OR TJ's Potato Tots,Handsome Cut Fries OR Potato Tots
+1368,"TJ's ripe avocado, jalapeño, or your favorite burger garnishes",ripe avocado
+1369,TJ's Holiday Vegetable Hash (seasonal),Holiday Vegetable Hash
+1370,TJ's Sliced Cremini Mushrooms,Sliced Cremini Mushrooms
+1371,TJ's Organic Turkey Bone Broth (seasonal) OR TJ's Organic Free Range Chicken Broth,Turkey Bone Broth OR Free Range Chicken Broth
+1372,TJ's Cultivated Wild Rice,Wild Rice
+1373,TJ's Turkey,Turkey
+1374,"TJ's Cuban Style Citrusy Garlic Seasoning Blend, divided",Cuban Style Citrusy Garlic Seasoning Blend
+1375,TJ's Canola Oil or Sunflower Oil,Canola Oil Sunflower Oil
+1376,"TJ's Fresh Citrus (we used the juice of 1 orange, 1 lemon, and 1 lime)",Citrus juice orange
+1377,TJ's All Natural Crate Free Pork Tenderloin,Crate Free Pork Tenderloin
+1378,TJ's Black Beans,Black Beans
+1379,TJ's Frozen Jasmine Rice,Frozen Jasmine Rice
+1380,"TJ's Fresh Cilantro, chopped",Cilantro
+1381,"Cheese, crumbled, for garnish",Cheese
+1382,TJ’s Sliced Halloumi Cheese (seasonal),Sliced Halloumi Cheese
+1383,"TJ’s Watermelon Spears or 1/4 of a TJ's Watermelon, cubed",Watermelon Spears / Watermelon
+1384,TJ’s Fresh Basil Leaves,Basil Leaves
+1385,TJ’s Black Mission Figs,Black Mission Figs
+1386,TJ’s Balsamic Glaze,Balsamic Glaze
+1387,TJ's Roasted Potatoes with Peppers & Onions,Potatoes Peppers Onions
+1388,"Beef, cubed to potato size (seasonal)",Beef
+1389,TJ's Pure Imported Olive Oil,Pure Olive Oil
+1390,TJ's Clarified Butter (Ghee),Clarified Butter
+1391,TJ's Globe Artichokes (4 count - Seasonal),Globe Artichokes
+1392,TJ's Lemons,Lemons
+1393,TJ's Premium Peeled Garlic Cloves,Premium Peeled Garlic Cloves
+1394,"TJ's Sea Salt, or to taste",Sea Salt
+1395,"TJ's Ground Black Pepper, or to taste",Ground Black Pepper
+1396,"TJ's Aioli Garlic Mustard Sauce, for dipping",Aioli Garlic Mustard Sauce
+1397,TJ's Trader Potato Tots,Trader Potato Tots
+1398,"TJ's Jalapeño Jack Cheese, shredded and divided",Jalapeño Jack Cheese
+1399,(or 2 cups of your favorite cooked protein),
+1400,"TJ's Hot & Sweet Jalapeños, Sour Cream & Cilantro (for garnish)",Hot Sweet Jalapeños
+1401,TJ's Fresh Corn,Corn
+1402,TJ's Green Goddess Salad Dressing,Green Goddess Salad Dressing
+1403,TJ's Red Chili Pepper Flakes (optional),Red Chili Pepper Flakes
+1404,"TJ's Sea Salt & Pepper, to taste",Sea Salt Pepper
+1405,"TJ's Boneless Chicken Breasts, cut into 2"" cubes",Boneless Chicken Breasts
+1406,TJ's Spicy Peanut Vinaigrette,Spicy Peanut Vinaigrette
+1407,"TJ's Sliced Fresh Pineapple, cut into chunks",Sliced Pineapple
+1408,"TJ's Green Bell Peppers, cut into 1.5"" pieces",Green Bell Peppers
+1409,TJ's Oranges cut into approximately 6 slices (keep peel on),Oranges slices
+1410,"TJ's Red Onions, sliced into large chunks",Red Onions
+1411,"TJ's Uncured Dry Rubbed Sliced Bacon, diced",Dry Rubbed Sliced Bacon
+1412,"TJ's Brussels Sprouts, cooked according to microwave instruction then quartered",Brussels Sprouts
+1413,"TJ's Gnocchi, cooked according to package instructions, reserving a 1/2 cup pasta water",Gnocchi
+1414,TJ's Unbleached All-Purpose Flour,All-Purpose Flour
+1415,TJ's Milk,Milk
+1416,TJ's Black Pepper,Black Pepper
+1417,TJ's Dijon Mustard,Dijon Mustard
+1418,"TJ's New Zealand Sharp Cheddar Cheese, grated",New Zealand Sharp Cheddar Cheese
+1419,"TJ's Sweet Onion, diced",Sweet Onion
+1420,TJ's Jasmine Rice,Jasmine Rice
+1421,TJ's Cumin,Cumin
+1422,TJ's Organic Low Sodium Chicken Broth (or Water),Low Sodium Chicken Broth
+1423,(15 oz) TJ's Tomato Sauce,Tomato Sauce
+1424,"TJ's Fully Cooked Carnitas, heated",Carnitas
+1425,"TJ's Frozen Roasted Corn, heated",Frozen Roasted Corn
+1426,"TJ's Organic Black Beans, heated",Black Beans
+1427,TJ's Mexican Blend Cheese,Mexican Blend Cheese
+1428,TJ's Avocado's Number Guacamole or TJ's Reduced Guilt Guacamole,Avocado Number Guacamole Reduced Guilt Guacamole
+1429,TJ's Salsa (optional),Salsa
+1430,"TJ's White Onion, diced",White Onion
+1431,TJ's Bell Pepper (Orange or Yellow),Bell Pepper
+1432,"TJ's Garlic, diced",Garlic
+1433,(1.5 lbs) TJ's Ground Turkey,Ground Turkey
+1434,TJ's Organic Diced & No Salt Added Tomatoes,Diced No Salt Added Tomatoes
+1435,TJ's Organic Pumpkin (seasonal),Pumpkin
+1436,"TJ's Organic Kidney Beans, drained",Kidney Beans
+1437,TJ's Shredded Cheddar Cheese,Cheddar Cheese
+1438,TJ's Organic Cilantro,Cilantro
+1439,"TJ's Avocado, diced",Avocado
+1440,TJ's Strawberries,Strawberries
+1441,"TJ's French Vanilla Ice Cream, softened",French Vanilla Ice Cream
+1442,TJ's Chantilly Cream Vanilla Bean Mini Sheet Cake (or 18 ounces of YOUR favorite TJ's Bakery cake),Cream Vanilla Bean Mini Sheet Cake
+1443,TJ's Whipped Cream,Whipped Cream
+1444,oz. package TJ's Blueberries,package Blueberries
+1445,TJ's Organic Mint (optional garnish),Mint
+1446,TJ's Soy Sauce,Soy Sauce
+1447,"TJ's Soyaki Sauce, Stir Fry Sauce, or other tangy marinade you might have sitting in your fridge",Soyaki Sauce
+1448,"TJ's Garlic Powder, if you've got it",Garlic Powder
+1449,"TJ's neutral oil (Sunflower, Canola, Grapeseed, etc. will all work here)",neutral oil Sunflower
+1450,"TJ's Vegetables you might have on hand (green/red/yellow onion, bell peppers, carrots, mushrooms, frozen peas/corn/edamame/broccoli), thawed if frozen, and chopped",Vegetables hand green/red/yellow onion
+1451,"cooked, day-old TJ's Rice",cooked
+1452,"TJ's Large Eggs, beaten",Eggs
+1453,TJ's Frozen Riced Cauliflower,Frozen Riced Cauliflower
+1454,Eggs,Eggs
+1455,"TJ's Salt, to taste",Salt
+1456,"TJ's Pepper, to taste",Pepper
+1457,TJ's Lite Shredded Mozzarella,Lite Mozzarella
+1458,TJ's Canola Oil Spray,Canola Oil Spray
+1459,TJ's Pre Sliced Mozzarella,Pre Sliced Mozzarella
+1460,TJ's Fresh Basil Leaves,Basil Leaves
+1461,TJ's Roma Tomatoes,Roma Tomatoes
+1462,"TJ's Frozen Shelled Edamame, heated",Frozen Edamame
+1463,"TJ's Red Quinoa, cooked",Red Quinoa
+1464,"TJ's Celery Ribs, sliced",Celery Ribs
+1465,"TJ's Green Onions, chopped",Green Onions
+1466,TJ's Shredded Carrots,Shredded Carrots
+1467,TJ's Italian Parsley,Italian Parsley
+1468,"TJ's Gala Apple, diced",Gala Apple
+1469,"TJ's Avocado, sliced",Avocado
+1470,TJ's Sliced Almonds,Sliced Almonds
+1471,TJ's Lemon (Juice Only),Lemon
+1472,TJ's Extra Virgin California Olive Oil,Extra Virgin California Olive Oil
+1473,"TJ's Garlic, minced (optional)",Garlic
+1474,TJ's Fully Cooked Uncured Bacon,Uncured Bacon
+1475,"TJ's Romaine Hearts, rinsed and chopped",Romaine Hearts
+1476,"oz. TJ's Grape Tomatoes, rinsed and halved",Grape Tomatoes
+1477,"Eggs, quartered",Eggs
+1478,TJ's Grilled Chicken Strips,Chicken Strips
+1479,TJ's Blue Cheese Crumbles,Blue Cheese Crumbles
+1480,TJ's Avocados,Avocados
+1481,TJ's Red Wine & Olive Oil Vinaigrette OR 1 jar TJ's Chunky Blue Cheese Dressing,Red Wine Olive Oil Vinaigrette OR Chunky Blue Cheese Dressing
+1482,prep,prep
+1483,dressing,dressing
+1484,TJ's Coconut Cashews,Coconut Cashews
+1485,TJ's Soft & Juicy Dried Mango,Soft Juicy Dried Mango
+1486,TJ's Organic Virgin Coconut Oil,Virgin Coconut Oil
+1487,"TJ's Sea Salt, to taste",Sea Salt
+1488,"(roughly 3 Mangoes) TJ's Mango, peeled, pitted & coarsely chopped",Mango
+1489,TJ's Multi-Floral & Clover Honey,Multi-Floral Clover Honey
+1490,TJ's Mascarpone Cheese,Mascarpone Cheese
+1491,TJ's Mango Greek Nonfat Yogurt,Mango Greek Nonfat Yogurt
+1492,"TJ's Mango, peeled, pitted & cubed",Mango
+1493,"TJ's Strawberries, quartered",Strawberries
+1494,"TJ's Organic Mint, to garnish",Mint
+1495,"TJ's Organic Flake Coconut, to garnish",Flake Coconut
+1496,TJ's Spicy Chai Tea Latte Mix,Spicy Chai Tea Latte Mix
+1497,TJ's Cold Brew Coffee Concentrate,Cold Brew Coffee
+1498,Cream,Cream
+1499,TJ's Organic Extra Virgin Olive Oil,Extra Virgin Olive Oil
+1500,TJ's Cruciferous Crunch,Cruciferous Crunch
+1501,TJ's Organic Dried Cranberries,Dried Cranberries
+1502,TJ's Dry Toasted & Sliced Almonds,Dry Toasted Sliced Almonds
+1503,"TJ's Shaved Parmesan, Romano & Asiago Cheese",Parmesan
+1504,TJ's Organic Brown Rice & Quinoa Spaghetti,Brown Rice Quinoa Spaghetti
+1505,"TJ's Organic Tuscan Kale, stems removed OR 1 bag TJ's Cruciferous Crunch",Tuscan Kale
+1506,TJ's Fresh Haricots Verts,Haricots Verts
+1507,TJ's Toasted Slivered Almonds,Slivered Almonds
+1508,"TJ's Fresh Basil, rinsed and dried",Basil
+1509,TJ's Just Almond Meal,Almond Meal
+1510,TJ's Blanched Almond Flour,Almond Flour
+1511,TJ's Baking Powder,Powder
+1512,"TJ's Organic Virgin Coconut Oil, melted (microwave for 30 seconds)",Virgin Coconut Oil
+1513,TJ's 100% Pure Maple Syrup,Pure Maple Syrup
+1514,"TJ's Eggs, beaten",Eggs
+1515,TJ's Coconut Oil Spray,Coconut Oil Spray
+1516,TJ's Organic Sugar,Sugar
+1517,TJ's Organic Brown Sugar,Brown Sugar
+1518,TJ's Ground Cinnamon,Ground Cinnamon
+1519,"TJ's refrigerated Buttermilk Biscuits, separated & sliced into quarters",Buttermilk Biscuits
+1520,TJ's Fleur de Sel Caramel Sauce,Fleur Sel Caramel Sauce
+1521,"TJ's Bananas, sliced into medallions",Bananas
+1522,TJ's Unsalted Dry Roasted Pecan Pieces,Dry Roasted Pecan Pieces
+1523,TJ's Jumbo Raisins,Jumbo Raisins
+1524,TJ's Canola Spray (to grease muffin tin),Canola Spray
+1525,TJ's Gluten Free Pumpkin Bread & Muffin Mix (seasonal),Gluten Free Pumpkin Bread Muffin Mix
+1526,TJ's Applesauce,Applesauce
+1527,TJ's Chocolate Chunks,Chocolate Chunks
+1528,"TJ's Unsalted Butter, softened to room temperature",Butter
+1529,TJ's Pumpkin Butter (seasonal),Pumpkin Butter
+1530,(1 pound) TJ's All Natural No Antibiotics Ever Ground Pork,Antibiotics Ground Pork
+1531,TJ's Salt,Salt
+1532,TJ's Pepper,Pepper
+1533,"TJ's Organic Extra Virgin Olive Oil Spray, to grease pan",Extra Virgin Olive Oil Spray
+1534,Salute,Salute
+1535,TJ's Buttermilk Biscuits,Buttermilk Biscuits
+1536,TJ's Shredded Cheese Blend,Cheese Blend
+1537,"TJ's Flour Tortillas, warmed",Tortillas
+1538,TJ's Hashbrowns,Hashbrowns
+1539,TJ's Dry Rubbed Bacon OR Uncured Fully Cooked Bacon,Dry Rubbed Bacon OR Uncured Fully Cooked Bacon
+1540,TJ's Shredded 3 Cheese Blend,Cheese Blend
+1541,"TJ's Large Avocado, thinly sliced",Avocado
+1542,"TJ's Hot Sauce, Salsa, or Sriracha",Hot Sauce
+1543,TJ's Instant Coffee,Instant Coffee
+1544,"TJ's Unsweetened Non-Dairy Hemp Beverage (or milk, or your favorite non-dairy beverage)",Non-Dairy Hemp Beverage milk
+1545,TJ's Ground Cinnamon (optional),Ground Cinnamon
+1546,"TJ's Unexpected Cheddar, broken into chunks",Cheddar
+1547,TJ's Cream Cheese,Cream Cheese
+1548,TJ's Chili Pepper Sauce,Chili Pepper Sauce
+1549,Juice,Juice
+1550,"TJ's Sweet & Spicy Pecans, chopped",Sweet Spicy Pecans
+1551,"TJ's Golden Rounds Crackers, for serving",Golden Crackers
+1552,"TJ's Anchovy Fillets in Olive Oil, drained and diced",Anchovy Fillets Olive Oil
+1553,"TJ's Premium Peeled Garlic Cloves, minced",Premium Peeled Garlic Cloves
+1554,TJ's Dijon Mustard with White Wine,Dijon Mustard White Wine
+1555,+ 1 Tbsp TJ's Sicilian Selezione EVOO,+ Tbsp Sicilian Selezione EVOO
+1556,TJ's Creamy Toscano Cheese Soaked in Syrah,Creamy Toscano Cheese Soaked Syrah
+1557,TJ's Toscano Cheese with Black Pepper,Toscano Cheese Black Pepper
+1558,TJ's Whole Grain Dijon Mustard,Whole Grain Dijon Mustard
+1559,TJ's Crisps (Fig & Olive or Raisin & Rosemary),Crisps
+1560,TJ's Seedless Grape Medley,Seedless Grape Medley
+1561,TJ's Prosciutto or TJ's Uncured Salame di Parma Mild Salami,Prosciutto Salame di Parma Mild Salami
+1562,TJ's Cornichons,Cornichons
+1563,TJ's Rosemary Marcona Almonds,Rosemary Marcona Almonds
+1564,TJ's Teeny Tiny Potatoes,Potatoes
+1565,"TJ's Peeled Garlic (or more, if you like)",Garlic
+1566,TJ's Organic Tahini,Tahini
+1567,water; 2 teaspoons TJ's Minced Garlic,water teaspoons Minced Garlic
+1568,TJ's Organic Reduced Sugar Raspberry (or Strawberry) Preserves,Sugar Raspberry Preserves
+1569,TJ's Sweet Chili Sauce,Sweet Chili Sauce
+1570,TJ's Turkey Meatballs,Turkey Meatballs
+1571,TJ's Sriracha Flavored Baked Tofu,Sriracha Flavored Baked Tofu
+1572,"TJ's Eggs, egg whites separated",Eggs
+1573,TJ's Panko Breadcrumbs,Panko Breadcrumbs
+1574,TJ's Nori Komi Furikake,Nori Komi Furikake
+1575,TJ's Frozen Meatballs (we used the Turkey variety),Frozen Meatballs
+1576,TJ's Organic Sriracha and Roasted Garlic BBQ Sauce,Sriracha Roasted Garlic BBQ Sauce
+1577,TJ's Chives (optional),Chives
+1578,"TJ’s Organic Tuscan Kale, chopped fine",Tuscan Kale
+1579,TJ’s Steamed Lentils,Steamed Lentils
+1580,TJ’s Baby Heirloom Tomatoes,Baby Heirloom Tomatoes
+1581,"TJ’s Shallot, minced",Shallot
+1582,TJ’s Dijon Mustard with White Wine,Dijon Mustard White Wine
+1583,TJ’s Clover Honey,Clover Honey
+1584,"TJ’s Sea Salt, or to taste",Sea Salt
+1585,"TJ’s Ground Black Pepper, or to taste",Ground Black Pepper
+1586,"(3 lbs.) TJ's Organic Sweet Potatoes, peeled and sliced into thin planks",Sweet Potatoes
+1587,"TJ's Frozen Spinach & Artichoke Dip, microwaved according to directions",Frozen Spinach Artichoke Dip
+1588,"TJ's Quattro Formaggio Shredded Cheese Blend, divided",Quattro Formaggio Shredded Cheese Blend
+1589,TJ’s Gluten Free Breaded Chicken Breast Nuggets,Gluten Free Breaded Chicken Breast Nuggets
+1590,TJ’s Jalapenos (optional),Jalapenos
+1591,TJ’s Gluten Free Toaster Waffles,Gluten Free Toaster Waffles
+1592,"TJ's Uncured Apple Smoked Bacon (or your favorite TJ's Bacon), chopped (optional)",Apple Smoked Bacon
+1593,TJ's Diced Onions,Diced Onions
+1594,TJ's Organic Baked Beans,Baked Beans
+1595,TJ's Organic Sriracha & Roasted Garlic BBQ Sauce,Sriracha Roasted Garlic BBQ Sauce
+1596,"Cilantro, Chives or Parsley, for garnish (optional)",Cilantro
+1597,TJ's Red Wine Vinegar,Red Wine Vinegar
+1598,TJ's South African Smoke Seasoning (Seasonal),African Smoke Seasoning
+1599,TJ's Dried Oregano,Dried Oregano
+1600,TJ's Premium and Peeled Garlic Cloves,Premium Peeled Garlic Cloves
+1601,"EVOO, divided",EVOO
+1602,(packed) fresh TJ's Cilantro,Cilantro
+1603,(packed) fresh TJ's Parsley,Parsley
+1604,"TJ's Organic Gold Potatoes, peeled and cut into one inch cubes",Gold Potatoes
+1605,"TJ's Chives, chopped",Chives
+1606,TJ's 100% Spanish Organic Extra Virgin Garlic Flavored Olive Oil,Spanish Extra Virgin Garlic Flavored Olive Oil
+1607,"TJ's Spices of the World, Smoked Paprika",Spices World
+1608,(1lb) bag TJ’s Dutch Yellow Baby Potatoes,Dutch Yellow Baby Potatoes
+1609,"TJ's Jumbo Cooked Shrimp (Peeled, Tail Off, Whole)",Jumbo Cooked Shrimp
+1610,TJ's Baguette,Baguette
+1611,"TJ's Mayonnaise, divided",Mayonnaise
+1612,TJ's Mini Heirloom Tomatoes,Mini Heirloom Tomatoes
+1613,TJ's Parsley,Parsley
+1614,TJ's Jalapeño Pepper Hot Sauce,Jalapeño Pepper Hot Sauce
+1615,"TJ's Organic Tricolor Quinoa, cooked according to package instruction and cooled to room temperature",Tricolor Quinoa
+1616,"TJ’s Sugar Snap Peas, steamed according to microwave package instructions",Sugar Snap Peas
+1617,"TJ’s Pineapple Tidbits, thawed",Pineapple Tidbits
+1618,TJ’s Organic Toasted Sesame Dressing,Sesame Dressing
+1619,TJ’s Unsalted Dry Toasted Sliced Almonds,Dry Toasted Sliced Almonds
+1620,TJ's Sea Salted Saddle Potato Crisps,Sea Salted Saddle Potato Crisps
+1621,"TJ's Pico de Gallo Salsa (Mild or Hot, your choice!)",Pico Gallo Salsa Mild Hot
+1622,TJ's Fancy Shredded Mexican Cheese Blend,Fancy Mexican Cheese Blend
+1623,TJ's Fresh Cilantro (optional),Cilantro
+1624,TJ's Sweet Potatoes,Sweet Potatoes
+1625,TJ's 100% Greek Kalamata Olive Oil,Greek Kalamata Olive Oil
+1626,TJ's Arugula,Arugula
+1627,"TJ's Beets in Vinaigrette, julienned",Beets Vinaigrette
+1628,"TJ's Roasted and Salted Pecans, chopped",Pecans
+1629,"TJ's Balsamic Glaze, for garnish",Balsamic Glaze
+1630,TJ's Plain Pizza Dough,Plain Pizza Dough
+1631,"*If you'd prefer to skip the pretzel-making, substitute the ingredients above with 1 package of TJ's Big Soft Pretzels, prepared according to package instructions & cut into bite-sized pieces.",* pretzel-making
+1632,"TJ's Shallots, minced",Shallots
+1633,TJ's Shredded Sharp Cheddar Cheese (or your preferred Cheddar),Sharp Cheddar Cheese
+1634,TJ's Garlic Powder,Garlic Powder
+1635,Lager,Lager
+1636,"TJ's Sea Salt & Black Pepper, to taste",Sea Salt Black Pepper
+1637,"oz. TJ's Frozen Mashed Sweet Potatoes (seasonal), defrosted",Frozen Mashed Sweet Potatoes
+1638,TJ's Ground Nutmeg (seasonal),Ground Nutmeg
+1639,TJ's Brown Sugar,Brown Sugar
+1640,TJ's Pure Vanilla Extract,Pure Vanilla Extract
+1641,"TJ's Apple Smoked Bacon, cooked and crumbled",Apple Smoked Bacon
+1642,4.5 cups TJ's Buttermilk Pancake & All-Purpose Baking Mix,cups Buttermilk Pancake All-Purpose Baking Mix
+1643,"TJ's Salted Butter, softened",Butter
+1644,TJ's Clarified Butter,Clarified Butter
+1645,board,board
+1646,1.5 inch round cookie cutter,inch round cookie cutter
+1647,TJ's Organic Brown Eggs,Brown Eggs
+1648,TJ's Sunflower Oil,Oil
+1649,TJ's Cornbread Baking Mix,Cornbread Baking Mix
+1650,"TJ's Hot & Sweet Jalapeños, diced",Hot Sweet Jalapeños
+1651,"TJ's Apple Smoked Bacon, cooked and chopped",Apple Smoked Bacon
+1652,"TJ's Cream Cheese, softened",Cream Cheese
+1653,TJ's Organic Pepper Jack Cheese (shredded),Pepper Jack Cheese
+1654,"TJ's Fancy Shredded Mexican Blend Cheese, divided",Fancy Mexican Blend Cheese
+1655,TJ's Roasted Corn,Corn
+1656,TJ's Organic Sour Cream,Sour Cream
+1657,Cilantro,Cilantro
+1658,TJ's Avocado Spray Oil,Avocado Spray Oil
+1659,"TJ's Shredded Pepper Jack Cheese, divided",Shredded Pepper Jack Cheese
+1660,TJ's Salsa Verde,Salsa Verde
+1661,"TJ's Tuscan Melon (or small TJ's Cantaloupe), cubed",Tuscan Melon
+1662,"TJ's Sliced Prosciutto, gently sliced in half lengthwise",Sliced Prosciutto
+1663,"Basil, rinsed & dried",Basil
+1664,Toothpicks,Toothpicks
+1665,"TJ's Sea Salt, more to taste",Sea Salt
+1666,TJ's Ground Cumin,Ground Cumin
+1667,TJ's Clarified Butter or TJ's 100% Canola Oil,Clarified Butter Canola Oil
+1668,TJ's Raw Shelled Pumpkin Seeds,Pumpkin Seeds
+1669,"TJ's Rosemary Leaves, roughly chopped",Rosemary Leaves
+1670,TJ's Organic Quinoa,Quinoa
+1671,oz. TJ's Pineapple Juice (refrigerated) or 2 cans TJ's 100% Pineapple Juice (shelf-stable),Pineapple Juice cans Pineapple Juice
+1672,TJ's Grapeseed Oil,Oil
+1673,TJ's Pineapple Tidbits,Pineapple Tidbits
+1674,"TJ's Red Bell Pepper, chopped",Red Bell Pepper
+1675,"TJ's Green Onion, chopped",Green Onion
+1676,TJ's Crushed Red Chile Pepper,Red Chile Pepper
+1677,"(1 oz) slices TJ's Multigrain Bread, toasted",slices Multigrain Bread
+1678,TJ's Avocado,Avocado
+1679,TJ's Sardines in Oil,Sardines Oil
+1680,TJ's English Peas,English Peas
+1681,"TJ's Mint leaves, chopped",Mint leaves
+1682,TJ's Goat Cheese Crumbles,Goat Cheese Crumbles
+1683,TJ's Hard Cooked Eggs,Hard Cooked Eggs
+1684,TJ's Avocado's Number Guacamole,Avocado Number Guacamole
+1685,"TJ's Grilled Chicken Breast Strips, diced",Chicken Breast Strips
+1686,"TJ's Grape Tomatoes, diced",Grape Tomatoes
+1687,"TJ's Fully Cooked Uncured Bacon, crumbled",Uncured Bacon
+1688,TJ's Organic Romaine Lettuce,Romaine Lettuce
+1689,TJ's Organic Thick & Chunky Salsa,Thick Chunky Salsa
+1690,TJ's Chevre With Honey Goat's Milk Cheese,Chevre Honey Goat Milk Cheese
+1691,"TJ's Wild Blueberries, defrosted",Wild Blueberries
+1692,TJ's Brioche Toasts,Brioche Toasts
+1693,TJ's Oven Baked Cheese Bites with Black Summer Truffle (seasonal) or TJ's Oven Baked Cheese Bites,Baked Cheese Black Summer Truffle Oven Baked Cheese Bites
+1694,TJ's Organic Popcorn with Organic Extra Virgin Olive Oil,Extra Virgin Olive Oil
+1695,TJ's Dry Roasted Unsalted Almonds,Dry Roasted Unsalted Almonds
+1696,TJ's Gluten Free Pretzel Twists,Gluten Free Pretzel Twists
+1697,TJ's Organic Canola Oil Spray,Canola Oil Spray
+1698,TJ's Beer Bread Mix (seasonal),Beer Bread Mix
+1699,"TJ's Unexpected Cheddar, grated and divided",Cheddar
+1700,"TJ's Hot & Sweet Jalapeños, halved, plus more for garnish",Hot Sweet Jalapeños
+1701,TJ's Organic Shredded Green & Red Cabbage with Orange Carrots,Shredded Green Red Cabbage Orange Carrots
+1702,"TJ's Fuji Apple, julienned",Fuji Apple
+1703,TJ's Carolina Gold BBQ Sauce (seasonal),Carolina Gold BBQ Sauce
+1704,TJ's Real Mayonnaise (or TJ's Greek Yogurt),Real Mayonnaise
+1705,TJ’s Shishito Peppers,Shishito Peppers
+1706,TJ’s Premium Peeled Garlic Cloves,Premium Peeled Garlic Cloves
+1707,"(2 pounds) TJ's Organic Carrots Of Many Colors, rinsed and dried",Carrots Many Colors
+1708,TJ's Organic Apple Cider Vinegar OR Balsamic Vinegar,Apple Cider Vinegar OR Balsamic Vinegar
+1709,Thyme,Thyme
+1710,TJ's Brussels Sprouts Stalk (Seasonal),Brussels Sprouts Stalk
+1711,TJ's Maple Syrup,Maple Syrup
+1712,"TJ's Dried Cranberries or TJ's Fresh Pomegranate Seeds, for garnish",Dried Cranberries Pomegranate Seeds
+1713,TJ's Uncured Apple Smoked Bacon,Apple Smoked Bacon
+1714,TJ's Frozen Mashed Potatoes,Frozen Mashed Potatoes
+1715,"Water, plus 2 tablespoons",Water
+1716,TJ's Cruciferous Crunch Collection,Cruciferous Crunch Collection
+1717,Butter,Butter
+1718,TJ's Gluten Free Crispbreads,Gluten Free Crispbreads
+1719,"Dill, for garnish (optional)",Dill
+1720,(16 ounces) TJ's Organic Sour Cream,Sour Cream
+1721,TJ's Everything but the Bagel Sesame Seasoning Blend,Everything Bagel Sesame Seasoning Blend
+1722,"Chives, for garnish (optional)",Chives
+1723,TJ's Organic Extra Virgin Coconut Oil,Extra Virgin Coconut Oil
+1724,TJ's Fresh Riced Cauliflower,Riced Cauliflower
+1725,TJ's Cumin (to taste),Cumin
+1726,TJ's Sea Salt (to taste),Sea Salt
+1727,TJ's Gluten Free Cornbread Mix (seasonal),Gluten Free Cornbread Mix
+1728,TJ's Organic Fresh Cranberries (seasonal),Cranberries
+1729,Orange,Orange
+1730,TJ's Red & White Belgian Endives,Red White Belgian Endives
+1731,"TJ's Cranberry Chevre (seasonal), softened to room temperature",Cranberry Chevre
+1732,(seasonal),
+1733,TJ's Cranberry Orange Relish (seasonal),Cranberry Orange Relish
+1734,"TJ's Water Crackers, for serving",Water Crackers
+1735,"TJ's Walnuts and Fresh Rosemary, for garnish (optional)",Walnuts Rosemary
+1736,TJ's Corn and Chile Tomato-less Salsa,Corn Chile Tomato-less Salsa
+1737,"TJ's Black Beans, drained and rinsed",Black Beans
+1738,"TJ's fresh Sugar Plum Tomatoes, halved",Sugar Plum Tomatoes
+1739,"TJ's Orange Bell Pepper, diced",Orange Bell Pepper
+1740,TJ's Cilantro Salad Dressing,Cilantro Salad Dressing
+1741,"TJ's Organic Unbleached All-Purpose Flour, sifted",All-Purpose Flour
+1742,TJ's Thompson Seedless Raisins,Thompson Seedless Raisins
+1743,TJ's TJ's Egg,Egg
+1744,"TJ's Unsalted Butter, softened, plus more for serving",Butter
+1745,"TJ's 12-Month Aged Manchego Añejo, cubed",-Month Aged Manchego Añejo
+1746,"TJ's Black Mission Figs, halved (Seasonal)",Black Mission Figs
+1747,"TJ's Prosciutto, sliced in half lengthwise",Prosciutto
+1748,"TJ's Whole Grain Dijon Mustard and TJ's Honey, to serve (optional)",Whole Grain Dijon Mustard Honey
+1749,Joe's Frozen Mashed Potatoes,Joe Frozen Mashed Potatoes
+1750,(16 oz) TJ's Heavy Cream,Heavy Cream
+1751,TJ's Shredded Swiss Cheese & Gruyère Cheese Blend,Shredded Swiss Cheese Gruyère Cheese Blend
+1752,TJ's Salted Butter,Butter
+1753,"TJ's Parsley, chopped, for garnish",Parsley
+1754,TJ's Jalapeños,Jalapeños
+1755,TJ's Chunky Artichoke & Jalapeño Dip,Chunky Artichoke Jalapeño Dip
+1756,"TJ's Roasted Corn, defrosted",Corn
+1757,"TJ's Shredded Mozzarella Cheese, divided",Shredded Mozzarella Cheese
+1758,"TJ's Cilantro, plus more for garnish",Cilantro
+1759,"TJ's Salted Butter, melted",Butter
+1760,TJ's Japanese Style Panko Breadcrumbs,Japanese Style Panko Breadcrumbs
+1761,TJ’s Hot & Spicy Chicken Wings Sections,Hot Spicy Chicken Wings Sections
+1762,(about 12) TJ’s Organic Cut and Peeled Carrots,Cut Peeled Carrots
+1763,TJ’s Organic Celery Hearts,Celery Hearts
+1764,TJ’s Chunky Blue Cheese Dressing & Dip,Chunky Blue Cheese Dressing Dip
+1765,TJ’s Parsley (optional garnish),Parsley
+1766,TJ's Israeli Feta,Israeli Feta
+1767,TJ's California Extra-Virgin Olive Oil,California Extra-Virgin Olive Oil
+1768,"TJ's Organic On The Vine Tomatoes, sliced (optional)",Vine Tomatoes
+1769,TJ's Middle Eastern Style Flatbread (optional),Middle Eastern Style Flatbread
+1770,TJ's Thyme for garnish (optional),Thyme garnish
+1771,"TJ's Grilled Asparagus Spears, thawed according to package directions and chopped into large pieces",Asparagus Spears
+1772,"TJ's Roasted Corn, microwaved according to package directions",Corn
+1773,"TJ's Red Onion, diced",Red Onion
+1774,"TJ's Red Bell Peppers (or Enjoya Peppers), chopped",Red Bell Peppers
+1775,TJ's Organic Rosé Vinaigrette,Rosé Vinaigrette
+1776,"Neck, from TJ's Fresh Whole Turkey of your choice (if you choose to omit turkey neck, increase measurement of TJ's Turkey Stock to 3 Cups, and increase simmering time to thicken the gravy)",Neck
+1777,(one stick) TJ's Unsalted Butter,Butter
+1778,TJ's All-Purpose Flour,All-Purpose Flour
+1779,TJ's Chicken Broth or Vegetable Broth,Chicken Broth Vegetable Broth
+1780,TJ's Party Size Mini Meatballs,Party Size Mini Meatballs
+1781,TJ's Carolina Gold Barbeque Sauce,Carolina Gold Barbeque Sauce
+1782,"TJ's Fresh Chives, chopped",Chives
+1783,TJ's Red Chili Pepper Flakes,Red Chili Pepper Flakes
+1784,TJ's Peaches,Peaches
+1785,TJ's Apple Juice or TJ's Country Peach Juice,Apple Juice Country Peach Juice
+1786,& chopped TJ's Ginger,Ginger
+1787,TJ's Multigrain Bread,Multigrain Bread
+1788,blackberries,blackberries
+1789,"TJ's Frozen Peach Slices, defrosted",Frozen Peach Slices
+1790,honey,honey
+1791,"mint, chopped",mint
+1792,TJ's Creamy Salted Cashew Butter,Creamy Salted Cashew Butter
+1793,"garnish, if desired",garnish
+1794,(32 oz) container TJ’s Canola Oil,Canola Oil
+1795,TJ’s Fresh Ravioli (we used our Beef Bolognese variety),Ravioli
+1796,TJ’s Organic Brown Eggs,Brown Eggs
+1797,"TJ’s Ground Black Pepper, divided",Ground Black Pepper
+1798,TJ’s Creamy Tomato Basil Pasta Sauce,Creamy Tomato Basil Pasta Sauce
+1799,TJ's Organic Salsa Style Refried Black Beans,Salsa Style Refried Black Beans
+1800,(16 oz) TJ's Organic Sour Cream,Sour Cream
+1801,TJ's Double Roasted Salsa,Salsa
+1802,TJ's Organic Shredded 3 Cheese Blend,Cheese Blend
+1803,TJ's Sliced Black Olives,Sliced Black Olives
+1804,"TJ's Green Onions, thinly sliced",Green Onions
+1805,TJ's Restaurant Style Tortilla Chips (or your favorite TJ's Tortilla Chips) for dipping,Restaurant Style Tortilla Chips
+1806,(or individual ramekins) for dip assembly,dip assembly
+1807,"TJ's Iceberg Lettuce, cut into several wedges",Iceberg Lettuce
+1808,TJ's Organic Ranch Dressing,Ranch
+1809,TJ's Mini Pearl Grape Tomatoes,Mini Pearl Grape Tomatoes
+1810,"TJ's Green Onions, white and green parts sliced thin",Green Onions
+1811,"TJ's Crumbled Blue Cheese, crumbled and divided",Blue Cheese
+1812,TJ's Uncured Black Forest Bacon,Uncured Black Forest Bacon
+1813,(2 trays) TJ's Avocado's Number Guacamole,Avocado Number Guacamole
+1814,TJ's Broccoli & Kale Slaw Complete Salad Kit,Broccoli Kale Slaw Complete Salad Kit
+1815,"TJ's Organic Great Northern Beans, drained and rinsed",Great Northern Beans
+1816,TJ's Hot & Sweet Pepper Jelly,Hot Sweet Pepper Jelly
+1817,"TJ's Cream Cheese, cut into 1/4""slices",Cream Cheese
+1818,TJ's Hot & Sweet Jalapeños (plus 3 tablespoons liquid from jar),Hot Sweet Jalapeños
+1819,"TJ's Olive Oil, plus more for frying",Olive Oil
+1820,TJ's Microgreens OR 1 package TJ's Organic Spring Mix,Microgreens OR package Spring Mix
+1821,"TJ's Peaches, pitted and thinly sliced",Peaches
+1822,"Cheese, drained and sliced ¼-inch thick",Cheese
+1823,"lb. TJ's Sweet Italian Pork Sausage or Hot Italian Pork Sausage, casing removed",Sweet Italian Pork Sausage Hot Italian Pork Sausage
+1824,"TJ's Organic Cooked & Peeled Chestnuts, halved",Cooked Peeled Chestnuts
+1825,"TJ's Cranberry Sauce & Turkey Gravy, for serving (optional)",Cranberry Sauce Turkey Gravy
+1826,"TJ's Cranberries, rinsed and drained",Cranberries
+1827,"TJ's Gala Apple or SweeTango Apple, peeled & cut into large chunks",Gala Apple SweeTango Apple
+1828,TJ's Ground Nutmeg (optional),Ground Nutmeg
+1829,TJ's Orange,Orange
+1830,TJ's Crystallized Ginger,Ginger
+1831,TJ's Walnut Baking Pieces,Walnut Baking Pieces
+1832,"TJ's Creamed Greens (seasonal), cooked according to package directions",Greens
+1833,"TJ's Fully Cooked Uncured Bacon, cooked according to package directions and crumbled into pieces",Uncured Bacon
+1834,"TJ's Frozen Wild Boreal Blueberries, divided",Frozen Wild Boreal Blueberries
+1835,"TJ's Goat's Milk Cheese Marinated With Herbs, softened to room temperature",Goat Milk Cheese Herbs
+1836,"TJ's Cling Peach Halves, thinly sliced",Peach Halves
+1837,"Basil, chopped, for garnish",Basil
+1838,TJ’s Cranberry Chevre (seasonal),Cranberry Chevre
+1839,TJ’s Cream Cheese,Cream Cheese
+1840,"TJ’s Dry Roasted & Salted Pistachio Nutmeats, crushed into small pieces",Dry Roasted Salted Pistachio Nutmeats
+1841,"TJ’s Dried Cranberries, very finely diced",Dried Cranberries
+1842,"Squash, roasted and cubed",Squash
+1843,Joe's Organic Tahini,Joe Tahini
+1844,"Paprika, plus more for garnish",Paprika
+1845,Salt,Salt
+1846,Pepper,Pepper
+1847,Lime,Lime
+1848,"Joe's Avocado Oil, plus more for garnish",Joe Avocado Oil
+1849,(we like Organic Blue Corn Tortilla Chips),
+1850,TJ's Triple Creme Brie,Triple Creme Brie
+1851,TJ's Pumpkin Tortilla Chips (seasonal),Pumpkin Tortilla Chips
+1852,"TJ's Pumpkin Butter (optional, seasonal)",Pumpkin Butter
+1853,TJ's Bacon,Bacon
+1854,"TJ's Onions, diced",Onions
+1855,"TJ's Premium Peeled Garlic, chopped",Premium Garlic
+1856,TJ's Organic Yellow Mustard,Yellow Mustard
+1857,TJ's Organic Brown Sugar BBQ Sauce & Marinade,Brown Sugar BBQ Sauce Marinade
+1858,"Cilantro, chopped, for garnish (optional)",Cilantro
+1859,TJ's Organic Tomato & Roasted Red Pepper Soup,Tomato Roasted Red Pepper Soup
+1860,TJ's Channa Masala,Channa Masala
+1861,"TJ's Greek Yogurt or Sour Cream and chopped parsley, for garnish (optional)",Greek Yogurt Sour Cream parsley
+1862,"TJ's Tandoori Naan, cooked according to package directions, for dipping (optional)",Tandoori Naan
+1863,TJ's Fully Cooked Traditional Carnitas,Cooked Traditional Carnitas
+1864,TJ's Frozen Organic Jasmine Rice,Frozen Jasmine Rice
+1865,"TJ's Organic Black Beans, rinsed and drained",Black Beans
+1866,TJ's Pico de Gallo,Pico Gallo
+1867,TJ's Jalapeño Sauce,Jalapeño Sauce
+1868,"TJ's Fresh Cilantro, sliced Jalapeno, and sliced Lime, for garnish (optional)",Cilantro
+1869,TJ's Kettle Cooked Chicken Soup,Kettle Cooked Chicken Soup
+1870,(shelf-stable),
+1871,TJ's Whipping Cream (shelf-stable),Cream
+1872,"TJ's Fresh Thyme, for garnish (optional)",Thyme
+1873,TJ's Italian Style Soffritto Seasoning Blend,Italian Style Soffritto Seasoning Blend
+1874,"Kale, chopped",Kale
+1875,TJ's Diced Tomatoes,Diced Tomatoes
+1876,"TJ's Organic Great Northern Beans, drained",Great Northern Beans
+1877,TJ's Shredded Mozzarella Cheese,Shredded Mozzarella Cheese
+1878,"Rolls, heated or toasted to your preference",Rolls
+1879,"TJ's Garlic, crushed",Garlic
+1880,"TJ's Shallots, sliced thinly",Shallots
+1881,TJ's All Natural Drumsticks,Drumsticks
+1882,TJ's Six Piece Organic Chicken Family Pack,Six Piece Chicken Family
+1883,TJ's Spanish Extra Virgin Olive Oil,Spanish Extra Virgin Olive Oil
+1884,"TJ's Sweet White Onions, roughly sliced (about 4 cups)",Sweet White Onions
+1885,"TJ's Ginger, chopped",Ginger
+1886,TJ's Spanish Manzanilla Olives with Pemento Paste,Spanish Manzanilla Olives Pemento Paste
+1887,Joseph's All Purpose White Flour,Joseph All Purpose White Flour
+1888,TJ's Ground Cayenne Pepper,Ground Cayenne Pepper
+1889,TJ's Organic Chicken Broth,Chicken Broth
+1890,"TJ's Lemon, juiced",Lemon
+1891,"TJ's Dates, coarsely chopped",Dates
+1892,"TJ's Jasmine White Rice, cooked",Jasmine White Rice
+1893,"TJ's Portobello Mushrooms, diced",Portobello Mushrooms
+1894,TJ's Beef-less Ground Beef,Beef-less Ground Beef
+1895,TJ's Organic Spicy Taco Sauce,Spicy Taco Sauce
+1896,TJ's Tortillas,Tortillas
+1897,"TJ's Iceberg Lettuce, shredded",Iceberg Lettuce
+1898,"TJ's Roma Tomatoes, diced",Roma Tomatoes
+1899,TJ's Mild Shredded Cheddar Cheese,Mild Shredded Cheddar Cheese
+1900,TJ's Steamed Lentils,Steamed Lentils
+1901,"TJ's Frozen Organic Brown Rice, heated",Frozen Brown Rice
+1902,TJ's Baby Spinach,Baby Spinach
+1903,"TJ's Red Bell Pepper, sliced",Red Bell Pepper
+1904,"TJ's Red Onion, chopped",Red Onion
+1905,TJ's Sundried Tomatoes in Olive Oil,Sundried Tomatoes Olive Oil
+1906,"TJ's Garlic Cloves, peeled and diced",Garlic Cloves
+1907,"TJ's Parsley, chopped",Parsley
+1908,TJ's Organic Italian Extra Virgin Olive Oil (or your favorite TJ's Olive Oil),Italian Extra Virgin Olive Oil
+1909,TJ's Organic Cherry Tomatoes,Cherry Tomatoes
+1910,"TJ's Zucchini, sliced into half-moons",Zucchini
+1911,"TJ's Fresh Basil, chopped (plus more for garnish)",Basil
+1912,TJ's Corn (fresh or thawed from frozen),Corn
+1913,TJ's Hearts of Palm Pasta,Hearts Palm Pasta
+1914,TJ's Sea Salt and Black Pepper,Sea Salt Black Pepper
+1915,TJ's Asian Stir Fry Veggies,Asian Stir Fry Veggies
+1916,"TJ's Firm Tofu, pressed and cubed",Firm Tofu
+1917,TJ's Organic Toasted Sesame Oil,Sesame Oil
+1918,TJ's Orange Juice,Orange Juice
+1919,TJ's Clover Honey,Clover Honey
+1920,"TJ's Fresh Ginger, grated",Ginger
+1921,(16 oz) TJ's All Natural Ground Turkey,Ground Turkey
+1922,TJ's Yellow Onion,Yellow Onion
+1923,TJ's Mushroom & Company Multipurpose Umami Seasoning Blend,Mushroom Company Multipurpose Umami Seasoning Blend
+1924,TJ's Ciabatta Rolls (halved lengthwise) or 4 TJ's Brioche Buns,Ciabatta Rolls Brioche Buns
+1925,TJ's Sliced Aged Swiss Cheese,Sliced Aged Swiss Cheese
+1926,"TJ's Balsamic Glaze and/or Organic Yellow Mustard, whichever you prefer",Balsamic Glaze Yellow Mustard
+1927,TJ's Salad Greens or Microgreens,Salad Greens Microgreens
+1928,TJ's Pineapple,Pineapple
+1929,"TJ's Frozen Jasmine Rice, heated",Frozen Jasmine Rice
+1930,TJ's Frozen BBQ Chicken Teriyaki,Frozen BBQ Chicken Teriyaki
+1931,TJ's Coconut Oil,Coconut Oil
+1932,TJ's Soyaki,Soyaki
+1933,Joe's Organic Baked Teriyaki Tofu,Joe Baked Teriyaki Tofu
+1934,"& Marinade, plus more to finish, if desired",Marinade
+1935,TJ's Soycutash,Soycutash
+1936,"water, or more if needed",water
+1937,TJ's Organic Power to the Greens,Power Greens
+1938,"& pepper, to taste",pepper
+1939,TJ's Taquitos (Beef or Chicken),Taquitos
+1940,TJ's Enchilada Sauce,Enchilada Sauce
+1941,"TJ's Shredded Mexican Cheese Blend, divided",Shredded Mexican Cheese Blend
+1942,"TJ's Green Onions, white and green parts, sliced",Green Onions
+1943,TJ's Fire Roasted Diced Green Chiles,Fire Roasted Diced Green Chiles
+1944,"(1 stick) TJ's Unsalted Butter, melted",Butter
+1945,TJ's Aioli Garlic Mustard Sauce,Aioli Garlic Mustard Sauce
+1946,(28 oz) TJ's Potato Medley,Potato Medley
+1947,TJ's Sweet and Spicy Pecans,Sweet Spicy Pecans
+1948,"TJ's Parsley, plus more for garnish",Parsley
+1949,TJ's Fresh Salmon Boneless Skinless Fillets (2 large fillets),Salmon Boneless Skinless Fillets
+1950,"TJ's Lemon, sliced into wedges (garnish)",Lemon
+1951,"TJ's Tilapia Filets, defrosted according to package directions",Tilapia Filets
+1952,TJ's Ghee,Ghee
+1953,TJ's Smoky Peach Salsa,Smoky Peach Salsa
+1954,"TJ's Smoked Paprika, Sea Salt & Pepper",Paprika
+1955,"TJ's Lemons &Cilantro, for garnish",Lemons Cilantro
+1956,TJ's Fresh Cilantro (optional garnish),Cilantro
+1957,"Skewers, soaked in water for at least 20 minutes",Skewers
+1958,TJ's Spicy Italian Chicken Sausage (or any spicy TJ's Chicken Sausage),Spicy Italian Chicken Sausage
+1959,"TJ's Extra Virgin Olive Oil, divided",Extra Virgin Olive Oil
+1960,"TJ's Spice of the World, Garlic Powder",Spice World
+1961,"TJ's Spices of the World, Oregano",Spices World
+1962,TJ's Organic Low Sodium Chicken Broth,Low Sodium Chicken Broth
+1963,"TJ's Organic Red Quinoa, rinsed and drained",Red Quinoa
+1964,"TJ's Organic Tuscan Kale, stems removed",Tuscan Kale
+1965,"TJ's Grated Parmesan Cheese or Fresh Lemon, sliced, for garnish",Parmesan Cheese Lemon
+1966,TJ's Spaghetti Squash (seasonally available),Spaghetti Squash
+1967,TJ's Party Meatballs,Party Meatballs
+1968,TJ's Marinara Sauce,Marinara Sauce
+1969,"TJ's Grated Parmesan Cheese, to taste",Parmesan Cheese
+1970,"TJ's Sea Salt & Ground Black Pepper, to taste",Sea Salt Ground Black Pepper
+1971,"TJ's Onion, diced",Onion
+1972,"TJ's Premium Peeled Garlic, minced",Premium Garlic
+1973,"TJ's Jalapeños, deseeded and diced (use gloves!)",Jalapeños
+1974,TJ's Chicken Thighs,Chicken Thighs
+1975,"TJ's Organic Jasmine Rice, heated according to package directions",Jasmine Rice
+1976,"TJ's Organic Black Beans, heated according to package directions",Black Beans
+1977,"TJ's Fresh Lime wedges and chopped Fresh Cilantro, for garnish",Lime wedges Cilantro
+1978,"TJ's Yellow Onion, thinly sliced",Yellow Onion
+1979,"TJ's Frozen Mélange &agrave; Trois (Red, Yellow & Green Bell Pepper Strips)",Frozen Mélange Trois Red
+1980,TJ's Pollo Asado Autentico,Pollo Asado Autentico
+1981,TJ's Cilantro,Cilantro
+1982,TJ's Shawarma Chicken Thighs,Shawarma Chicken Thighs
+1983,"TJ's Organic Free Range Chicken Broth, plus 2 cups water",Free Range Chicken Broth
+1984,TJ's Basmati Rice (dry),Basmati Rice
+1985,TJ's Organic Ground Beef,Ground Beef
+1986,TJ's Cheddar with Caramelized Onions,Cheddar Caramelized Onions
+1987,"TJ's Fully Cooked Uncured Bacon, chopped",Uncured Bacon
+1988,TJ's Sriracha & Roasted Garlic BBQ Sauce,Sriracha Roasted Garlic BBQ Sauce
+1989,TJ's Real Mayonnaise,Real Mayonnaise
+1990,Cubes,Cubes
+1991,"TJ’s Organic Flake Coconut, divided",Flake Coconut
+1992,"TJ’s Non-Dairy Coconut Beverage (Vanilla Flavor), divided",Non-Dairy Coconut Beverage
+1993,TJ’s Coconut Cold Brew Coffee Concentrate (or original TJ's Cold Brew Coffee Concentrate),Coconut Cold Brew Coffee
+1994,"sticks, 12 small square pieces of foil and 12 small paper cups to use as molds",sticks
+1995,TJ's Linguine,Linguine
+1996,TJ's Limone Alfredo Sauce,Limone Alfredo Sauce
+1997,TJ's Frozen Cooked Medium Shrimp,Frozen Cooked Medium Shrimp
+1998,"TJ's Parsley (optional, garnish)",Parsley
+1999,"TJ's Pie Crust, defrosted according to package instructions",Pie Crust
+2000,"TJ's Roasted & Mashed Sweet Potatoes (seasonally available), defrosted",Roasted Mashed Sweet Potatoes
+2001,TJ's Whipping Cream,Cream
+2002,TJ's Vanilla Extract,Vanilla Extract
+2003,TJ's Ground Nutmeg (seasonally available),Ground Nutmeg
+2004,TJ's Sugar,Sugar
+2005,TJ's Coconut Oil Spray or Canola Oil Spray,Coconut Oil Spray Canola Oil Spray
+2006,TJ's Banana Bread Mix,Banana Bread Mix
+2007,TJ's Organic Unsweetened Flake Coconut,Flake Coconut
+2008,TJ's Uncrystallized Candied Ginger Pieces,Candied Ginger Pieces
+2009,TJ’s Sunflower Oil,Oil
+2010,"Banana, smashed",Banana
+2011,"TJ's Creamy Peanut Butter, melted (optional, for garnish)",Creamy Peanut Butter
+2012,"TJ's Canola Oil or Coconut Oil Spray, to grease pan",Canola Oil Coconut Oil Spray
+2013,TJ's Brownie Truffle Baking Mix,Brownie Truffle Baking Mix
+2014,"(4 oz) TJ's Salted Butter, melted",Butter
+2015,"TJ's Fleur de Sel Caramel Sauce, warmed in the microwave",Fleur Sel Caramel Sauce
+2016,TJ's Apricots,Apricots
+2017,"(4.5 oz.) tub TJ's Goat's Milk Creamy Cheese or 1 (5 oz.) log TJ's Chèvre with Honey, warmed to room temperature",Goat Milk Creamy Cheese Chèvre Honey
+2018,TJ's Sliced Honey Roasted Almonds,Sliced Honey Roasted Almonds
+2019,TJ's Coconut Macaroons (available Jan-Sep),Coconut Macaroons
+2020,TJ's Blueberries,Blueberries
+2021,"(1 pkg) TJ's Pie Crust, defrosted in fridge overnight",Pie Crust
+2022,"TJ's Gala Apples, peeled, cored & diced",Gala Apples
+2023,"TJ's Meyer Lemon, juice only",Meyer Lemon
+2024,"TJ's Unbleached All Purpose Flour, plus more for rolling dough",Purpose Flour
+2025,"(or more, to taste)",(or more
+2026,"TJ's Egg, beaten with 1 tsp Water",Egg
+2027,TJ's Turbinado Sugar (optional for sanding tops),Turbinado Sugar
+2028,*You will also need a wide-mouthed jar or circular cookie cutter (3.5 in diameter = about 7 hand pies),* circular cookie cutter
+2029,"TJ's Nuts (TJ's Raw Cashew Pieces, TJ's Raw Pecan Pieces, TJ's Walnut Halves & Pieces)",Nuts Cashew Pieces
+2030,TJ's Pumpkin Pie Spice (seasonal),Pumpkin Pie Spice
+2031,TJ's Breaded Chicken Tenderloin Breasts,Chicken Tenderloin Breasts
+2032,"TJ's Plain Bagels, sliced in half",Plain Bagels
+2033,"TJ's Sriracha Sauce, divided",Sriracha Sauce
+2034,TJ's Bread & Butter Pickle Chips,Bread Butter Pickle Chips
+2035,TJ's Pretzel Bagel,Pretzel Bagel
+2036,TJ's Cocoa Almond Spread,Cocoa Almond Spread
+2037,"TJ's Uncured Dry Rubbed Sliced Bacon, cooked",Dry Rubbed Sliced Bacon
+2038,TJ's Truffle Brownie Mix,Truffle Brownie Mix
+2039,TJ's Dried Montmorency Cherries,Dried Montmorency Cherries
+2040,TJ's Walnut Halves and Pieces,Walnut Halves Pieces
+2041,"TJ's Chocolate Chip Cookie Dough, softened to room temperature",Chocolate Chip Cookie Dough
+2042,TJ's Turkey Cranberry Apple Salad (seasonal),Turkey Cranberry Apple Salad
+2043,"TJ's Multigrain Bread (toasted or untoasted, your call)",Multigrain Bread
+2044,"TJ's Organic Romaine Hearts, rinsed and torn into pieces",Romaine Hearts
+2045,"(8 pieces) TJ's Toaster Waffles, heated",Toaster Waffles
+2046,TJ's Greek Honey Yogurt,Greek Honey Yogurt
+2047,"TJ's Bananas, sliced thin",Bananas
+2048,"TJ's Strawberries, hulled and sliced top to bottom",Strawberries
+2049,"TJ's Tuna in Olive Oil, drained",Tuna Olive Oil
+2050,TJ's Sweet Onion,Sweet Onion
+2051,TJ's Organic Mayonnaise,Mayonnaise
+2052,TJ's Organic Romaine Lettuce leaves,Romaine Lettuce leaves
+2053,TJ's Pita Bread Pockets,Pita Bread Pockets
+2054,TJ's frozen shrimp 70-110 medium peeled,frozen shrimp medium
+2055,"onion, finely minced",onion
+2056,"Tbsp. fresh cilantro, minced",Tbsp cilantro
+2057,"peaches, thawed",peaches
+2058,avocado,avocado
+2059,peppers,peppers
+2060,"TJ's Large Egg, whisked",Egg
+2061,TJ's Spiced Chai Black Tea Concentrate (do not dilute!),Spiced Chai Black Tea
+2062,TJ's Buttermilk Pancake & All-Purpose Baking Mix,Buttermilk Pancake All-Purpose Baking Mix
+2063,TJ's Dry Toasted Pecan Pieces,Dry Pecan Pieces
+2064,TJ's Half &Half,Half Half
+2065,"TJ's Shaved Cheese Blend, divided",Cheese Blend
+2066,"TJ's Super Sweet Baby Bell Peppers, cored and sliced into rings",Super Sweet Baby Bell Peppers
+2067,TJ's Red Onion,Red Onion
+2068,"TJ's Soy Chorizo, casing removed and crumbled",Soy Chorizo
+2069,TJ's Mini Pearl Grape Tomatoes (garnish),Mini Pearl Grape Tomatoes
+2070,TJ's Cilantro (garnish),Cilantro
+2071,"TJ's Yellowfin Tuna in Olive Oil, drained",Yellowfin Tuna Olive Oil
+2072,TJ's Mayo,Mayo
+2073,TJ's Celery,Celery
+2074,TJ's Red Bell Pepper,Red Bell Pepper
+2075,"TJ's Avocado, sliced in half and pit removed",Avocado
+2076,TJ's Nonfat Greek Yogurt (any kind),Nonfat Greek Yogurt
+2077,TJ's Almond Beverage (Vanilla or Plain),Almond Beverage
+2078,TJ's Chia Seeds,Chia Seeds
+2079,TJ’s Bagel,Bagel
+2080,TJ’s Smoked Salmon,Smoked Salmon
+2081,"TJ’s Walnuts, crushed",Walnuts
+2082,TJ’s Golden Raisins,Golden Raisins
+2083,TJ’s Capers,Capers
+2084,TJ's Shrimp Seafood Burger Patties,Shrimp Seafood Burger Patties
+2085,Mix,Mix
+2086,Dressing,Dressing
+2087,sliced,sliced
+2088,"TJ's Russet Potatoes, rinsed and dried",Russet Potatoes
+2089,"TJ's Yellow Onion, rinsed and dried",Yellow Onion
+2090,"TJ's Whole Organic Carrots, rinsed and dried",Whole Carrots
+2091,"TJ’s Tricolor Peppers, rinsed and dried",Tricolor Peppers
+2092,"TJ’s Organic Broccoli Florets, rinsed and dried",Broccoli Florets
+2093,TJ’s Spicy Italian Chicken Sausages (or your favorite TJ's fully cooked chicken sausage),Spicy Italian Chicken Sausages
+2094,"TJ’s 21 Seasoning Salute, divided",Salute
+2095,"TJ's Sea Salt, divided",Sea Salt
+2096,TJ’s Frozen Rice Medley,Frozen Rice Medley
+2097,"TJ's Frozen Brown Rice, microwaved according to package directions",Frozen Brown Rice
+2098,"vegetables, cold or warm (we used Brussels Sprouts & Delicata Squash, feel free to sub in whatever you have on hand)",vegetables
+2099,TJ's Kale,Kale
+2100,TJ's Pepita Salsa,Pepita Salsa
+2101,"TJ's Gourmet Pie Crusts, defrosted in the refrigerator",Gourmet Pie Crusts
+2102,TJ's Organic Foursome Vegetables,Foursome Vegetables
+2103,TJ's Just Chicken,Chicken
+2104,TJ's Thai Yellow Curry Sauce,Thai Yellow Curry Sauce
+2105,"small, oven-safe ramekins",small
+2106,sheet,sheet
+2107,TJ's Zucchini (4-5 medium zucchinis),Zucchini
+2108,"TJ's Unsalted Butter, divided",Butter
+2109,"TJ's Yellow Onion, sliced thinly",Yellow Onion
+2110,TJ's Balsamic Vinegar of Modena,Balsamic Vinegar Modena
+2111,TJ's Shredded Mozzarella,Mozzarella
+2112,TJ's Artisan Bread (we used the Rustic variety),Artisan Bread
+2113,"TJ's Bananas, sliced",Bananas
+2114,"TJ's Strawberries, sliced into heart shapes",Strawberries
+2115,"TJ's Cara Cara Oranges (if unavailable, Navels or Valencias will work just fine)",Cara Cara Oranges
+2116,TJ's Unsweetened Vanilla Almond Milk,Vanilla Almond Milk
+2117,"TJ's Ghee, melted",Ghee
+2118,TJ's Go Raw Trek Mix (or Oh My! Omega Trek Mix),Go Trek Mix
+2119,TJ's Cinnamon,Cinnamon
+2120,TJ's Sugar (optional),Sugar
+2121,TJ's Bread,Bread
+2122,TJ's Nutmeg (optional - Seasonal product),Nutmeg
+2123,TJ's Organic Strawberries,Strawberries
+2124,TJ's Organic Banana,Banana
+2125,TJ's Organic Thompson Seedless Raisins,Thompson Seedless Raisins
+2126,"TJ's Canola Spray, to grease pan",Canola Spray
+2127,TJ's Chicken Breakfast Sausage,Chicken Breakfast Sausage
+2128,"TJ's Unexpected Cheddar, shredded and divided (you'll have about 2 cups shredded)",Cheddar
+2129,TJ's Trader Potato Tots (roughly half a bag),Trader Potato Tots
+2130,"TJ's Fully Cooked Bacon, diced, for garnish (optional)",Bacon
+2131,"TJ's Cultured Butter, softened",Cultured Butter
+2132,TJ's Sliced French Brioche,Sliced French Brioche
+2133,TJ's Traditional Whole Milk Ricotta Cheese OR Part Skim Ricotta Cheese,Traditional Whole Milk Ricotta Cheese OR Part Skim Ricotta Cheese
+2134,TJ's Raspberry Preserves,Raspberry Preserves
+2135,"TJ's Everything Bagels, sliced in half",Everything Bagels
+2136,TJ's Egg Salad,Egg Salad
+2137,"TJ's Pico de Gallo, hot or mild",Pico Gallo
+2138,"TJ's Fresh Chives, chopped, for garnish (optional)",Chives
+2139,TJ's Greek Whole Milk Egg Nog Yogurt OR Cultured Coconut Nog (seasonal),Greek Whole Milk Egg Nog Yogurt OR Cultured Coconut Nog
+2140,TJ's Granola,Granola
+2141,TJ's Pomegranate Seeds,Pomegranate Seeds
+2142,"TJ's Pie Crusts, thawed according to package directions",Pie Crusts
+2143,"TJ's Palak Paneer, microwaved according to package directions",Palak Paneer
+2144,TJ's Imported Olive Oil,Olive Oil
+2145,"TJ's Gyoza Potstickers (Pork, Chicken, Shrimp or Vegetable)",Gyoza Potstickers Pork
+2146,TJ's Low Sodium Chicken Broth,Low Sodium Chicken Broth
+2147,TJ's Reduced Sodium Soy Sauce,Reduced Sodium Soy Sauce
+2148,"TJ's Fresh Cilantro, for garnish",Cilantro
+2149,"TJ’s Crunchy Chili Onion, or your favorite TJ’s Hot Sauce (for garnish)",Crunchy Chili Onion
+2150,TJ's Pound Plus Dark Chocolate or TJ's Pound Plus 72% Cacao Dark Chocolate,Dark Chocolate Plus Cacao Dark Chocolate
+2151,TJ's Heavy Cream,Heavy Cream
+2152,TJ's Instant Coffee Packets All Dressed Up with Creamer & Sugar,Instant Coffee All Creamer Sugar
+2153,"TJ's Dry Roasted & Salted Pistachios, shelled",Dry Roasted Salted Pistachios
+2154,TJ's Joe-Joe's Cookies,Joe-Joe Cookies
+2155,"TJ's Cream Cheese, quartered and softened",Cream Cheese
+2156,TJ's Fig Butter,Fig Butter
+2157,"TJ's Dried Apricots, diced",Dried Apricots
+2158,TJ's Pizza Crust,Pizza Crust
+2159,TJ's Organic Shredded Mozzarella Cheese,Shredded Mozzarella Cheese
+2160,Pepperoni,Pepperoni
+2161,TJ's Organic Oregano (optional),Oregano
+2162,TJ's Buttermilk Protein Pancake Mix,Buttermilk Protein Pancake Mix
+2163,"TJ's Organic Wild Blueberries, thawed and divided",Wild Blueberries
+2164,TJ's Blarney Scone (Seasonal),Blarney Scone
+2165,TJ's Seville Orange Marmalade,Seville Orange Marmalade
+2166,Kerrygold® Irish Butter,Kerrygold® Irish Butter
+2167,TJ's Sliced Crimini Mushrooms,Sliced Crimini Mushrooms
+2168,TJ's Miso Ginger Broth,Miso Ginger Broth
+2169,"TJ's Baby Bok Choy, rinsed and trimmed",Baby Bok Choy
+2170,"(16 oz.) TJ's Organic Extra Firm Sprouted Tofu, cut into bite-size pieces",Extra Firm Sprouted Tofu
+2171,"TJ's Sesame Oil & Soy Sauce, for garnish",Sesame Oil Soy Sauce
+2172,TJ's Ground Turkey (about 1.5 pounds),Ground Turkey
+2173,"leaves, chopped (plus more for garnish)",leaves
+2174,TJ's Gone Berry Crazy Chocolate Covered Strawberry Slices,Gone Berry Crazy Chocolate Covered Strawberry Slices
+2175,TJ's Organic Midnight Moo Chocolate Flavored Syrup,Midnight Moo Chocolate Flavored Syrup
+2176,TJ's Belgian Butter Waffle Cookies,Belgian Butter Waffle Cookies
+2177,TJ's Dry Rubbed Bacon,Dry Rubbed Bacon
+2178,"TJ's Kumato Tomatoes, sliced",Kumato Tomatoes
+2179,"TJ's Gluten Free Whole Grain or Multigrain Bread (toasted or untoasted, your call!)",Gluten Free Whole Grain Multigrain Bread
+2180,"TJ's Salted Butter, divided",Butter
+2181,TJ's Large Eggs (1 egg per sandwich),Eggs
+2182,TJ's Organic Chicken Drumsticks,Chicken Drumsticks
+2183,TJ's BBQ Rub and Seasoning with Coffee and Garlic,BBQ Rub Coffee Garlic
+2184,"TJ's Pumpkin Pie, broken into pieces (reserve some of the crust edges for garnish)",Pumpkin Pie
+2185,"TJ's D'Anjou Pear, peeled, halved and cored",D'Anjou Pear
+2186,TJ's Organic Grass Fed Plain Whole Milk Yogurt,Grass Fed Plain Whole Milk Yogurt
+2187,TJ's Gluten Free Cranberry Maple Nut Granola,Gluten Free Cranberry Maple Nut Granola
+2188,"TJ's Turkey, diced",Turkey
+2189,TJ's Canned Corn,Corn
+2190,TJ's Frozen Shelled Edamame,Frozen Edamame
+2191,TJ's Condensed Cream of Portabella Mushroom Soup (seasonal),Condensed Cream Portabella Mushroom Soup
+2192,(or more) TJ's Organic Low Sodium Chicken Broth,Low Sodium Chicken Broth
+2193,"TJ's Pie Crusts, both crusts defrosted",Pie Crusts
+2194,TJ's Olive Oil for sautéing,Olive Oil
+2195,TJ's Pie Pumpkin,Pie Pumpkin
+2196,"TJ's Frozen Pie Crust, thawed according to package directions",Frozen Pie Crust
+2197,(use more for a larger Pie Pumpkin),
+2198,"TJ's Butter, melted",Butter
+2199,TJ's Organic Brown Sugar (use more for a larger Pie Pumpkin),Brown Sugar
+2200,"TJ's Large Eggs, lightly beaten",Eggs
+2201,TJ's Pumpkin Pie Spice,Pumpkin Pie Spice
+2202,"cream, for garnish (optional)",cream
+2203,"TJ's Organic Sweet Potatoes, peeled and diced",Sweet Potatoes
+2204,"TJ's Uncured Apple Smoked Bacon (or your favorite TJ's Bacon), chopped",Apple Smoked Bacon
+2205,"TJ's Yellow Onion, chopped",Yellow Onion
+2206,"TJ's Gala Apples or TJ's Granny Smith Apples, diced",Gala Apples Granny Smith Apples
+2207,TJ's Organic Kale,Kale
+2208,TJ's Organic Maple Syrup,Maple Syrup
+2209,TJ's Powdered Sugar,Sugar
+2210,TJ's Spiced Pumpkin Madeleine Cookies (seasonal),Spiced Pumpkin Madeleine Cookies
+2211,TJ's Organic Unsweetened Açaí Purée packet,Açaí Purée
+2212,TJ's Frozen Organic Mixed Berry Blend,Frozen Mixed Berry Blend
+2213,"TJ's Banana, sliced and divided",Banana
+2214,TJ's Toasted Coconut Granola,Coconut Granola
+2215,"TJ's Fancy Medjool Dates, chopped",Fancy Medjool Dates
+2216,"(1 jar) TJ's Creamy Salted Peanut Butter, stirred",Creamy Salted Peanut Butter
+2217,"TJ's Organic Cane Sugar, plus more for rolling cookies",Cane Sugar
+2218,TJ's Baking Soda,Soda
+2219,"TJ's Dark Chocolate Peanut Butter Cups, wrappers removed",Dark Chocolate Peanut Butter Cups
+2220,TJ's Pizza Dough,Pizza Dough
+2221,"TJ's All-Purpose Flour, for work surface",All-Purpose Flour
+2222,"TJ's Olive Oil, plus more for brushing pizza crust",Olive Oil
+2223,(1 pound) TJ's Organic Grass Fed Ground Beef,Grass Fed Ground Beef
+2224,TJ's Organic Sweet Bread & Butter Pickles,Sweet Bread Butter Pickles
+2225,"TJ's Organic Ketchup & Yellow Mustard, for garnish",Ketchup Yellow Mustard
+2226,"TJ's Cinnamon Graham Crackers, crumbled",Cinnamon Graham Crackers
+2227,"(1 cup) TJ's Unsalted Butter, melted and divided",Butter
+2228,TJ's Chocolate Peppermint Loaf & Baking Mix (seasonal),Chocolate Peppermint Loaf Baking Mix
+2229,TJ's Mini Marshmallows (seasonal),Mini Marshmallows
+2230,TJ's Ground Chicken,Ground Chicken
+2231,TJ's Rice Vinegar,Rice Vinegar
+2232,"TJ's Ginger, grated",Ginger
+2233,"TJ's Chile & Garlic Cashews, chopped",Chile Garlic Cashews
+2234,TJ's salt,salt
+2235,TJ's Ground Pepper,Ground Pepper
+2236,TJ's Crunchy Cinnamon Squares Cereal,Crunchy Cinnamon Squares Cereal
+2237,TJ's Marshmallows (seasonal),Marshmallows
+2238,"TJ's Dark Chocolate Peanut Butter Cups, cut into halves",Dark Chocolate Peanut Butter Cups
+2239,"TJ's Peanut Butter Cups, unwrapped",Peanut Butter Cups
+2240,"TJ's Fresh Strawberries, roughly chopped, plus 2 whole strawberries for garnish",Strawberries
+2241,TJ's Brewed Ginger Beer,Brewed Ginger Beer
+2242,TJ's Tequila,Tequila
+2243,TJ's Limes,Limes
+2244,TJ's Plain Sparkling Mineral Water,Plain Sparkling Mineral Water
+2245,"TJ's Pie Crusts, thawed",Pie Crusts
+2246,"TJ's Peach Slices, thawed",Peach Slices
+2247,"TJ's Brown Sugar, plus more for sprinkling",Brown Sugar
+2248,TJ's Ground Ginger (optional),Ground Ginger
+2249,TJ's Cookie Butter Ice Cream or TJ's French Vanilla Ice Cream,Cookie Butter Ice Cream French Vanilla Ice Cream
+2250,TJ's Speculoos Cookies,Speculoos Cookies
+2251,"Masala, microwaved according to package directions",Masala
+2252,TJ's Cookie Butter,Cookie Butter
+2253,"TJ's Banana, sliced",Banana
+2254,TJ's Bagels cut in half (for a total of 6),Bagels half
+2255,TJ's Pizza sauce,Pizza sauce
+2256,TJ's Pepperoni,Pepperoni
+2257,"TJ's Fully Cooked Uncured Apple Smoked Bacon, chopped",Uncured Apple Smoked Bacon
+2258,Bellini,Bellini
+2259,TJ's Frozen Freestone Peach Slices,Frozen Freestone Peach Slices
+2260,TJ's Organic Mint for garnish (optional),Mint garnish
+2261,TJ's Cuban Style Citrus Garlic Bowl,Cuban Style Citrus Garlic Bowl
+2262,TJ's Corn & Wheat Tortillas,Corn Wheat Tortillas
+2263,TJ's Salsa,Salsa
+2264,TJ's Cilantro (for optional garnish),Cilantro
+2265,"TJ's Jalapeño, sliced (for optional garnish)",Jalapeño
+2266,TJ's Chickenless Mandarin Orange Morsels,Chickenless Mandarin Orange Morsels
+2267,"TJ's Pineapple Tidbits, defrosted",Pineapple Tidbits
+2268,TJ's Matcha Green Tea Single-Serve Packages,Matcha Green Tea Single-Serve Packages
+2269,TJ's Non-Dairy Oat Beverage,Non-Dairy Oat Beverage
+2270,TJ's Coconut Water,Coconut Water
+2271,(about 12) TJ's Organic Cut and Peeled Carrots,Cut Peeled Carrots
+2272,"TJ's Strawberries, hulled",Strawberries
+2273,TJ's Frozen Pineapple Tidbits,Frozen Pineapple Tidbits
+2274,"TJ's Banana, frozen",Banana
+2275,TJ's Plain Greek Yogurt,Plain Greek Yogurt
+2276,(32 ounces) TJ's Organic Lemonade,Lemonade
+2277,"TJ's French Sparkling Limeade, chilled",French Sparkling Limeade
+2278,"TJ's 100% Cherry Juice, chilled",Cherry Juice
+2279,"TJ's Blanc de Blancs Sparkling wine (or TJ's Plain Sparkling Spring Water), chilled",Blanc Blancs Sparkling wine
+2280,"limes, for garnish (optional)",limes
+2281,TJ's Acerola Juice Shot,Acerola Juice Shot
+2282,TJ's Mango Nectar,Mango Nectar
+2283,TJ's Unsweetened Coconut Beverage,Coconut Beverage
+2284,"TJ's Lime wedge and fresh Mint, for garnish (optional)",Lime wedge Mint
+2285,(2 packages) TJ’s Frozen Raspberries,Frozen Raspberries
+2286,"TJ’s Basil Leaves, plus more for garnish",Basil Leaves
+2287,TJ’s Organic Lemonade,Lemonade
+2288,"TJ’s Lemons, sliced into rounds for garnish",Lemons
+2289,"TJ's Delicata Squash, halved lenghtwise and de-seeded (or substitute 3 cups of your favorite peeled & cubed squash)",Delicata Squash
+2290,TJ's Organic Brown Rice & Quinoa Fusilli Pasta,Brown Rice Quinoa Fusilli Pasta
+2291,TJ's Organic Pomegranate Seeds,Pomegranate Seeds
+2292,TJ's Gone Bananas,Gone Bananas
+2293,TJ's Cut Butternut Squash,Cut Butternut Squash
+2294,TJ's Hatch Chopped Green Chiles,Hatch Chopped Green Chiles
+2295,TJ's Enchilada Sauce divided,Enchilada Sauce
+2296,TJ's Shredded Fancy Mexican Style Cheese Blend divided,Shredded Fancy Mexican Style Cheese Blend
+2297,TJ's Corn Tortillas,Corn Tortillas
+2298,"TJ's Green Onions diced, for garnish",Green Onions
+2299,"TJ's Avocado, diced, for garnish",Avocado
+2300,TJ's Sea Salt to taste,Sea Salt
+2301,(6 oz) can TJ's Wild Alaskan Pink Salmon,Alaskan Pink Salmon
+2302,TJ's Unbleached All Purpose Flour,Purpose Flour
+2303,"TJ's Baby Swiss Cheese, divided",Baby Swiss Cheese
+2304,TJ's Sea Salt Crystals,Sea Salt Crystals
+2305,TJ's Black Peppercorns,Black Peppercorns
+2306,TJ's Everyday Seasoning,Everyday Seasoning
+2307,TJ's Shallots,Shallots
+2308,TJ's Large Brown Eggs,Brown Eggs
+2309,"TJ's Frozen Chopped Spinach, defrosted and water squeezed out",Frozen Chopped Spinach
+2310,TJ's Organic Tricolor Radiatore Pasta,Tricolor Radiatore Pasta
+2311,TJ's Unsweetened Almond Beverage,Almond Beverage
+2312,TJ's Raw Cashews,Cashews
+2313,TJ's Nutritional Yeast,Nutritional Yeast
+2314,TJ's Turmeric Powder,Turmeric Powder
+2315,TJ's Yellow Mustard,Yellow Mustard
+2316,TJ's Bloody Mary Mixer,Bloody Mary Mixer
+2317,TJ's Habanero Hot Sauce,Habanero Hot Sauce
+2318,TJ's Simpler Times Lager (or your favorite lager),Simpler Times Lager
+2319,Bacon,Bacon
+2320,Joe's Butter Croissants,Joe Butter Croissants
+2321,TJ's Speculoos Cookie Butter,Speculoos Cookie Butter
+2322,TJ's Butter,Butter
+2323,"TJ's Organic Midnight Moo Chocolate Flavored Syrup, to taste",Midnight Moo Chocolate Flavored Syrup
+2324,TJ's Chile Lime Seasoning,Chile Lime
+2325,"TJ's Lime (1 for .5 oz juice, 1 for garnish & glass prep)",Lime juice
+2326,"TJ's Mango, peeled, pitted & coarsely chopped",Mango
+2327,TJ's Margarita Mixer,Margarita Mixer
+2328,"TJ's Shaved Brussels Sprouts, lightly sautéed",Brussels Sprouts
+2329,TJ's Multigrain Sliced Bread or TJ's Sprouted Wheat Sourdough Bread,Multigrain Sliced Bread Wheat Sourdough Bread
+2330,"TJ's Sharp Cheddar, shredded",Sharp Cheddar
+2331,"TJ's Uncured Applewood Smoked Bacon, cooked",Applewood Smoked Bacon
+2332,"TJ's Peaches, firm with a little give",Peaches
+2333,TJ's Sliced Roast Chicken Breast with Rib Meat,Sliced Roast Chicken Breast Rib Meat
+2334,TJ's Organic Blueberries,Blueberries
+2335,TJ's Crumbled Goat Cheese,Goat Cheese
+2336,TJ's Fat Free Balsamic Vinaigrette,Fat Free Balsamic Vinaigrette
+2337,"TJ's Limes, 1 sliced for garnish",Limes
+2338,"TJ's Limeade (or TJ's Organic Jalapeño Limeade, if you enjoy a kick!)",Limeade Jalapeño Limeade
+2339,(4 shots) TJ's Reposado Distinqt Tequila (optional),Reposado Distinqt Tequila
+2340,TJ's Organic Frozen Mango Chunks,Frozen Mango Chunks
+2341,"TJ's Orange, juice only",Orange
+2342,TJ's Agave Sweetener,Agave Sweetener
+2343,TJ's Cinnamon Raisin Bread,Cinnamon Raisin Bread
+2344,"TJ's Camembert, rind removed",Camembert
+2345,(thin) TJ's Apple,Apple
+2346,TJ's Prosciutto,Prosciutto
+2347,"TJ's Caved Aged Blue Cheese, crumbled",Caved Aged Blue Cheese
+2348,TJ's diced Dried Apricots,Dried Apricots
+2349,"TJ's Sweet and Spicy Pecans, chopped",Sweet Spicy Pecans
+2350,TJ's Italian Farfalle,Italian Farfalle
+2351,(4oz) TJ's Mascarpone,Mascarpone
+2352,TJ's Genova Pesto,Genova Pesto
+2353,TJ's Roasted & Salted Pecan Halves,Roasted Salted Pecan Halves
+2354,TJ's Organic Broccoli Florets (fresh not frozen),Broccoli Florets
+2355,TJ's Raspberry Stars Shortbread Cookies (seasonal),Raspberry Stars Shortbread Cookies
+2356,"TJ's 72% Dark Chocolate Pound Plus Bar, broken into small pieces",Dark Chocolate Plus Bar
+2357,TJ's Dry Rubbed Bacon OR TJ's Uncured Fully Cooked Bacon,Dry Rubbed Bacon OR Uncured Fully Cooked Bacon
+2358,TJ's Gluten Free Whole Grain Bread,Gluten Free Whole Grain Bread
+2359,TJ's Fresh Pre-Sliced Mozzarella Cheese Log,Pre-Sliced Mozzarella Cheese Log
+2360,TJ's Organic Baby Lettuce,Baby Lettuce
+2361,TJ's Vodka Of The Gods,Vodka Gods
+2362,"TJ's Lemon, sliced",Lemon
+2363,"TJ's Celery Stalk, rinsed and trimmed",Celery Stalk
+2364,"TJ's Colossal Olives Hand Stuffed With Garlic Cloves, plus one tablespoon brine from jar (optional)",Colossal Olives Hand Stuffed Garlic Cloves
+2365,"TJ's Pound Plus 72% Dark Chocolate Bar, broken into pieces",Dark Chocolate Bar
+2366,"TJ's Pumpkin Pie, frozen for 1 hour",Pumpkin Pie
+2367,"choice: Sea Salt, Sliced Almonds, Sweet & Spicy Pecans, Pistachios, Sunflower Seeds...",choice Sea Salt
+2368,fl. oz. TJ's Organic Cold Pressed Green Juice Beverage,fl Cold Green Juice Beverage
+2369,TJ's Oven Toasted Old Fashioned Organic Oats,Toasted Old Oats
+2370,cubes,cubes
+2371,(32 oz) TJ's Honey Greek Yogurt (or four 8 oz tubs),Honey Greek Yogurt
+2372,"(1 lb) container TJ's Strawberries, rinsed",Strawberries
+2373,(12 oz) package TJ's Frozen Organic Blueberries,package Frozen Blueberries
+2374,TJ's Organic Mint,Mint
+2375,molds,molds
+2376,TJ's Sparkling Cranberry Juice,Cranberry Juice
+2377,TJ's Sparkling Apple Cider,Apple Cider
+2378,"slices, for garnish (optional)",slices
+2379,TJ's Kentucky Bourbon Straight Whiskey,Kentucky Bourbon Straight Whiskey
+2380,TJ's Multi-Floral and Clover Honey,Clover Honey
+2381,TJ's Sparkling Black Tea with Peach Juice Beverage,Black Tea Peach Juice Beverage
+2382,TJ's Lemon Slice,Lemon Slice
+2383,TJ's Canola Oil Spray or Coconut Oil Spray,Canola Oil Spray Coconut Oil Spray
+2384,TJ's Mochi Cake Mix,Mochi Cake Mix
+2385,(room temperature),
+2386,TJ's Unsweetened Cocoa Powder,Cocoa Powder
+2387,"TJ's Roma tomatoes, diced",Roma tomatoes
+2388,TJ's Maple Espresso Black Tea Blend teabags,Maple Espresso Black Tea Blend teabags
+2389,"beverage, warmed",beverage
+2390,"TJ's Ridge Cut Potato Chips with Sea Salt, crushed",Ridge Cut Potato Chips Sea Salt
+2391,TJ's Bite-Sized Candy Coated Milk Chocolate Candies or TJ's Candy Coated Milk Chocolate Dipped Peanuts,Bite-Sized Candy Coated Milk Chocolate Candies Candy Coated Milk Chocolate Dipped Peanuts
+2392,TJ's Gluten Free Pumpkin Bread & Muffin Baking Mix,Gluten Free Pumpkin Bread Muffin Baking Mix
+2393,TJ's Organic Pumpkin,Pumpkin
+2394,TJ's Organic Chia Seeds,Chia Seeds
+2395,TJ's Super Premium Pumpkin Ice Cream,Super Premium Pumpkin Ice Cream
+2396,TJ's Candied Pecans,Candied Pecans
+2397,TJ's Blondie Bar Baking Mix,Blondie Bar Baking Mix
+2398,"2-1.75 oz bars Trader Joe's Milk Chocolate, roughly chopped",bars Joe Milk Chocolate
+2399,TJ's Organic Reduced Sugar Raspberry Preserves,Sugar Raspberry Preserves
+2400,"TJ's Organic Frozen Mango Chunks, thawed",Frozen Mango Chunks
+2401,"TJ's Organic Biscuits, baked and cooled",Biscuits
+2402,TJ's Organic Reduced Fat Coconut Milk,Fat Coconut Milk
+2403,"TJ's Marshmallows, cut in half",Marshmallows
+2404,"TJ's cookies, for dipping",cookies
+2405,TJ's Quick Cook Farro,Quick Cook Farro
+2406,TJ's Butter Lettuce,Butter Lettuce
+2407,"TJ's Balsamic Vinaigrette, plus more for serving",Balsamic Vinaigrette
+2408,"TJ's Fire Roasted Red Peppers, sliced",Fire Roasted Red Peppers
+2409,TJ's Grilled Artichoke Halves,Artichoke Halves
+2410,TJ's Pitted Greek Kalamata Olives,Greek Kalamata Olives
+2411,TJ's Pitted Green Olives,Green Olives
+2412,TJ's Ciliegene Whole Milk Fresh Mozzarella,Ciliegene Whole Milk Mozzarella
+2413,TJ's Salame,Salame
+2414,oz. package your favorite TJ's Tofu,Tofu
+2415,TJ's Coconut Aminos or Soy Sauce,Coconut Aminos Soy Sauce
+2416,TJ's Chicken Tikka Masala OR Vegan Tikka Masala,Chicken Tikka Masala OR Vegan Tikka Masala
+2417,TJ's Flour Tortillas,Tortillas
+2418,"TJ's Organic Peas, heated according to package directions and drained",Peas
+2419,TJ’s Organic Mango Chutney,Mango Chutney
+2420,TJ's Plain Yogurt,Plain Yogurt
+2421,TJ's Turkey Burgers,Turkey Burgers
+2422,TJ's Broccoli Kale Slaw Complete Salad Kit,Broccoli Kale Slaw Complete Salad Kit
+2423,TJ's Gourmet White Hamburger Buns or TJ's Gluten Free Hamburger Buns,Gourmet White Hamburger Buns Gluten Free Hamburger Buns
+2424,TJ's Ridge Cut Potato Chips (optional),Ridge Cut Potato Chips
+2425,TJ's Plain Whole Milk Greek Yogurt,Plain Whole Milk Greek Yogurt
+2426,TJ's Organic Apple Cider Vinegar,Apple Cider Vinegar
+2427,"TJ's Cilantro, chopped",Cilantro
+2428,"TJ's Coconut Oil, divided",Coconut Oil
+2429,"TJ's Mango Chunks, thawed",Mango Chunks
+2430,"TJ's Uncooked Wild Argentinian Red Shrimp, thawed",Argentinian Red Shrimp
+2431,"TJ's Pepitas or Sunflower Seeds, for garnish",Pepitas Seeds
+2432,TJ's Korean Inspired Bulgogi Beef Fried Rice with Kimchi,Korean Inspired Bulgogi Beef Fried Rice Kimchi
+2433,TJ's Green Onions (green parts only) thinly sliced,Green Onions
+2434,"TJ's Portabella Mushrooms, wiped with a damp cloth, stems removed",Portabella Mushrooms
+2435,TJ's Provolone Cheese,Provolone Cheese
+2436,"TJ's Roasted Red Bell Peppers, thinly sliced",Red Bell Peppers
+2437,"TJ's Artisan Rolls, baked according to package directions",Artisan Rolls
+2438,TJ's Organic Baby Lettuce Mix,Baby Lettuce Mix
+2439,"TJ's Vegan Kale, Cashew & Basil Pesto",Vegan Kale
+2440,"TJ's Organic Sugar, plus more for sprinkling",Sugar
+2441,TJ's Frozen Blueberries (do not thaw),Frozen Blueberries
+2442,"TJ's Cultured Butter, for serving (optional, but encouraged)",Cultured Butter
+2443,"TJ's Butternut Squash (seasonally available), peeled, sliced lengthwise and cleaned of seeds and string",Butternut Squash
+2444,TJ's Olive Oil Cooking Spray,Olive Oil Cooking Spray
+2445,TJ's Alfredo Sauce,Alfredo Sauce
+2446,"TJ's Chopped Frozen Spinach, defrosted and squeezed of some water",Chopped Frozen Spinach
+2447,TJ's Traditional Ricotta Cheese,Traditional Ricotta Cheese
+2448,TJ's Nutmeg (seasonally available),Nutmeg
+2449,TJ's No Boil Lasagna Noodles,Boil Lasagna Noodles
+2450,TJ's Grated Parmigiano Reggiano Cheese,Parmigiano Reggiano Cheese
+2451,TJ's Ricotta & Lemon Zest Ravioli (limited),Ricotta Lemon Zest Ravioli
+2452,TJ's Organic Italian Dressing,Italian Dressing
+2453,TJ's Lemon Pepper,Lemon Pepper
+2454,TJ's Dry Toasted Pine Nuts OR TJ's Roasted Not So Salty Cashew Pieces,Dry Toasted Pine Nuts OR Roasted Salty Cashew Pieces
+2455,"Bacon, cooked crispy, drained and chopped into small pieces",Bacon
+2456,"TJ's Cannellini White Kidney Beans, rinsed, drained and pureed until smooth",Cannellini White Kidney Beans
+2457,(1 cup) TJ's Whole Milk Ricotta,Whole Milk Ricotta
+2458,"TJ's Grated Parmesan, divided",Parmesan
+2459,TJ's Basil,Basil
+2460,"TJ's Red Chili Pepper Flakes, or more to taste",Red Chili Pepper Flakes
+2461,"TJ's Organic Frozen Peas, defrosted and drained",Frozen Peas
+2462,"TJ's Organic Low Sodium Chicken Broth, divided",Low Sodium Chicken Broth
+2463,TJ's No Boil Italian Lasagna Noodles,Boil Italian Lasagna Noodles
+2464,"(about 1 pound) TJ's Sweet OR Hot Italian Sausage, casing removed",Sweet OR Hot Italian Sausage
+2465,TJ's Tomato Basil Marinara,Tomato Basil Marinara
+2466,TJ's Whole Milk Ricotta Cheese,Whole Milk Ricotta Cheese
+2467,"Basil, shredded, for garnish (optional)",Basil
+2468,"TJ's Organic Yellow Onion, diced",Yellow Onion
+2469,"TJ's Organic Carrots, diced",Carrots
+2470,"TJ's Organic Garlic, diced",Garlic
+2471,TJ's Organic Diced No Salt Added Tomatoes,Diced No Salt Added Tomatoes
+2472,"Rosemary, de-stemmed and chopped",Rosemary
+2473,"leaves, finely chopped",leaves
+2474,"TJ's Pasta, cooked",Pasta
+2475,TJ's Battered Fish Nuggets,Battered Fish Nuggets
+2476,TJ's Organic Tomatoes on the Vine,Tomatoes Vine
+2477,TJ's Green Dragon Hot Sauce,Green Dragon Hot Sauce
+2478,TJ's Garlic & Herb Pizza Dough,Garlic Herb Pizza Dough
+2479,TJ's Fresh Garlic,Garlic
+2480,TJ's Dutch Yellow Potatoes,Dutch Yellow Potatoes
+2481,TJ's Fresh Rosemary,Rosemary
+2482,"TJ's Pound Plus Milk Chocolate, broken into chunks",Milk Chocolate
+2483,"TJ's Butter Toffee Pretzels (seasonal), divided",Butter Toffee Pretzels
+2484,"TJ's Mini Marshmallows, divided",Mini Marshmallows
+2485,Crème Fraîche,Crème Fraîche
+2486,(1 pound) TJ's Farfalle Pasta,Farfalle Pasta
+2487,TJ's Frozen Peas,Frozen Peas
+2488,"(1 box) TJ's Pie Crust, defrosted in fridge overnight",Pie Crust
+2489,(1 1/2 cups) TJ's Frozen Wild Boreal Blueberries,Frozen Wild Boreal Blueberries
+2490,"TJ's Lemons, zested",Lemons
+2491,TJ's Lemon Curd,Lemon Curd
+2492,TJ's Organic Corn Chip Dippers,Corn Chip Dippers
+2493,"TJ's Organic Vegetarian Chili, heated according to package directions",Vegetarian Chili
+2494,TJ's Shredded Three Cheese Mexican Blend,Shredded Cheese Mexican Blend
+2495,TJ's Hot & Sweet Jalapeños,Hot Sweet Jalapeños
+2496,TJ’s 2% Milk,Milk
+2497,"TJ’s Sharp Cheddar Cheese, shredded",Sharp Cheddar Cheese
+2498,TJ’s Fully Cooked Uncured Applewood Smoked Bacon,Uncured Applewood Smoked Bacon
+2499,(7.5 oz.) Crème Fraiche,Crème Fraiche
+2500,(8 oz.) Mascarpone,Mascarpone
+2501,Mustard,Mustard
+2502,TJ's Steamed & Fully Cooked Lentils,Steamed Fully Cooked Lentils
+2503,TJ's Organic Crumbled Feta Cheese,Crumbled Feta Cheese
+2504,TJ's Bruschetta Sauce,Bruschetta Sauce
+2505,TJ's Chevre Fine Herbs Goat Cheese,Chevre Fine Herbs Goat Cheese
+2506,"& fruit (we used green bell pepper, snap peas, Persian cucumbers, baby broccoli, green grapes) and/or your favorite cooked green vegetables (blanched asparagus, sautéed shishito peppers)",fruit green bell pepper
+2507,TJ's Dry Roasted & Salted Pistachio Nutmeats,Dry Roasted Salted Pistachio Nutmeats
+2508,TJ's Green Olives,Green Olives
+2509,TJ's English Muffins,English Muffins
+2510,"TJ's Egg Frittata, microwaved according to package instructions",Egg Frittata
+2511,"TJ's Fully Cooked Bacon, microwaved according to package instructions",Bacon
+2512,"TJ's Tomato, thinly sliced",Tomato
+2513,"TJ's Olive Oil, divided",Olive Oil
+2514,"TJ's Soy Chorizo, removed from casing",Soy Chorizo
+2515,TJ's Extra Large Eggs,Extra Eggs
+2516,TJ's Sea Salt & Black Pepper,Sea Salt Black Pepper
+2517,"TJ's Corn & Wheat Tortillas, or your favorite TJ's tortillas",Corn Wheat Tortillas
+2518,TJ's Mild or Hot Pico de Gallo Salsa,Mild Hot Pico Gallo Salsa
+2519,"TJ's Avocado, cubed, for garnish",Avocado
+2520,Dippers,Dippers
+2521,TJ's Unbleached Enriched All-Purpose Flour,All-Purpose Flour
+2522,TJ's Everything But The Elote Seasoning Blend,Everything Elote Seasoning Blend
+2523,"TJ's Eggs, whisked",Eggs
+2524,TJ's Organic Boneless & Skinless Chicken Tenders,Boneless Skinless Chicken Tenders
+2525,TJ's sauce for dipping,sauce
+2526,TJ's Organic Popping Corn,Corn
+2527,TJ's Everything but the Elote Seasoning Blend,Everything Elote Seasoning Blend
+2528,"TJ's Super Premium French Vanilla Ice Cream, softened",Super Premium French Vanilla Ice Cream
+2529,TJ's Lemon curd,Lemon curd
+2530,"TJ's Wild Boreal Blueberries, thawed and drained",Wild Boreal Blueberries
+2531,TJ's Blueberry Waffles,Blueberry Waffles
+2532,TJ's Bananas,Bananas
+2533,"TJ's Organic Pure Bourbon Vanilla Flavor (for best results, do not substitute vanilla extract)",Pure Bourbon Vanilla Flavor results
+2534,"(6-8 cubes) TJ's Watermelon, plus a few more cubes for garnish",Watermelon
+2535,TJ's Vodka,Vodka
+2536,TJ's Sparkling Watermelon Juice (seasonal),Watermelon Juice
+2537,TJ's Old Fashioned Potato Salad,Old Potato Salad
+2538,"TJ’s Persian Cucumber, thinly sliced",Persian Cucumber
+2539,"TJ’s Red Bell Pepper, cored, de-seeded and diced",Red Bell Pepper
+2540,TJ’s Feta Cheese Crumbles,Feta Cheese Crumbles
+2541,"TJ’s Kalamata Olives, drained and sliced in half",Kalamata Olives
+2542,"TJ’s Fresh Parsley, chopped",Parsley
+2543,"TJ's Traditional Tunisian Harissa (or more, if you're feeling brave!)",Tunisian Harissa
+2544,"TJ's Uncured Apple Smoked Bacon, cooked and crumbled",Apple Smoked Bacon
+2545,TJ's Butternut Squash Zigzags,Butternut Squash Zigzags
+2546,"TJ's Organic Peas, thawed",Peas
+2547,TJ's Yellow Curry Sauce,Yellow Curry Sauce
+2548,TJ's Cauliflower Gnocchi,Cauliflower Gnocchi
+2549,TJ's Olive Oil or Ghee,Olive Oil Ghee
+2550,"TJ's Fresh Basil, chopped, for garnish",Basil
+2551,"Crackers, for serving (optional)",Crackers
+2552,"TJ's Pasta (Macaroni, Farfalle, Fusilli, etc.)",Pasta Macaroni
+2553,"(8 oz.) TJ's Cream Cheese, cubed",Cream Cheese
+2554,TJ's Garlic Powder (optional),Garlic Powder
+2555,TJ's Shredded Unexpected Cheddar,Cheddar
+2556,"TJ's Green Onions and crumbled TJ's Fully Cooked Bacon, for garnish",Green Onions Fully Cooked Bacon
+2557,TJ's Canola Oil or Olive Oil,Canola Oil Olive Oil
+2558,lb. TJ's Ground Chicken or Ground Beef,Ground Chicken Ground Beef
+2559,TJ's Taco Seasoning Mix (use the whole packet if you like it really spicy),Taco Seasoning Mix
+2560,TJ's Organic Stone Ground Yellow Corn Taco Shells,Stone Ground Yellow Corn Taco Shells
+2561,"TJ's Avocados, peeled and cubed",Avocados
+2562,TJ's Pickled Fermented Jalapeño Slices,Jalapeño Slices
+2563,TJ's Pumpkin Pie Pumpkin (seasonal) or your favorite TJ's squash,Pumpkin Pie Pumpkin squash
+2564,TJ's Chevre Goat Cheese Log (5 oz.),Chevre Goat Cheese Log
+2565,"TJ's Raw Pumpkin Seeds, dry toasted",Pumpkin Seeds
+2566,TJ's Canola Oil Spray (to grease sheet pan),Canola Oil Spray
+2567,TJ's Organic Spanish Extra Virgin Olive Oil (or your favorite TJ's Extra Virgin Olive Oil),Spanish Extra Virgin Olive Oil
+2568,TJ's Clementines OR 1/2 cup orange juice,Clementines OR / cup orange juice
+2569,"TJ's Clementines OR oranges, plus more for garnish",Clementines OR oranges
+2570,"(1/2 cup) TJ's Unsalted Butter, softened",Butter
+2571,TJ's Vanilla Paste,Vanilla Paste
+2572,"TJ's Organic Garbanzo beans, drained",Garbanzo beans
+2573,TJ's Raw Cashew Pieces,Cashew Pieces
+2574,TJ's Organic Romaine Salad,Romaine Salad
+2575,TJ's Vegan Caesar Dressing,Vegan Caesar Dressing
+2576,"TJ's Lemon, cut into wedges",Lemon
+2577,TJ's Fresh Parsley,Parsley
+2578,"TJ's Organic Garlic Powder OR 1 clove TJ's Garlic, minced",Garlic Powder OR Garlic
+2579,TJ's Organic White Bread (or your favorite TJ's sandwich bread),White Bread
+2580,"TJ's Shredded Unexpected Cheddar, divided",Cheddar
+2581,(12 oz.) TJ's Cut Butternut Squash,Cut Butternut Squash
+2582,"(16 oz.) TJ's Brussels Sprouts, trimmed and halved",Brussels Sprouts
+2583,"TJ's Red Onion, cut into chunks",Red Onion
+2584,"TJ's Everything But The Leftovers Seasoning, divided (seasonal)",Everything Leftovers Seasoning
+2585,"TJ's Turkey Cutlets (4-5 cutlets), patted dry",Turkey Cutlets
+2586,TJ's Olive oil,Olive oil
+2587,"TJ's Organic Foursome Vegetable Medley, thawed",Foursome Vegetable Medley
+2588,TJ's Fresh Thyme,Thyme
+2589,(8 waffles) TJ's Frozen Toaster Waffles,Frozen Toaster Waffles
+2590,"TJ's Blueberries, fresh or frozen",Blueberries
+2591,"TJ's Organic Basil, cut into strips",Basil
+2592,TJ's Ciliegine Mozzarella,Ciliegine Mozzarella
+2593,TJ's Balsamic Vinaigrette,Balsamic Vinaigrette
+2594,"TJ's ground Black Pepper, or to taste",ground Black Pepper
