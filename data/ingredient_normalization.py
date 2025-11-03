@@ -18,13 +18,12 @@ def normalize(text):
     units = r'\b(?:lb|lbs|pounds?|oz|ounces?|kg|g|grams?|ct|count)\b|%'
     packaging = r'\b(?:concentrate|packet(?:s)?|pouch(?:es)?|bottle|jar|tub|container|bag|box|carton|pack(?:s)?)\b'
     fluff = r'\b(?:organic|favorite|fresh|freeze-dried|large|les|natural|petite|petites|raw|teeny|tiny)\b'
+    allowed_tokens = {'?', '!', '&', 'with', 'and', 'or', 'in'}
 
     nltk.download('punkt')
     nltk.download('punkt_tab')
     nltk.download('averaged_perceptron_tagger')
     nltk.download('averaged_perceptron_tagger_eng')
-
-    original = str(text)
 
     # Get rid of TJ's and any directions like ", divided"
     text = text.replace("TJ’s", "TJ's").replace("TJ's", "").split(',')[0].strip()
@@ -47,31 +46,33 @@ def normalize(text):
     # Collapse spaces
     text = re.sub(r'\s{2,}', ' ', text).strip()
 
-    # ---- DEBUG: show state before tagging ----
-    # (remove these prints when you’re satisfied)
-    print(f"INPUT:   {original!r}")
-    print(f"CLEANED: {text!r}")
-
     # Get pos for each word
     tokens = nltk.word_tokenize(text)
     pos_tags = nltk.pos_tag(tokens)
-    
-    # ---- DEBUG: show tokens/tags ----
-    print("TAGS:", pos_tags)
 
     keep = []
+    lower_tokens = [t.lower() for t in tokens]
     for i, (word, tag) in enumerate(pos_tags):
         if tag.startswith('NN'):
-            keep.append(word)
+            keep.append(word.lower())
 
         # Keep adjective only if followed by a noun
         elif tag == 'JJ' and i + 1 < len(pos_tags) and pos_tags[i+1][1].startswith('NN'):
-            keep.append(word)
+            keep.append(word.lower())
 
-    # ---- DEBUG: what we decided to keep ----
-    print("KEPT:", keep)
+        # Keep things like ? or with
+        elif word in allowed_tokens:
+            keep.append(word.lower())
 
-    return ' '.join(keep) if keep else text
+    if 'olive' in lower_tokens and 'oil' in lower_tokens and len(lower_tokens) <= 5:
+        if 'spray' in lower_tokens:
+            return 'extra virgin olive oil spray'
+        return 'extra virgin olive oil'
+    
+    if 'all' in lower_tokens and 'purpose' in lower_tokens and 'flour' in lower_tokens:
+        return 'all purpose flour'
+
+    return ' '.join(keep) if keep else text.lower()
 
     # # Get all nouns
     # nouns = [word for word, pos in pos_tags if pos.startswith('NN')]
