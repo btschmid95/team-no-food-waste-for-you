@@ -26,7 +26,7 @@ def normalize(text):
     nltk.download('averaged_perceptron_tagger_eng')
 
     # Get rid of TJ's and any directions like ", divided"
-    text = text.replace("TJ’s", "TJ's").replace("TJ's", "").split(',')[0].strip()
+    text = text.replace("TJ’s", "TJ's").replace("TJ's", "").replace("Joe's", "").replace("Joseph's", "").split(',')[0].strip()
 
     # Removes parentheses and contents
     text = re.sub(r'\([^)]*\)', '', text)
