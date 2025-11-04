@@ -15,7 +15,7 @@ def get_sql_table(input):
 
 
 def normalize(text):
-    units = r'\b(?:lb|lbs|pounds?|oz|ounces?|kg|g|grams?|ct|count)\b|%'
+    units = r'\b(?:lb|lbs|pounds?|oz|ounces?|kg|g|grams?|tsp.|ct|count)\b|%'
     packaging = r'\b(?:concentrate|packet(?:s)?|pouch(?:es)?|bottle|jar|tub|container|bag|box|carton|pack(?:s)?)\b'
     fluff = r'\b(?:organic|favorite|fresh|freeze-dried|large|les|natural|petite|petites|raw|teeny|tiny)\b'
     allowed_tokens = {'?', '!', '&', 'with', 'and', 'or', 'in'}
@@ -64,7 +64,7 @@ def normalize(text):
         elif word in allowed_tokens:
             keep.append(word.lower())
 
-    if 'olive' in lower_tokens and 'oil' in lower_tokens and len(lower_tokens) <= 5:
+    if 'olive' in lower_tokens and 'oil' in lower_tokens and 'in' not in lower_tokens and 'popcorn' not in lower_tokens and len(lower_tokens) <= 5:
         if 'spray' in lower_tokens:
             return 'extra virgin olive oil spray'
         return 'extra virgin olive oil'
