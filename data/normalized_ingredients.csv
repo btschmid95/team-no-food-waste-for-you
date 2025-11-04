@@ -224,7 +224,7 @@ ingredient_id,ingredient_name,norm_name
 222,"TJ’s Lemon, one half zested, the other half quartered and thinly sliced",lemon
 223,TJ’s Organic Raw Apple Cider Vinegar,apple cider vinegar
 224,TJ's Rainbow Peppercorns,rainbow peppercorns
-225,TJ’s Joe's Diner Mac n' Cheese,joe diner mac n cheese
+225,TJ’s Joe's Diner Mac n' Cheese,diner mac n cheese
 226,TJ’s Pepper Jack Cheese Blend,pepper jack cheese blend
 227,TJ’s Tortilla Chips,tortilla chips
 228,TJ’s Hot Pico de Gallo,hot pico gallo
@@ -522,7 +522,7 @@ ingredient_id,ingredient_name,norm_name
 520,"TJ’s Rice (Brown or White), to serve",rice
 521,"Sautéed TJ’s Shredded Green Cabbage or Cut Napa Cabbage, to serve",sautéed shredded green cabbage or cut napa cabbage
 522,"TJ’s Green Onions, thinly sliced",green onions
-523,"Joe's Organic Tricolor Quinoa, dry",joe tricolor quinoa
+523,"Joe's Organic Tricolor Quinoa, dry",tricolor quinoa
 524,TJ's Cowboy Caviar Salsa,cowboy caviar salsa
 525,TJ's Organic Diced & Fire Roasted Tomatoes,diced & fire tomatoes
 526,"TJ's Mexican Blend Shredded Cheese, divided",mexican blend shredded cheese
@@ -701,7 +701,7 @@ ingredient_id,ingredient_name,norm_name
 699,"TJ’s Zucchini, sliced into half-moons",zucchini
 700,"TJ’s Organic Baby Spinach, roughly chopped",baby spinach
 701,"TJ’s Rice Medley, cooked according to package instructions",rice medley
-702,(30 cookies) of TJ’s Chocolate Vanilla Creme Joe-Joe's Sandwich Cookies,chocolate vanilla creme joe-joe sandwich cookies
+702,(30 cookies) of TJ’s Chocolate Vanilla Creme Joe-Joe's Sandwich Cookies,chocolate vanilla creme joe- sandwich cookies
 703,"TJ’s Organic Pure Bourbon Vanilla Extract, divided",pure bourbon vanilla extract
 704,"(8 ounces) TJ’s Cream Cheese, at room temperature",cream cheese
 705,"TJ’s Unsalted Butter, softened at room temperature",butter
@@ -1748,7 +1748,7 @@ ingredient_id,ingredient_name,norm_name
 1746,"TJ's Black Mission Figs, halved (Seasonal)",black mission figs
 1747,"TJ's Prosciutto, sliced in half lengthwise",prosciutto
 1748,"TJ's Whole Grain Dijon Mustard and TJ's Honey, to serve (optional)",whole grain dijon mustard and honey
-1749,Joe's Frozen Mashed Potatoes,joe frozen mashed potatoes
+1749,Joe's Frozen Mashed Potatoes,frozen mashed potatoes
 1750,(16 oz) TJ's Heavy Cream,heavy cream
 1751,TJ's Shredded Swiss Cheese & Gruyère Cheese Blend,shredded swiss cheese & gruyère cheese blend
 1752,TJ's Salted Butter,butter
@@ -1842,12 +1842,12 @@ ingredient_id,ingredient_name,norm_name
 1840,"TJ’s Dry Roasted & Salted Pistachio Nutmeats, crushed into small pieces",dry roasted & salted pistachio nutmeats
 1841,"TJ’s Dried Cranberries, very finely diced",dried cranberries
 1842,"Squash, roasted and cubed",squash
-1843,Joe's Organic Tahini,joe tahini
+1843,Joe's Organic Tahini,tahini
 1844,"Paprika, plus more for garnish",paprika
 1845,Salt,salt
 1846,Pepper,pepper
 1847,Lime,lime
-1848,"Joe's Avocado Oil, plus more for garnish",joe avocado oil
+1848,"Joe's Avocado Oil, plus more for garnish",avocado oil
 1849,(we like Organic Blue Corn Tortilla Chips),
 1850,TJ's Triple Creme Brie,triple creme brie
 1851,TJ's Pumpkin Tortilla Chips (seasonal),pumpkin tortilla chips
@@ -1932,7 +1932,7 @@ ingredient_id,ingredient_name,norm_name
 1930,TJ's Frozen BBQ Chicken Teriyaki,frozen bbq chicken teriyaki
 1931,TJ's Coconut Oil,coconut oil
 1932,TJ's Soyaki,soyaki
-1933,Joe's Organic Baked Teriyaki Tofu,joe baked teriyaki tofu
+1933,Joe's Organic Baked Teriyaki Tofu,teriyaki tofu
 1934,"& Marinade, plus more to finish, if desired",& marinade
 1935,TJ's Soycutash,soycutash
 1936,"water, or more if needed",water
@@ -2153,7 +2153,7 @@ ingredient_id,ingredient_name,norm_name
 2151,TJ's Heavy Cream,heavy cream
 2152,TJ's Instant Coffee Packets All Dressed Up with Creamer & Sugar,instant coffee all with creamer & sugar
 2153,"TJ's Dry Roasted & Salted Pistachios, shelled",dry roasted & salted pistachios
-2154,TJ's Joe-Joe's Cookies,joe-joe cookies
+2154,TJ's Joe-Joe's Cookies,joe- cookies
 2155,"TJ's Cream Cheese, quartered and softened",cream cheese
 2156,TJ's Fig Butter,fig butter
 2157,"TJ's Dried Apricots, diced",dried apricots
@@ -2319,7 +2319,7 @@ ingredient_id,ingredient_name,norm_name
 2317,TJ's Habanero Hot Sauce,habanero hot sauce
 2318,TJ's Simpler Times Lager (or your favorite lager),simpler times lager
 2319,Bacon,bacon
-2320,Joe's Butter Croissants,joe butter croissants
+2320,Joe's Butter Croissants,butter croissants
 2321,TJ's Speculoos Cookie Butter,speculoos cookie butter
 2322,TJ's Butter,butter
 2323,"TJ's Organic Midnight Moo Chocolate Flavored Syrup, to taste",midnight moo chocolate flavored syrup
@@ -2397,7 +2397,7 @@ ingredient_id,ingredient_name,norm_name
 2395,TJ's Super Premium Pumpkin Ice Cream,super premium pumpkin ice cream
 2396,TJ's Candied Pecans,candied pecans
 2397,TJ's Blondie Bar Baking Mix,blondie bar baking mix
-2398,"2-1.75 oz bars Trader Joe's Milk Chocolate, roughly chopped",bars joe milk chocolate
+2398,"2-1.75 oz bars Trader Joe's Milk Chocolate, roughly chopped",bars milk chocolate
 2399,TJ's Organic Reduced Sugar Raspberry Preserves,sugar raspberry preserves
 2400,"TJ's Organic Frozen Mango Chunks, thawed",frozen mango chunks
 2401,"TJ's Organic Biscuits, baked and cooled",biscuits
