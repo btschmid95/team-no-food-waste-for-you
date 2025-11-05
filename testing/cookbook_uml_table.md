@@ -1,7 +1,7 @@
 ```mermaid
 classDiagram
-  class Recipe {
-    +INTEGER recipe_id PK
+  class recipe {
+    +INTEGER recipe_id
     +TEXT title
     +TEXT url
     +TEXT image_url
@@ -10,36 +10,34 @@ classDiagram
     +TEXT category
   }
 
-  class Usable_Ingredients {
-    +INTEGER ingredient_id PK
+  class usable_ingredients {
+    +INTEGER ingredient_id
     +TEXT raw_name
     +TEXT norm_name
   }
 
-  class Quantity {
-    +INTEGER quantity_id PK
+  class quantity {
+    +INTEGER quantity_id
     +TEXT amount_text
   }
 
-  class Cookbook {
-    +INTEGER recipe_id FK
-    +INTEGER ingredient_id FK
-    +INTEGER quantity_id FK
-    --
-    (PK) recipe_id, ingredient_id, quantity_id
+  class cookbook {
+    +INTEGER recipe_id
+    +INTEGER ingredient_id
+    +INTEGER quantity_id
   }
 
-  class Pantry {
-    +INTEGER pantry_id PK
-    +INTEGER ingredient_id FK
+  class pantry {
+    +INTEGER pantry_id
+    +INTEGER ingredient_id
     +REAL amount
     +TEXT unit
     +TEXT date_purchased
     +TEXT expiration_date
   }
 
-  class TJ_Inventory {
-    +INTEGER product_id PK
+  class tj_inventory {
+    +INTEGER product_id
     +TEXT name
     +TEXT norm_name
     +TEXT unit
@@ -48,42 +46,42 @@ classDiagram
     +TEXT category
   }
 
-  class Sold_As {
-    +INTEGER product_id FK
-    +INTEGER ingredient_id FK
-    --
-    (PK) product_id, ingredient_id
+  class sold_as {
+    +INTEGER product_id
+    +INTEGER ingredient_id
   }
 
-  class Ingredient_Recipe_Inverted_Index {
-    +INTEGER ingredient_id FK
-    +INTEGER recipe_id FK
+  class ingredient_recipe_inverted_index {
+    +INTEGER ingredient_id
+    +INTEGER recipe_id
   }
 
-  class Recipe_Recommended {
-    +INTEGER id PK
-    +INTEGER recipe_id FK
+  class recipe_recommended {
+    +INTEGER id
+    +INTEGER recipe_id
     +TEXT date
     +TEXT recipe
   }
 
-  class Recipe_Selected {
-    +INTEGER sel_id PK
-    +INTEGER recipe_id FK
+  class recipe_selected {
+    +INTEGER sel_id
+    +INTEGER recipe_id
     +TEXT sel_ts
   }
 
-  Recipe "1" --o "0..*" Cookbook : recipe_id
-  Usable_Ingredients "1" --o "0..*" Cookbook : ingredient_id
-  Quantity "1" --o "0..*" Cookbook : quantity_id
+  %% Relationships
+  recipe --> cookbook : recipe_id
+  usable_ingredients --> cookbook : ingredient_id
+  quantity --> cookbook : quantity_id
 
-  Usable_Ingredients "1" --o "0..*" Pantry : ingredient_id
-  TJ_Inventory "1" --o "0..*" Sold_As : product_id
-  Usable_Ingredients "1" --o "0..*" Sold_As : ingredient_id
+  usable_ingredients --> pantry : ingredient_id
 
-  Usable_Ingredients "1" --o "0..*" Ingredient_Recipe_Inverted_Index
-  Recipe "1" --o "0..*" Ingredient_Recipe_Inverted_Index
+  tj_inventory --> sold_as : product_id
+  usable_ingredients --> sold_as : ingredient_id
 
-  Recipe "1" --o "0..*" Recipe_Recommended
-  Recipe "1" --o "0..*" Recipe_Selected
-```
+  usable_ingredients --> ingredient_recipe_inverted_index : ingredient_id
+  recipe --> ingredient_recipe_inverted_index : recipe_id
+
+  recipe --> recipe_recommended : recipe_id
+  recipe --> recipe_selected : recipe_id
+```g
