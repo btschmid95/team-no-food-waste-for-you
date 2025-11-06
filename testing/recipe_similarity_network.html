@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "21 Seasoning Salute Vinaigrette", "label": "21 Seasoning Salute Vinaigrette", "shape": "dot", "title": "21 Seasoning Salute Vinaigrette"}, {"color": "#97c2fc", "id": "Smashed Potatoes", "label": "Smashed Potatoes", "shape": "dot", "title": "Smashed Potatoes"}, {"color": "#97c2fc", "id": "Almond Butter Dipping Sauce", "label": "Almond Butter Dipping Sauce", "shape": "dot", "title": "Almond Butter Dipping Sauce"}, {"color": "#97c2fc", "id": "Sweet \u0026 Tangy Apricot Glaze", "label": "Sweet \u0026 Tangy Apricot Glaze", "shape": "dot", "title": "Sweet \u0026 Tangy Apricot Glaze"}, {"color": "#97c2fc", "id": "Apple-Caramel Hand Pies", "label": "Apple-Caramel Hand Pies", "shape": "dot", "title": "Apple-Caramel Hand Pies"}, {"color": "#97c2fc", "id": "Blueberry-Lemon Hand Pies", "label": "Blueberry-Lemon Hand Pies", "shape": "dot", "title": "Blueberry-Lemon Hand Pies"}, {"color": "#97c2fc", "id": "Avocado Crema", "label": "Avocado Crema", "shape": "dot", "title": "Avocado Crema"}, {"color": "#97c2fc", "id": "Cilantro Crema", "label": "Cilantro Crema", "shape": "dot", "title": "Cilantro Crema"}, {"color": "#97c2fc", "id": "Beef-less Burritos", "label": "Beef-less Burritos", "shape": "dot", "title": "Beef-less Burritos"}, {"color": "#97c2fc", "id": "Beef-less Tacos", "label": "Beef-less Tacos", "shape": "dot", "title": "Beef-less Tacos"}, {"color": "#97c2fc", "id": "Channa Masala Pasties", "label": "Channa Masala Pasties", "shape": "dot", "title": "Channa Masala Pasties"}, {"color": "#97c2fc", "id": "Palak Paneer Pasties", "label": "Palak Paneer Pasties", "shape": "dot", "title": "Palak Paneer Pasties"}, {"color": "#97c2fc", "id": "Chewy Salted Caramel Cookies", "label": "Chewy Salted Caramel Cookies", "shape": "dot", "title": "Chewy Salted Caramel Cookies"}, {"color": "#97c2fc", "id": "Double Chocolate Crinkle Cookies", "label": "Double Chocolate Crinkle Cookies", "shape": "dot", "title": "Double Chocolate Crinkle Cookies"}, {"color": "#97c2fc", "id": "Chicken \u0026 Waffles With Spicy Honey Butter", "label": "Chicken \u0026 Waffles With Spicy Honey Butter", "shape": "dot", "title": "Chicken \u0026 Waffles With Spicy Honey Butter"}, {"color": "#97c2fc", "id": "Spicy Honey Butter", "label": "Spicy Honey Butter", "shape": "dot", "title": "Spicy Honey Butter"}, {"color": "#97c2fc", "id": "Cilantro \u0026 Lime Tuna Salad Bites", "label": "Cilantro \u0026 Lime Tuna Salad Bites", "shape": "dot", "title": "Cilantro \u0026 Lime Tuna Salad Bites"}, {"color": "#97c2fc", "id": "Red Pepper \u0026 OIive Tuna Salad Bites", "label": "Red Pepper \u0026 OIive Tuna Salad Bites", "shape": "dot", "title": "Red Pepper \u0026 OIive Tuna Salad Bites"}, {"color": "#97c2fc", "id": "Whipped Avocado Dip", "label": "Whipped Avocado Dip", "shape": "dot", "title": "Whipped Avocado Dip"}, {"color": "#97c2fc", "id": "Citrus-Sprinkled Ricotta Cookies", "label": "Citrus-Sprinkled Ricotta Cookies", "shape": "dot", "title": "Citrus-Sprinkled Ricotta Cookies"}, {"color": "#97c2fc", "id": "Hemp Seed Cookies", "label": "Hemp Seed Cookies", "shape": "dot", "title": "Hemp Seed Cookies"}, {"color": "#97c2fc", "id": "Cocoa-Stuffed Snowflakes", "label": "Cocoa-Stuffed Snowflakes", "shape": "dot", "title": "Cocoa-Stuffed Snowflakes"}, {"color": "#97c2fc", "id": "Ricotta \u0026 Pesto Tear \u0026 Share", "label": "Ricotta \u0026 Pesto Tear \u0026 Share", "shape": "dot", "title": "Ricotta \u0026 Pesto Tear \u0026 Share"}, {"color": "#97c2fc", "id": "Cookie Butter Sandwich", "label": "Cookie Butter Sandwich", "shape": "dot", "title": "Cookie Butter Sandwich"}, {"color": "#97c2fc", "id": "Raspberry Ricotta Toast", "label": "Raspberry Ricotta Toast", "shape": "dot", "title": "Raspberry Ricotta Toast"}, {"color": "#97c2fc", "id": "Date Shake", "label": "Date Shake", "shape": "dot", "title": "Date Shake"}, {"color": "#97c2fc", "id": "Pumpkin Pie Milkshake", "label": "Pumpkin Pie Milkshake", "shape": "dot", "title": "Pumpkin Pie Milkshake"}, {"color": "#97c2fc", "id": "Delightfully Fiery Tofu Sheet Pan", "label": "Delightfully Fiery Tofu Sheet Pan", "shape": "dot", "title": "Delightfully Fiery Tofu Sheet Pan"}, {"color": "#97c2fc", "id": "Gochujang-Glazed Carrots", "label": "Gochujang-Glazed Carrots", "shape": "dot", "title": "Gochujang-Glazed Carrots"}, {"color": "#97c2fc", "id": "Dutch Baby Pancake with Berries \u0026 Lemon Cream", "label": "Dutch Baby Pancake with Berries \u0026 Lemon Cream", "shape": "dot", "title": "Dutch Baby Pancake with Berries \u0026 Lemon Cream"}, {"color": "#97c2fc", "id": "Salty Maple Cold Foam", "label": "Salty Maple Cold Foam", "shape": "dot", "title": "Salty Maple Cold Foam"}, {"color": "#97c2fc", "id": "Frank\u0027s Blueberry Muffins", "label": "Frank\u0027s Blueberry Muffins", "shape": "dot", "title": "Frank\u0027s Blueberry Muffins"}, {"color": "#97c2fc", "id": "Olive Oil Cake", "label": "Olive Oil Cake", "shape": "dot", "title": "Olive Oil Cake"}, {"color": "#97c2fc", "id": "Joe-Joe\u0027s Cupcakes", "label": "Joe-Joe\u0027s Cupcakes", "shape": "dot", "title": "Joe-Joe\u0027s Cupcakes"}, {"color": "#97c2fc", "id": "Matcha Matcha Cupcakes", "label": "Matcha Matcha Cupcakes", "shape": "dot", "title": "Matcha Matcha Cupcakes"}, {"color": "#97c2fc", "id": "Lemon-Mustard Vinaigrette", "label": "Lemon-Mustard Vinaigrette", "shape": "dot", "title": "Lemon-Mustard Vinaigrette"}, {"color": "#97c2fc", "id": "Roasted Shishito Pepper Sauce", "label": "Roasted Shishito Pepper Sauce", "shape": "dot", "title": "Roasted Shishito Pepper Sauce"}, {"color": "#97c2fc", "id": "Spring Lentil Salad", "label": "Spring Lentil Salad", "shape": "dot", "title": "Spring Lentil Salad"}, {"color": "#97c2fc", "id": "Peanut Butter Cup Cinnamallow Treats", "label": "Peanut Butter Cup Cinnamallow Treats", "shape": "dot", "title": "Peanut Butter Cup Cinnamallow Treats"}, {"color": "#97c2fc", "id": "Ridge Crispy S\u0027moreover Bars", "label": "Ridge Crispy S\u0027moreover Bars", "shape": "dot", "title": "Ridge Crispy S\u0027moreover Bars"}, {"color": "#97c2fc", "id": "Roasted Brussels Sprouts", "label": "Roasted Brussels Sprouts", "shape": "dot", "title": "Roasted Brussels Sprouts"}, {"color": "#97c2fc", "id": "Roasted Lemon-Garlic Artichokes", "label": "Roasted Lemon-Garlic Artichokes", "shape": "dot", "title": "Roasted Lemon-Garlic Artichokes"}, {"color": "#97c2fc", "id": "Umami Dressing", "label": "Umami Dressing", "shape": "dot", "title": "Umami Dressing"}, {"color": "#97c2fc", "id": "Seared Salmon \u0026 Quick-Pickled Cucumbers", "label": "Seared Salmon \u0026 Quick-Pickled Cucumbers", "shape": "dot", "title": "Seared Salmon \u0026 Quick-Pickled Cucumbers"}, {"color": "#97c2fc", "id": "Vegan Coffee Meringues", "label": "Vegan Coffee Meringues", "shape": "dot", "title": "Vegan Coffee Meringues"}, {"color": "#97c2fc", "id": "Vegan Matcha Meringues", "label": "Vegan Matcha Meringues", "shape": "dot", "title": "Vegan Matcha Meringues"}]);
+                  edges = new vis.DataSet([{"from": "21 Seasoning Salute Vinaigrette", "title": "similarity: 0.57", "to": "Smashed Potatoes", "value": 0.5669467095138407}, {"from": "Smashed Potatoes", "title": "similarity: 0.40", "to": "Seared Salmon \u0026 Quick-Pickled Cucumbers", "value": 0.4008918628686366}, {"from": "Almond Butter Dipping Sauce", "title": "similarity: 0.41", "to": "Sweet \u0026 Tangy Apricot Glaze", "value": 0.4082482904638631}, {"from": "Apple-Caramel Hand Pies", "title": "similarity: 0.45", "to": "Blueberry-Lemon Hand Pies", "value": 0.4472135954999579}, {"from": "Avocado Crema", "title": "similarity: 0.68", "to": "Cilantro Crema", "value": 0.6761234037828131}, {"from": "Cilantro Crema", "title": "similarity: 0.45", "to": "Whipped Avocado Dip", "value": 0.4472135954999579}, {"from": "Beef-less Burritos", "title": "similarity: 0.87", "to": "Beef-less Tacos", "value": 0.8749999999999999}, {"from": "Channa Masala Pasties", "title": "similarity: 0.67", "to": "Palak Paneer Pasties", "value": 0.6666666666666669}, {"from": "Chewy Salted Caramel Cookies", "title": "similarity: 0.55", "to": "Double Chocolate Crinkle Cookies", "value": 0.5477225575051662}, {"from": "Chicken \u0026 Waffles With Spicy Honey Butter", "title": "similarity: 0.41", "to": "Spicy Honey Butter", "value": 0.408248290463863}, {"from": "Cilantro \u0026 Lime Tuna Salad Bites", "title": "similarity: 0.45", "to": "Red Pepper \u0026 OIive Tuna Salad Bites", "value": 0.4472135954999579}, {"from": "Citrus-Sprinkled Ricotta Cookies", "title": "similarity: 0.53", "to": "Hemp Seed Cookies", "value": 0.5345224838248488}, {"from": "Cocoa-Stuffed Snowflakes", "title": "similarity: 0.41", "to": "Ricotta \u0026 Pesto Tear \u0026 Share", "value": 0.4082482904638631}, {"from": "Cookie Butter Sandwich", "title": "similarity: 0.50", "to": "Raspberry Ricotta Toast", "value": 0.5}, {"from": "Date Shake", "title": "similarity: 0.58", "to": "Pumpkin Pie Milkshake", "value": 0.5773502691896258}, {"from": "Delightfully Fiery Tofu Sheet Pan", "title": "similarity: 0.43", "to": "Gochujang-Glazed Carrots", "value": 0.42640143271122083}, {"from": "Dutch Baby Pancake with Berries \u0026 Lemon Cream", "title": "similarity: 0.43", "to": "Salty Maple Cold Foam", "value": 0.4330127018922194}, {"from": "Frank\u0027s Blueberry Muffins", "title": "similarity: 0.40", "to": "Olive Oil Cake", "value": 0.40291148201269017}, {"from": "Joe-Joe\u0027s Cupcakes", "title": "similarity: 0.42", "to": "Matcha Matcha Cupcakes", "value": 0.4216370213557839}, {"from": "Lemon-Mustard Vinaigrette", "title": "similarity: 0.40", "to": "Roasted Shishito Pepper Sauce", "value": 0.4008918628686365}, {"from": "Lemon-Mustard Vinaigrette", "title": "similarity: 0.85", "to": "Spring Lentil Salad", "value": 0.8528028654224417}, {"from": "Peanut Butter Cup Cinnamallow Treats", "title": "similarity: 0.45", "to": "Ridge Crispy S\u0027moreover Bars", "value": 0.4472135954999579}, {"from": "Roasted Brussels Sprouts", "title": "similarity: 0.46", "to": "Roasted Lemon-Garlic Artichokes", "value": 0.46291004988627577}, {"from": "Roasted Lemon-Garlic Artichokes", "title": "similarity: 0.43", "to": "Umami Dressing", "value": 0.4285714285714285}, {"from": "Vegan Coffee Meringues", "title": "similarity: 0.80", "to": "Vegan Matcha Meringues", "value": 0.7999999999999999}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.3,
+            "damping": 0.09,
+            "gravitationalConstant": -80000,
+            "springConstant": 0.001,
+            "springLength": 250
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
