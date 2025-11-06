@@ -4,7 +4,7 @@ import re
 import ast
 from sqlalchemy import create_engine, text
 from data.ingredient_normalization import normalize
-d
+
 recipes = pd.read_csv("../web_scraper/trader_joes_recipes.csv")
 tj_inventory = pd.read_csv("../data/trader_joes_products_v2.csv")
 
