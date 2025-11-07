@@ -3,8 +3,6 @@ import numpy as np
 from sentence_transformers import SentenceTransformer, util
 import argparse
 
-# from thefuzz import process
-
 
 def map_to_product(ing_df, prod_df, output_path):
     model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
