@@ -1,70 +1,10 @@
 import pandas as pd
 import numpy as np
-
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer, util
-import torch
-
 import argparse
-
-# from thefuzz import process
 
 
 def map_to_product(ing_df, prod_df, output_path):
-    # choices = prod_df['norm_name'].to_dict()
-
-    # mapped_products = []
-    # for ing in ing_df['norm_name']:
-    #     choice, score, idx = process.extractOne(ing, choices)
-    #     product_name = prod_df.loc[idx, 'product_name']
-    #     unit = prod_df.loc[idx, 'unit']
-    #     mapped_products.append((choice, product_name, score, unit))
-
-    # ing_df['norm_prod'] = [x[0] for x in mapped_products]
-
-    # ing_df['matched_product'] = [x[1] for x in mapped_products]
-
-    # ing_df['match_score'] = [x[2] for x in mapped_products]
-
-    # ing_df['unit'] = [x[3] for x in mapped_products]
-    # ing_df['unit'] = ing_df['unit'].str.lstrip('/')
-
-    # ing_df.to_csv(output_path, index = False)
-    # print(f"Saved normalized CSV to {output_path}")
-
-
-    # vectorizer = TfidfVectorizer(analyzer = 'word', stop_words = 'english')
-    # tfidf_matrix = vectorizer.fit_transform(pd.concat([ing_df['norm_name'], prod_df['norm_name']]))
-
-    # ing_vectors = tfidf_matrix[:len(ing_df)]
-    # prod_vectors = tfidf_matrix[len(ing_df):]
-
-    # sim = cosine_similarity(ing_vectors, prod_vectors)
-
-    # best_match_idx = np.argmax(sim, axis = 1)
-    # best_score = sim[np.arange(len(ing_df)), best_match_idx]
-
-    # matched_product = []
-    # for idx, score in zip(best_match_idx, best_score):
-    #     if score > 0.9:
-    #         matched_product.append(prod_df.iloc[idx]['product_name'])
-    #     elif 
-        
-
-    # ing_df['matched_product'] = prod_df.iloc[best_match_idx]['product_name'].values
-
-    # ing_df['match_score'] = best_score 
-    
-    # ing_df['unit'] = prod_df.iloc[best_match_idx]['unit'].values
-    # ing_df['unit'] = ing_df['unit'].str.lstrip('/')
-
-    # ing_df['category'] = prod_df.iloc[best_match_idx]['category'].values
-
-    # ing_df.to_csv(output_path, index = False)
-    # print(f"Saved normalized CSV to {output_path}")
-
-
     model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
     ing_texts = ing_df['norm_name']
@@ -86,8 +26,6 @@ def map_to_product(ing_df, prod_df, output_path):
         category = prod_df.iloc[idx]['category']
         if score > 0.80:
             matched_products.append((prod_name, unit, category))
-        # elif len(ing_name) == 1:
-        #     matched_products.append((ing_name, np.nan, category))
         else:
             matched_products.append((ing_name, np.nan, category))
 
