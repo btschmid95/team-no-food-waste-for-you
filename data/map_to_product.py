@@ -1,29 +1,44 @@
 import pandas as pd
-
-from thefuzz import fuzz
-from thefuzz import process
-
+import numpy as np
+from sentence_transformers import SentenceTransformer, util
 import argparse
 
 
 def map_to_product(ing_df, prod_df, output_path):
-    choices = prod_df['product_name'].to_dict()
+    model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
-    mapped_products = []
-    for ing in ing_df['norm_name']:
-        choice, score, idx = process.extractOne(ing, choices)
-        unit = prod_df.loc[idx, 'unit']
-        mapped_products.append((choice, score, unit))
+    ing_texts = ing_df['norm_name']
+    prod_texts = prod_df['norm_name']
 
-    ing_df['product'] = [x[0] for x in mapped_products]
+    ing_emb = model.encode(ing_texts, convert_to_tensor = True)
+    prod_emb = model.encode(prod_texts, convert_to_tensor = True)
 
-    ing_df['match_score'] = [x[1] for x in mapped_products]
+    cos_scores = util.cos_sim(ing_emb, prod_emb)
+    cos_scores = cos_scores.cpu().numpy()
 
-    ing_df['unit'] = [x[2] for x in mapped_products]
+    best_match_idx = np.argmax(cos_scores, axis = 1)
+    best_score = cos_scores[np.arange(len(ing_df)), best_match_idx]
+
+    matched_products = []
+    for ing_name, idx, score in zip(ing_df['norm_name'], best_match_idx, best_score):
+        prod_name = prod_df.iloc[idx]['product_name']
+        unit = prod_df.iloc[idx]['unit']
+        category = prod_df.iloc[idx]['category']
+        if score > 0.80:
+            matched_products.append((prod_name, unit, category))
+        else:
+            matched_products.append((ing_name, np.nan, category))
+
+    ing_df['matched_product'] = [x[0] for x in matched_products]
+    ing_df['match_score'] = best_score
+
+    ing_df['unit'] = [x[1] for x in matched_products]
     ing_df['unit'] = ing_df['unit'].str.lstrip('/')
 
+    ing_df['category'] = [x[2] for x in matched_products]
+
     ing_df.to_csv(output_path, index = False)
-    print(f"Saved normalized CSV to {output_path}")
+    print(f"Saved normalized CSV to {output_path}")   
 
 
 if __name__ == '__main__':
