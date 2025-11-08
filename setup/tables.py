@@ -75,6 +75,7 @@ class Pantry(Base):
 # --- TJ Inventory Tables ---
 class TJInventory(Base):
     __tablename__ = "tj_inventory"
+
     product_id = Column(Integer, primary_key=True)
     name = Column(Text, nullable=False)
     norm_name = Column(Text)
@@ -82,8 +83,10 @@ class TJInventory(Base):
     price = Column(Float)
     url = Column(Text)
     category = Column(Text)
+    sub_category = Column(Text)
 
     ingredients = relationship("UsableIngredient", secondary=sold_as_table, back_populates="tj_products")
+
 
 class RecipeRecommended(Base):
     __tablename__ = "recipe_recommended"
@@ -103,7 +106,7 @@ class RawIngredient(Base):
     raw_ing_id = Column(Integer, primary_key=True)
     recipe_id = Column(Integer, ForeignKey("recipe.recipe_id"))
     raw_text = Column(Text)
-    
+
 # --- Utility function ---
 def create_all_tables(engine):
     Base.metadata.create_all(engine)

@@ -1,12 +1,17 @@
-# data/pipeline/populate_tj_inventory.py
-
+from pathlib import Path
+import sys
 import pandas as pd
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
-from data.models import TJInventory, Base
+
+# --- Project setup ---
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+sys.path.append(str(PROJECT_ROOT))
+
+from setup.tables import Base, TJInventory
 from data.ingredient_normalization import normalize
 
-
+# --- Helpers ---
 def parse_price_to_float(p):
     """Convert price strings like '$3.99' or 3.99 to floats safely."""
     if pd.isna(p):
@@ -20,22 +25,26 @@ def parse_price_to_float(p):
         return None
 
 
-def populate_tj_inventory_v3(csv_path: str, engine_url: str):
+def populate_tj_inventory_v3(csv_path: Path, db_path: Path):
     """
-    Reads TJ inventory v3 CSV, normalizes product names, and populates the tj_inventory table.
-    
-    Args:
-        csv_path (str): Path to TJ inventory v3 CSV.
-        engine_url (str): SQLAlchemy engine URL.
+    Populate TJ Inventory (v3) into SQLite database.
     """
-    # Load CSV
+    # --- Resolve paths ---
+    csv_path = csv_path.resolve()
+    db_path = db_path.resolve()
+
+    if not csv_path.exists():
+        raise FileNotFoundError(f"TJ inventory CSV not found at {csv_path}")
+
+    # --- Load CSV ---
     tj_inventory = pd.read_csv(csv_path)
 
-    # Create engine and tables if not exist
+    # --- Create or connect to database ---
+    engine_url = f"sqlite:///{db_path}"
     engine = create_engine(engine_url, echo=False)
     Base.metadata.create_all(engine)
 
-    # Prepare DataFrame
+    # --- Normalize + prepare data ---
     tj = pd.DataFrame({
         "name": tj_inventory["product_name"],
         "norm_name": tj_inventory["product_name"].apply(lambda x: normalize(x) if isinstance(x, str) else x),
@@ -43,19 +52,15 @@ def populate_tj_inventory_v3(csv_path: str, engine_url: str):
         "price": tj_inventory.get("price").map(parse_price_to_float) if "price" in tj_inventory.columns else None,
         "url": tj_inventory.get("url"),
         "category": tj_inventory.get("category"),
-        "sub_category": tj_inventory.get("sub_category")
+        "sub_category": tj_inventory.get("sub_category"),
     })
 
-    # Drop exact duplicates
+    # --- Drop duplicates and add product_id ---
     tj = tj.drop_duplicates(subset=["name", "unit", "price", "sub_category"]).reset_index(drop=True)
-
-    # Assign product_id
     tj["product_id"] = tj.index + 1
-
-    # Reorder columns
     tj = tj[["product_id", "name", "norm_name", "unit", "price", "url", "category", "sub_category"]]
 
-    # Insert into database
+    # --- Insert into database ---
     with Session(engine) as session:
         for _, row in tj.iterrows():
             product = TJInventory(
@@ -66,17 +71,18 @@ def populate_tj_inventory_v3(csv_path: str, engine_url: str):
                 price=row["price"],
                 url=row["url"],
                 category=row["category"],
-                sub_category=row["sub_category"],  # make sure this exists in the model
+                sub_category=row["sub_category"],
             )
             session.merge(product)
         session.commit()
-    
-    print(f"✅ TJ inventory v3 populated: {len(tj)} products.")
+
+    print(f"✅ Populated TJ Inventory v3 into {db_path.name}: {len(tj)} products inserted/updated.")
 
 
-# Example usage
+# --- Run standalone ---
 if __name__ == "__main__":
-    populate_tj_inventory_v3(
-        csv_path="../data/trader_joes_products_v3.csv",
-        engine_url="sqlite:///cookbook.db"
-    )
+    project_root = Path(__file__).resolve().parents[2]
+    csv_path = project_root / "data" / "trader_joes_products_v3.csv"
+    db_path = project_root / "team-no-food-waste-for-you.sqlite"
+
+    populate_tj_inventory_v3(csv_path, db_path)
