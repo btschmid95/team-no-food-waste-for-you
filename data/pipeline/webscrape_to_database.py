@@ -41,7 +41,7 @@ def load_data():
     except Exception as e:
         print(f"Scraping failed: {e}")
         recipe_csv = DATA_DIR / "trader_joes_recipes.csv"
-        products_csv = DATA_DIR / "trader_joes_products_v2.csv"
+        products_csv = DATA_DIR / "trader_joes_products_v3.csv"
 
         if recipe_csv.exists() and products_csv.exists():
             recipe_df = pd.read_csv(recipe_csv)
@@ -67,7 +67,9 @@ def populate_database(recipe_df, products_df):
                 price=price,
                 url=row.get("url"),
                 category=row.get("category"),
+                sub_category=row.get("sub_category"),
             )
+
             session.add(product)
 
     # --- Recipes ---

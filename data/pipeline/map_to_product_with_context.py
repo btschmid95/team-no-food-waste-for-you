@@ -396,9 +396,9 @@ if __name__ == '__main__':
 
     # Hard-coded paths relative to project root
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-    ingredients_path = os.path.join(project_root, "parsed_raw_ingredients_no_duplicates.csv")
+    ingredients_path = os.path.join(project_root, "parsed_raw_ingredients.csv")
     products_path = os.path.join(project_root, "data", "trader_joes_products_v3.csv")
-    output_path = os.path.join(project_root, "data", "mapped_ingredients_with_sub-context_brett_top_5_matches.csv")
+    output_path = os.path.join(project_root, "data", "mapped_all_ingredients_with_sub-context_brett_top_5_matches.csv")
 
     # If user provides args, override defaults
     if args.ingredients:

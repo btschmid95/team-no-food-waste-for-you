@@ -13,7 +13,7 @@ from setup.tables import Base, TJInventory, Recipe, RawIngredient
 from ingredient_parser import parse_ingredient
 
 DB_FILE = Path("team-no-food-waste-for-you.sqlite")
-OUTPUT_CSV = Path("parsed_raw_ingredients_no_duplicates.csv")
+OUTPUT_CSV = Path("parsed_raw_ingredients.csv")
 engine = create_engine(f"sqlite:///{DB_FILE}", echo=False)
 Session = sessionmaker(bind=engine)
 
@@ -100,7 +100,7 @@ def parse_all_raw_ingredients(limit=None):
     session.close()
 
     df = pd.DataFrame(results)
-    df = df.drop_duplicates(subset=["name"]).reset_index(drop=True)
+    #df = df.drop_duplicates(subset=["name"]).reset_index(drop=True)
     df.to_csv(OUTPUT_CSV, index=False)
     print(f"✅ Saved parsed ingredients to {OUTPUT_CSV}")
 
