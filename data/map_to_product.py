@@ -5,7 +5,7 @@ import argparse
 
 
 def map_to_product(ing_df, prod_df, output_path):
-    model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+    model = SentenceTransformer('sentence-transformers/all-MiniLM-L12-v2')
 
     ing_texts = ing_df['norm_name']
     prod_texts = prod_df['norm_name']
@@ -24,10 +24,13 @@ def map_to_product(ing_df, prod_df, output_path):
         prod_name = prod_df.iloc[idx]['product_name']
         unit = prod_df.iloc[idx]['unit']
         category = prod_df.iloc[idx]['category']
-        if score > 0.80:
+
+        if len(ing_name.split()) == 1:
+            matched_products.append((ing_name, '1 Each', np.nan))
+        elif score > 0.80:
             matched_products.append((prod_name, unit, category))
         else:
-            matched_products.append((ing_name, np.nan, category))
+            matched_products.append((ing_name, np.nan, np.nan))
 
     ing_df['matched_product'] = [x[0] for x in matched_products]
     ing_df['match_score'] = best_score
