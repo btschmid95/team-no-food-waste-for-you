@@ -40,7 +40,7 @@ class PantryManager:
                 date_purchased = date_purchased
             )
             self.session.add(new_pantry_item)
-            message = f"Added {amount} {unit} of {ingredient_name}"
+            message = f"Added {amount} {unit} of {ingredient}"
         
         self.session.commit()
         
