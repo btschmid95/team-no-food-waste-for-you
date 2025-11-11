@@ -24,7 +24,7 @@ class PantryManager:
         # Get ingredient name for return message
         ingredient = self.session.query(UsableIngredient).filter(UsableIngredient.ingredient_id == ingredient_id).first()
         if not ingredient:
-            return f"Error: Ingreident {ingredient} not found"
+            return f"Error: Ingredient {ingredient} not found"
         
         if pantry_item:
             # Item exists - add to existing amount
@@ -32,7 +32,7 @@ class PantryManager:
             message = f"Added {amount} {unit} to existing {ingredient.norm_name} (now {pantry_item.amount} {unit})"
         else:
             # Item doesn't exist - create new entry
-            date_purchased = datetime.now().isoformat()             # Or have user enter date?
+            date_purchased = datetime.now().isoformat()
             new_pantry_item = Pantry(
                 ingredient_id = ingredient_id,
                 amount = amount,
@@ -61,7 +61,7 @@ class PantryManager:
 
             return f"Removed {ingredient_name}"
         
-        return f"Pantry item with ID {ingredient_id} not found"
+        return f"Pantry item {ingredient_id} not found"
 
 
     def add_recipe_items(self, recipe_id):
@@ -72,7 +72,7 @@ class PantryManager:
 
         cookbook_entries = self.session.query(Cookbook).filter(Cookbook.recipe_id == recipe_id).all()
 
-        added_items = []
+        messages = []
         for entry in cookbook_entries:
             # Check if ingredient already exists in pantry with sufficient amount
             pantry_item = self.session.query(Pantry).filter(Pantry.ingredient_id == entry.ingredient_id).first()
@@ -91,6 +91,7 @@ class PantryManager:
                     if pantry_item:
                         # Add to existing pantry item
                         pantry_item.amount = (pantry_item.amount or 0) + tj_product.amount_id
+                        message = f"Added {tj_product.amount_id} {tj_product.unit} of {entry.ingredient.norm_name} from {tj_product.name} (now {pantry_item.amount} {tj_product.unit})"
                     else:
                         # Create new pantry item
                         date_purchased = datetime.now().isoformat()
@@ -101,27 +102,23 @@ class PantryManager:
                             date_purchased = date_purchased
                         )
                         self.session.add(pantry_item)
+                        message = f"Added {tj_product.amount_id} {tj_product.unit} of {entry.ingredient.norm_name} from {tj_product.name} to pantry"
                     
-                    added_items.append({
-                        'ingredient_name': entry.ingredient.norm_name,
-                        'tj_product': tj_product.name,
-                        'amount_added': tj_product.amount_id,
-                        'unit': tj_product.unit
-                    })
+                    messages.append(message)
 
         self.session.commit()
         
-        return f"Updated {added_items}"
+        return "\n".join(messages)
 
 
-    def update_recipe_items(self, recipe_id):
+    def delete_recipe_items(self, recipe_id):
         """ 
         Remove amounts of all ingredients for a recipe from the pantry.
         """
 
         cookbook_entries = self.session.query(Cookbook).filter(Cookbook.recipe_id == recipe_id).all()
 
-        updated_items = []
+        messages = []
         for entry in cookbook_entries:
             pantry_item = self.session.query(Pantry).filter(
                 Pantry.ingredient_id == entry.ingredient_id
@@ -134,16 +131,15 @@ class PantryManager:
                 if new_amount == 0:
                     # Used it all up - delete the pantry entry
                     self.session.delete(pantry_item)
+                    message = f"Removed all {entry.ingredient.norm_name} from pantry"
 
                 else:
                     # Still some left - update the amount
                     pantry_item.amount = new_amount
-                    updated_items.append({
-                        'ingredient_name': entry.ingredient.norm_name,
-                        'amount_removed': entry.amount_id,
-                        'unit': entry.unit,
-                    })
+                    message = f"Removed {entry.amount_id} {entry.unit} of {entry.ingredient.norm_name} (now {new_amount} {entry.unit})"
+
+                messages.append(message)
         
         self.session.commit()
 
-        return f"Updated {updated_items}"
+        return "\n".join(messages)
