@@ -25,10 +25,10 @@ def map_to_product(ing_df, prod_df, output_path):
         unit = prod_df.iloc[idx]['unit']
         category = prod_df.iloc[idx]['category']
 
-        if len(ing_name.split()) == 1:
-            matched_products.append((ing_name, '1 Each', np.nan))
-        elif score > 0.80:
+        if score > 0.80:
             matched_products.append((prod_name, unit, category))
+        # elif len(ing_name.split()) == 1:
+        #     matched_products.append((ing_name, '1 Each', np.nan))
         else:
             matched_products.append((ing_name, np.nan, np.nan))
 
