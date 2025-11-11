@@ -3,7 +3,6 @@ import sqlite3
 import re
 import nltk
 from nltk import word_tokenize, pos_tag
-# import inflect
 import argparse
 
 
@@ -73,16 +72,6 @@ def normalize(text):
         return 'all purpose flour'
 
     return ' '.join(keep) if keep else text.lower()
-
-    # # Get all nouns
-    # nouns = [word for word, pos in pos_tags if pos.startswith('NN')]
-
-    # Make all nouns singular  
-    # p = inflect.engine()
-    # singular_nouns = [p.singular_noun(word) or word for word in nouns]
-
-    # # Pull out main noun
-    # main_noun = singular_nouns[-1].lower()
     
 
 def normalize_csv(ingredients_file, output_path, column = 'name'):
@@ -102,4 +91,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     get_sql_table(args.input)
-    normalize_csv('ingredients.csv', args.output, args.column)
+    normalize_csv('trader_joes_products_v3.csv', args.output, args.column)
