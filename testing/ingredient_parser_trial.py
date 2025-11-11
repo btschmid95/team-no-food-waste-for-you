@@ -13,21 +13,27 @@ from setup.tables import Base, TJInventory, Recipe, RawIngredient
 from ingredient_parser import parse_ingredient
 
 DB_FILE = Path("team-no-food-waste-for-you.sqlite")
-OUTPUT_CSV = Path("parsed_raw_ingredients.csv")
+OUTPUT_CSV = Path("parsed_raw_ingredients_all_mini_with_recipe_context_v2.csv")
 engine = create_engine(f"sqlite:///{DB_FILE}", echo=False)
 Session = sessionmaker(bind=engine)
 
 def parse_all_raw_ingredients(limit=None):
     """
-    Pulls all raw ingredients from the database, parses them, and predicts top 3 sub-categories
-    along with their main categories.
+    Pulls all raw ingredients from the database, parses them, predicts top 3 sub-categories
+    along with their main categories, and adds recipe title and category for context.
     """
     session = Session()
-    raw_ingredients = session.query(RawIngredient).limit(limit).all() if limit else session.query(RawIngredient).all()
 
+    query = session.query(RawIngredient, Recipe.title, Recipe.category)\
+        .join(Recipe, RawIngredient.recipe_id == Recipe.recipe_id)
+
+    if limit:
+        query = query.limit(limit)
+
+    raw_ingredients = query.all()
     results = []
 
-    for raw in raw_ingredients:
+    for raw, recipe_title, recipe_category in raw_ingredients:
         original_text = raw.raw_text
         parsed = parse_ingredient(original_text)
 
@@ -67,12 +73,11 @@ def parse_all_raw_ingredients(limit=None):
         # ---- Predict top 3 sub-categories & main categories ----
         if name_text:
             preds = predict_category(name_text)  # Returns [(sub_category, score, main_category), ...]
-            # Fill top 3
             top_preds = preds[:3]
         else:
             top_preds = [(None, None, None)] * 3
 
-        # Unpack predictions
+        # ---- Build final row ----
         parsed_row = {
             "original_text": original_text,
             "name": name_text,
@@ -83,6 +88,8 @@ def parse_all_raw_ingredients(limit=None):
             "amount_confidence": amount_conf,
             "preparation": preparation_text,
             "preparation_confidence": preparation_conf,
+            "recipe_title": recipe_title,
+            "recipe_category": recipe_category,
             # Sub-category & main category predictions
             "likely_sub_category_1": top_preds[0][0],
             "likely_sub_category_1_score": top_preds[0][1],
@@ -100,9 +107,9 @@ def parse_all_raw_ingredients(limit=None):
     session.close()
 
     df = pd.DataFrame(results)
-    #df = df.drop_duplicates(subset=["name"]).reset_index(drop=True)
     df.to_csv(OUTPUT_CSV, index=False)
-    print(f"✅ Saved parsed ingredients to {OUTPUT_CSV}")
+    print(f"✅ Saved parsed ingredients to {OUTPUT_CSV} with recipe context")
+
 
 
 if __name__ == "__main__":
