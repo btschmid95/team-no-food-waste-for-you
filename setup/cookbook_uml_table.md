@@ -16,15 +16,11 @@ classDiagram
     +TEXT norm_name
   }
 
-  class quantity {
-    +INTEGER quantity_id
-    +TEXT amount_text
-  }
-
   class cookbook {
     +INTEGER recipe_id
     +INTEGER ingredient_id
-    +INTEGER quantity_id
+    +REAL amount
+    +TEXT unit
   }
 
   class pantry {
@@ -40,6 +36,7 @@ classDiagram
     +INTEGER product_id
     +TEXT name
     +TEXT norm_name
+    +REAL amount
     +TEXT unit
     +REAL price
     +TEXT url
@@ -72,7 +69,6 @@ classDiagram
   %% Relationships
   recipe --> cookbook : recipe_id
   usable_ingredients --> cookbook : ingredient_id
-  quantity --> cookbook : quantity_id
 
   usable_ingredients --> pantry : ingredient_id
 

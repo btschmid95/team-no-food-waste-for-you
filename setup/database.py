@@ -92,11 +92,11 @@ CREATE TABLE IF NOT EXISTS quantity(
 CREATE TABLE IF NOT EXISTS cookbook(
   recipe_id INTEGER NOT NULL,
   ingredient_id INTEGER NOT NULL,
-  quantity_id INTEGER,
-  PRIMARY KEY (recipe_id, ingredient_id, quantity_id),
+  amount REAL,            -- numeric quantity (nullable)
+  unit   TEXT,            -- unit text (nullable)
+  PRIMARY KEY (recipe_id, ingredient_id),
   FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE,
-  FOREIGN KEY (ingredient_id) REFERENCES usable_ingredients(ingredient_id) ON DELETE CASCADE,
-  FOREIGN KEY (quantity_id) REFERENCES quantity(quantity_id)
+  FOREIGN KEY (ingredient_id) REFERENCES usable_ingredients(ingredient_id) ON DELETE CASCADE
 );
 
 -- Pantry
@@ -121,6 +121,7 @@ CREATE TABLE IF NOT EXISTS tj_inventory (
   product_id   INTEGER PRIMARY KEY,
   name         TEXT NOT NULL,
   norm_name    TEXT,           -- normalized name to match usable_ingredients
+  amount       REAL,
   unit         TEXT,           -- package size text from CSV (e.g., '/1 Each', '/16 Oz')
   price        REAL,           -- numeric price (e.g., 3.99)
   url          TEXT,           -- if present in CSV
