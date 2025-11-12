@@ -2,7 +2,6 @@ import pandas as pd
 import sqlite3
 import re
 import nltk
-from nltk import word_tokenize, pos_tag
 import argparse
 
 
