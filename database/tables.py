@@ -97,7 +97,7 @@ class RecipeRecommended(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     recipe_id = Column(Integer, ForeignKey("recipe.recipe_id"))
     recommended_at = Column(DateTime, default=datetime.now)
-    score = Column(Float, nullable=True)  # waste reduction score, model score, etc.
+    score = Column(Float, nullable=True)  #### waste reduction score, model score, etc.
 
     recipe = relationship("Recipe")
 
