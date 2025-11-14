@@ -4,14 +4,10 @@ from sentence_transformers import SentenceTransformer, util
 import torch
 from collections import Counter
 
-# -------------------------------
-# 1. Load FoodKeeper data
-# -------------------------------
 fk_products = pd.read_excel("data/FoodKeeper-Data.xls", sheet_name="Product").fillna('')
 fk_categories = pd.read_excel("data/FoodKeeper-Data.xls", sheet_name="Category").fillna('')
 fk_products = fk_products.merge(fk_categories, left_on='Category_ID', right_on='ID', how='left')
 
-# Build combined text for matching
 def build_fk_text(row):
     parts = [str(row['Category_Name']), str(row['Subcategory_Name']), str(row['Name']), str(row['Keywords'])]
     return " ".join([p for p in parts if p])
@@ -27,10 +23,6 @@ fk_products['text'] = fk_products.apply(
 
 fk_products['Keywords'] = np.where(fk_products['Keywords'] == '', fk_products['Name'], fk_products['Keywords'])
 
-
-# -------------------------------
-# 2. TJ → FK category mapping
-# -------------------------------
 tj_to_fk_mapping = {
     "Fresh Fruits & Veggies": {
         "Fruits": ("Produce", "Fresh Fruits"),
@@ -108,49 +100,40 @@ tj_to_fk_mapping = {
 }
 
 def map_tj_to_fk_category(tj_category, tj_subcategory):
-    # Try exact match first
     cat_map = tj_to_fk_mapping.get(tj_category, {})
     if tj_subcategory in cat_map:
         return cat_map[tj_subcategory]
 
-    # Fallback: use the first FK category in that group
     if tj_category in tj_to_fk_mapping and len(tj_to_fk_mapping[tj_category]) > 0:
         first_fk = next(iter(tj_to_fk_mapping[tj_category].values()))
         return first_fk
 
-    # Ultimate fallback
+
     return ("Unknown", "")
 
-# -------------------------------
-# 3. Load TJ products
-# -------------------------------
+
 tj_df = pd.read_csv("data/trader_joes_products_v3.csv")
 tj_df = tj_df[['product_name', 'category', 'sub_category']]
 
-# Map TJ category → FK category
+
 tj_df[['FK_Category', 'FK_Subcategory']] = tj_df.apply(
     lambda r: pd.Series(map_tj_to_fk_category(r['category'], r['sub_category'])),
     axis=1
 )
 tj_df['product_name_lower'] = tj_df['product_name'].str.lower()
-# -------------------------------
-# 4. Embedding model setup
-# -------------------------------
+
 model = SentenceTransformer('all-MiniLM-L6-v2')
 fk_products['embedding'] = fk_products['text'].apply(lambda x: model.encode(x, convert_to_tensor=True))
 
-# -------------------------------
-# 5. Matching function
-# -------------------------------
 def match_fk_keywords(product_name_lower, fk_cat, fk_df, min_score=0):
-    # Filter only by FK category
+
     fk_filtered = fk_df[fk_df['Category_Name'] == fk_cat]
     if fk_filtered.empty:
         return None
 
     product_emb = model.encode(product_name_lower, convert_to_tensor=True)
 
-    # Compute cosine similarity
+
     sims = torch.tensor([util.cos_sim(product_emb, emb).item() for emb in fk_filtered['embedding']])
     best_idx = torch.argmax(sims).item()
     
@@ -159,10 +142,6 @@ def match_fk_keywords(product_name_lower, fk_cat, fk_df, min_score=0):
     
     return fk_filtered.iloc[best_idx]
 
-
-# -------------------------------
-# 6. Expiration parsing
-# -------------------------------
 def parse_max_expiration(max_val, metric):
     if pd.isna(max_val) or not metric:
         return None
@@ -177,7 +156,7 @@ def parse_max_expiration(max_val, metric):
         return pd.Timedelta(days=max_val*365)
     return None
 
-purchase_date = pd.Timestamp('2025-11-09')  # example
+purchase_date = pd.Timestamp('2025-11-09')
 
 def get_default_storage_type(fk_cat):
     """Return preferred storage type for a category."""
@@ -186,16 +165,13 @@ def get_default_storage_type(fk_cat):
 
     fk_cat_lower = fk_cat.lower()
 
-    # Frozen items always prioritize Freeze
     if "frozen" in fk_cat_lower:
         return ['Freeze', 'Refrigerate', 'Pantry']
 
-    # Explicit overrides for specific categories
     pantry_first = ["grains, beans & pasta", "shelf stable foods", "condiments, sauces & canned goods"]
     if fk_cat_lower in pantry_first:
         return ['Pantry', 'Refrigerate', 'Freeze']
 
-    # Default order
     return ['Refrigerate', 'Pantry', 'Freeze']
 
 def assign_expiration_priority(row):
@@ -205,17 +181,14 @@ def assign_expiration_priority(row):
     if fk_cat in category_defaults:
         defaults = category_defaults[fk_cat]
 
-        # Fill missing storage types using category averages
         for pref in ['Refrigerate', 'Pantry', 'Freeze']:
             if f"{pref}_Max" not in fk_row or pd.isna(fk_row.get(f"{pref}_Max")):
                 if pref in defaults:
                     fk_row[f"{pref}_Max"] = defaults[pref]['shelf_life_days']
                     fk_row[f"{pref}_Metric"] = 'Days'
 
-    # Determine storage preference order
     storage_order = get_default_storage_type(fk_cat) if fk_cat else ['Refrigerate', 'Pantry', 'Freeze']
 
-    # Assign expiration using the preferred storage order
     for col_prefix in storage_order:
         max_val_col = f"{col_prefix}_Max"
         metric_col = f"{col_prefix}_Metric"
@@ -236,8 +209,6 @@ def assign_expiration_priority(row):
 
     return pd.NA
 
-# Compute most common (mode) shelf life per category for backfill
-# --- Clean FK shelf life columns ---
 for prefix in ['Pantry', 'Refrigerate', 'Freeze',
                'Pantry_After_Opening', 'Refrigerate_After_Opening',
                'Refrigerate_After_Thawing', 'DOP_Pantry', 'DOP_Refrigerate', 'DOP_Freeze']:
@@ -246,7 +217,6 @@ for prefix in ['Pantry', 'Refrigerate', 'Freeze',
         if col in fk_products.columns:
             fk_products[col] = fk_products[col].replace('', pd.NA)
 
-# --- Compute more complete defaults ---
 
 def max_to_days(val, metric):
     if pd.isna(val) or not metric:
@@ -273,7 +243,6 @@ for cat in fk_products['Category_Name'].unique():
         metric_col = f"{col_prefix}_Metric"
         
         if max_col in cat_rows.columns and metric_col in cat_rows.columns:
-            # Convert all to days
             days_series = cat_rows.apply(lambda r: max_to_days(r[max_col], r[metric_col]), axis=1)
             avg_days = days_series.mean(skipna=True)
             
@@ -283,7 +252,6 @@ for cat in fk_products['Category_Name'].unique():
     if defaults:
         category_defaults[cat] = defaults
 
-# Print clean summary
 for cat, vals in category_defaults.items():
     print(cat)
     print(vals)
@@ -306,16 +274,13 @@ def safe_match_fk_keywords(product_name_lower, fk_cat, fk_df, min_score=0):
         return {**fk_row, "Category_Name": fk_cat, "Name": product_name_lower, "text": product_name_lower}
 
     return pd.NA
-# Apply FK matching
 tj_df['fk_match'] = tj_df.apply(
     lambda r: safe_match_fk_keywords(r['product_name_lower'], r['FK_Category'], fk_products),
     axis=1
 )
 
-# Apply expiration assignment
 tj_df['expiration_info'] = tj_df.apply(assign_expiration_priority, axis=1)
 
-# Expand dictionary into separate columns
 expiration_df = tj_df['expiration_info'].apply(lambda x: pd.Series(x) if pd.notna(x) else pd.Series({
     "shelf_life": pd.NA,
     "shelf_life_unit": pd.NA,
@@ -329,25 +294,18 @@ tj_df = pd.concat([tj_df, expiration_df], axis=1)
 tj_file = r"data\trader_joes_products_v3.csv"
 original_df = pd.read_csv(tj_file)
 
-# Create DataFrame with just product_name and calculated shelf life info
 shelf_life_df = tj_df[['product_name', 'shelf_life', 'shelf_life_unit']]
 
-# Merge into original CSV on product_name
 merged_df = original_df.merge(shelf_life_df, on='product_name', how='left')
 
-# Save the result
-output_file = r"data\trader_joes_products_v3_with_shelf_life.csv"
-merged_df.to_csv(output_file, index=False)
+output_file = r"data\trader_joes_products_v3_with_shelf_life.xlsx"
+merged_df.to_excel(output_file, index=False)
+
 
 print(f"Saved merged TJ products with shelf life to {output_file}")
 
-# Optional: quick check
 print(merged_df[['product_name', 'shelf_life', 'shelf_life_unit']].head(10))
 
-
-print(f"Saved TJ products with shelf life to {output_file}")
-
-# Quick check
 print(tj_df[['product_name', 'FK_Category', 'shelf_life', 'shelf_life_unit', 'Expiration_Date']].head(10))
 
 
