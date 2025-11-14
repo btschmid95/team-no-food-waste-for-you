@@ -12,7 +12,7 @@ REM 4. Install dependencies
 pip install -r requirements.txt
 
 REM 5. Initialize database
-python setup\init_db.py
+python -m setup.init_db
 
 REM 6. Run Streamlit app
 streamlit run app\streamlit_app.py

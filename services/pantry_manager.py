@@ -2,10 +2,12 @@ import pandas as pd
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ..setup.tables import UsableIngredient, Cookbook, Pantry, TJInventory
+from ..database.tables import UsableIngredient, Cookbook, Pantry, TJInventory
+from database.config import DATABASE_URL
+from sqlalchemy import create_engine
 
+engine = create_engine(DATABASE_URL)
 
-engine = create_engine('../testing/cookbook.db')
 Session = sessionmaker(bind = engine)
 session = Session()
 

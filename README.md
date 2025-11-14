@@ -7,7 +7,7 @@ Run the following:
 
 cd "path/to/streamlit_app" to set current directly
 then you can run streamlit run home.py
-.....\GitHub\team-no-food-waste-for-you\streamlit_app> streamlit run home.py
+.....\GitHub\team-no-food-waste-for-you\streamlit_app> streamlit run streamlit_app/streamlit_app.py
 
 start venv
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
