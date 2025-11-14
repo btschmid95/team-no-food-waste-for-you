@@ -211,3 +211,7 @@ __marimo__/
 checkpoints/
 *.ckpt
 *.pt
+*.safetensors
+data/mapped_ingredients_with_context_brett_top_5_matches.csv
+tj_product_classifier/checkpoint*/
+tj_product_classifier/checkpoint*/**

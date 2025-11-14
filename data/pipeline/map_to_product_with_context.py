@@ -171,7 +171,7 @@ from rapidfuzz import fuzz
 import re
 
 def map_to_product_top_n_sub_main_expanded(
-    ing_df, prod_df, output_path, tight_threshold=0.7, loose_threshold=0.7, top_n=6
+    ing_df, prod_df, output_path, tight_threshold=0.7, loose_threshold=0.7, top_n=3
 ):
     model = SentenceTransformer('all-mpnet-base-v2')
 
@@ -234,36 +234,17 @@ def map_to_product_top_n_sub_main_expanded(
         ing_name_clean = clean_text(row['name'])
         # Example: include recipe context in embedding
         #recipe_context = f"{row.get('recipe_title', '')}, {row.get('recipe_category', '')}"
+        ing_emb = model.encode(
+            f"{ing_name_clean} as an ingredient in the recipe '{row.get('recipe_title', '')}'"
+            f" categorized as '{row.get('recipe_category', '')}'",
+            convert_to_tensor=True
+        )
         ing_subcategories = [
             row.get('likely_sub_category_1'),
             row.get('likely_sub_category_2'),
             row.get('likely_sub_category_3')
         ]
 
-        # Filter out None/NaN and duplicates
-        ing_subcategories = [s for s in ing_subcategories if pd.notna(s)]
-        ing_subcategories = list(dict.fromkeys(ing_subcategories))  # preserve order, dedupe
-
-        # Phrase subcategory context
-        if len(ing_subcategories) == 1:
-            subcat_context = f"possibly belonging to the category '{ing_subcategories[0]}'"
-        elif len(ing_subcategories) == 2:
-            subcat_context = f"possibly belonging to categories '{ing_subcategories[0]}' or '{ing_subcategories[1]}'"
-        # elif len(ing_subcategories) >= 3:
-        #     subcat_context = (
-        #         f"possibly belonging to categories '{ing_subcategories[0]}', '{ing_subcategories[1]}', "
-        #         f"or '{ing_subcategories[2]}'"
-        #     )
-        else:
-            subcat_context = ""
-
-        # Build the full context string for embedding
-        context_text = (
-            f"{ing_name_clean} {subcat_context} "
-            f"as an ingredient in the recipe '{row.get('recipe_title', '')}' "
-            f"categorized as '{row.get('recipe_category', '')}'"
-        ).strip()
-        ing_emb = model.encode(context_text, convert_to_tensor=True)
         top_matches = []
 
         # --- Step 1: Iterate over sub-categories sequentially ---
@@ -366,50 +347,50 @@ def map_to_product_top_n_sub_main_expanded(
         match_scores.append("; ".join([f"{m['score']:.3f}" for m in top_matches]) if top_matches else np.nan)
 
     # Update dataframe and save
-    # ing_df['matched_products'] = matched_products
-    # ing_df['units'] = units_list
-    # ing_df['matched_categories'] = categories_list
-    # ing_df['match_scores'] = match_scores
-    # for idx, row in ing_df.iterrows():
-    #     if pd.isna(row['matched_products']):
-    #         similar_matches = []
+    ing_df['matched_products'] = matched_products
+    ing_df['units'] = units_list
+    ing_df['matched_categories'] = categories_list
+    ing_df['match_scores'] = match_scores
+    for idx, row in ing_df.iterrows():
+        if pd.isna(row['matched_products']):
+            similar_matches = []
 
-    #         # collect all similar ingredients
-    #         for _, mapped_row in ing_df.iterrows():
-    #             if pd.notna(mapped_row['matched_products']):
-    #                 similarity = token_overlap_score(clean_text(row['name']), clean_text(mapped_row['name']))
-    #                 if similarity >= 0.66:
-    #                     products = mapped_row['matched_products'].split("; ")
-    #                     units = mapped_row['units'].split("; ") if pd.notna(mapped_row['units']) else [""]*len(products)
-    #                     categories = mapped_row['matched_categories'].split("; ") if pd.notna(mapped_row['matched_categories']) else [""]*len(products)
-    #                     scores = mapped_row['match_scores'].split("; ") if pd.notna(mapped_row['match_scores']) else ["0"]*len(products)
-    #                     for p, u, c, s in zip(products, units, categories, scores):
-    #                         similar_matches.append((p, u, c, s))
+            # collect all similar ingredients
+            for _, mapped_row in ing_df.iterrows():
+                if pd.notna(mapped_row['matched_products']):
+                    similarity = token_overlap_score(clean_text(row['name']), clean_text(mapped_row['name']))
+                    if similarity >= 0.66:
+                        products = mapped_row['matched_products'].split("; ")
+                        units = mapped_row['units'].split("; ") if pd.notna(mapped_row['units']) else [""]*len(products)
+                        categories = mapped_row['matched_categories'].split("; ") if pd.notna(mapped_row['matched_categories']) else [""]*len(products)
+                        scores = mapped_row['match_scores'].split("; ") if pd.notna(mapped_row['match_scores']) else ["0"]*len(products)
+                        for p, u, c, s in zip(products, units, categories, scores):
+                            similar_matches.append((p, u, c, s))
 
-    #         if similar_matches:
-    #             # count frequency of products
-    #             from collections import Counter
-    #             prod_counter = Counter([p for p, _, _, _ in similar_matches])
-    #             top_products = [p for p, _ in prod_counter.most_common(top_n)]
+            if similar_matches:
+                # count frequency of products
+                from collections import Counter
+                prod_counter = Counter([p for p, _, _, _ in similar_matches])
+                top_products = [p for p, _ in prod_counter.most_common(top_n)]
 
-    #             # reconstruct lists preserving order by frequency
-    #             final_matches = []
-    #             final_units = []
-    #             final_categories = []
-    #             final_scores = []
-    #             for p in top_products:
-    #                 for mp, u, c, s in similar_matches:
-    #                     if mp == p:
-    #                         final_matches.append(mp)
-    #                         final_units.append(u)
-    #                         final_categories.append(c)
-    #                         final_scores.append(s)
-    #                         break  # only take first occurrence for each product
+                # reconstruct lists preserving order by frequency
+                final_matches = []
+                final_units = []
+                final_categories = []
+                final_scores = []
+                for p in top_products:
+                    for mp, u, c, s in similar_matches:
+                        if mp == p:
+                            final_matches.append(mp)
+                            final_units.append(u)
+                            final_categories.append(c)
+                            final_scores.append(s)
+                            break  # only take first occurrence for each product
 
-    #             ing_df.at[idx, 'matched_products'] = "; ".join(final_matches)
-    #             ing_df.at[idx, 'units'] = "; ".join(final_units)
-    #             ing_df.at[idx, 'matched_categories'] = "; ".join(final_categories)
-    #             ing_df.at[idx, 'match_scores'] = "; ".join(final_scores)
+                ing_df.at[idx, 'matched_products'] = "; ".join(final_matches)
+                ing_df.at[idx, 'units'] = "; ".join(final_units)
+                ing_df.at[idx, 'matched_categories'] = "; ".join(final_categories)
+                ing_df.at[idx, 'match_scores'] = "; ".join(final_scores)
 
     ing_df.to_csv(output_path, index=False)
     print(f"✅ Saved mapped file to: {output_path}")
@@ -432,7 +413,7 @@ if __name__ == '__main__':
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
     ingredients_path = os.path.join(project_root, "parsed_raw_ingredients_all_mini_with_recipe_context_v2.csv")
     products_path = os.path.join(project_root, "data", "trader_joes_products_v3.csv")
-    output_path = os.path.join(project_root, "data", "mapped_all_ingredients_mini_with_sub-context_brett_top_5_matches_with_enhanced-context_v2.csv")
+    output_path = os.path.join(project_root, "data", "mapped_all_ingredients_mini_with_sub-context_brett_top_5_matches_with_enhanced-context_v3.csv")
 
     # If user provides args, override defaults
     if args.ingredients:
