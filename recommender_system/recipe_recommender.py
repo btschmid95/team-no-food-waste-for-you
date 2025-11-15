@@ -1,60 +1,127 @@
-import numpy as np
-import pandas as pd
-from sklearn.linear_model import SGDRegressor
-from sklearn.preprocessing import StandardScaler
+from sqlalchemy.orm import Session
+from services.pantry_manager import PantryManager
+from database.tables import Recipe, PantryItem
+from datetime import datetime
 
-class HybridRecipeRecommender:
-    def __init__(self, alpha=0.5, beta=0.3, gamma=0.2, random_state=42):
-        self.alpha = alpha
-        self.beta = beta
-        self.gamma = gamma
-        
-        self.model = SGDRegressor(random_state=random_state)
-        self.scaler = StandardScaler()
-        self._model_initialized = False
+class RecipeRecommender:
 
-    def content_score(self, recipe, pantry):
-        waste_score = 0
-        for ing in recipe['ingredients']:
-            if ing in pantry:
-                days_to_exp = pantry[ing]['days_to_exp']
-                waste_score += np.exp(-0.1 * days_to_exp)
-        waste_score /= max(len(recipe['ingredients']), 1)
-        
-        ## gotta adjust that ##
-        preference_score = 1.0 if recipe['category'] in ['Dinner', 'Lunch'] else 0.5
-        
-        target_calories = 2000
-        calories = recipe.get('calories', 500)
-        overproduction_risk = max(0, (calories - target_calories) / target_calories)
-        
-        score = self.alpha * waste_score + self.beta * preference_score - self.gamma * overproduction_risk
-        return score
+    def __init__(self, session: Session):
+        self.session = session
+        self.pm = PantryManager(session)
 
-    def recommend(self, recipes_df, pantry, top_k=10):
-        recipes_df['content_score'] = recipes_df.apply(lambda r: self.content_score(r, pantry), axis=1)
-        
-        if self._model_initialized:
-            X = recipes_df[['content_score']].values
-            X_scaled = self.scaler.transform(X)
-            adjustment = self.model.predict(X_scaled)
-            recipes_df['final_score'] = recipes_df['content_score'] + adjustment
-        else:
-            recipes_df['final_score'] = recipes_df['content_score']
-        
-        return recipes_df.sort_values('final_score', ascending=False).head(top_k)
-
-    def update_feedback(self, recipes_df, feedback):
+    # Calculate waste score for all pantry items
+    def calculate_item_scores(self, virtual_state=None):
         """
-        feedback: dict of recipe_id -> liked (1) / skipped (0)
+        Returns {product_id: waste_score}
+        If virtual_state is provided, compute scores from that.
         """
-        X = recipes_df.loc[recipes_df.index.isin(feedback.keys()), ['content_score']].values
-        y = np.array([feedback[rid] for rid in recipes_df.index if rid in feedback])
-        
-        X_scaled = self.scaler.fit_transform(X) if not self._model_initialized else self.scaler.transform(X)
-        
-        if not self._model_initialized:
-            self.model.partial_fit(X_scaled, y)
-            self._model_initialized = True
+        if virtual_state is None:
+            items = self.pm.get_all_items()
         else:
-            self.model.partial_fit(X_scaled, y)
+            items = self.pm.import_state(virtual_state)
+
+        return {
+            item["product_id"]: self.pm.compute_waste_score_from_snapshot(item)
+            for item in items
+        }
+
+    # Score a single recipe
+    def score_recipe(self, recipe: Recipe, item_scores: dict, virtual_state=None):
+        total_score = 0
+        matched = 0
+        missing = 0
+        external = 0
+
+        for ing in recipe.ingredients:
+
+            if not ing.matched_product:
+                external += 1
+                continue
+
+            product_id = ing.matched_product_id
+            recipe_amt = ing.amount or 0
+
+            # -------------------------------
+            # Get pantry amount from virtual state
+            # -------------------------------
+            if virtual_state is None:
+                pantry_item = (
+                    self.session.query(PantryItem)
+                    .filter_by(product_id=product_id)
+                    .first()
+                )
+                pantry_amt = pantry_item.amount if pantry_item else 0
+            else:
+                pantry_amt = virtual_state.get(product_id, {}).get("amount", 0)
+
+            if pantry_amt <= 0:
+                missing += 1
+                continue
+
+            matched += 1
+
+            TWRS = item_scores.get(product_id, 0)
+
+            utilization_ratio = min(recipe_amt / pantry_amt, 1.0) if pantry_amt else 0.0
+            item_contribution = TWRS * utilization_ratio
+            total_score += item_contribution
+
+            if recipe_amt > pantry_amt:
+                missing += 1
+
+        return {
+            "recipe_id": recipe.recipe_id,
+            "title": recipe.title,
+            "score": total_score,
+            "matched": matched,
+            "missing": missing,
+            "external": external,
+        }
+
+    # -------------------------------------------------
+    # Recommend top recipes
+    # -------------------------------------------------
+    def recommend_recipes(self, limit=5, max_missing=1, virtual_pantry_state=None):
+        item_scores = self.calculate_item_scores(virtual_pantry_state)
+        recipes = self.session.query(Recipe).all()
+
+        scored = [
+            self.score_recipe(r, item_scores, virtual_pantry_state)
+            for r in recipes
+        ]
+
+        filtered = [s for s in scored if s["missing"] <= max_missing]
+        ranked = sorted(filtered, key=lambda x: x["score"], reverse=True)
+        return ranked[:limit]
+
+    # -------------------------------------------------
+    # Explain rationale
+    # -------------------------------------------------
+    def get_rationale(self, recipe_id):
+        recipe = (
+            self.session.query(Recipe)
+            .filter_by(recipe_id=recipe_id)
+            .first()
+        )
+
+        rationale = []
+        for ing in recipe.ingredients:
+            exp_days = None
+
+            if ing.matched_product:
+                pantry_item = (
+                    self.session.query(PantryItem)
+                    .filter_by(product_id=ing.matched_product_id)
+                    .first()
+                )
+                if pantry_item and pantry_item.expiration_date:
+                    exp_days = (pantry_item.expiration_date - datetime.now()).days
+
+            rationale.append({
+                "ingredient": ing.name,
+                "matched_product": ing.matched_product.name if ing.matched_product else None,
+                "expires_in_days": exp_days,
+                "is_external": ing.matched_product is None,
+            })
+
+        return rationale
