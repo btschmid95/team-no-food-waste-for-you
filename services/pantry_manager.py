@@ -1,8 +1,9 @@
 import pandas as pd
 from datetime import datetime
+import math
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ..database.tables import UsableIngredient, Cookbook, Pantry, TJInventory
+from ..database.tables import Cookbook, Ingredient, Pantry, TJInventory, UsableIngredient
 from database.config import DATABASE_URL
 from sqlalchemy import create_engine
 
@@ -66,15 +67,15 @@ class PantryManager:
         return f"Pantry item {ingredient_id} not found"
 
 
-    def add_recipe_items(self, recipe_id):
+    def get_needed_recipe_items(self, recipe_id):
         """
         Check if ingredients are in pantry first. If ingredient is not there, or not enough of it, add 
-        ingredient to pantry. 
+        ingredient to grocery list. Return grocery list 
         """
 
         cookbook_entries = self.session.query(Cookbook).filter(Cookbook.recipe_id == recipe_id).all()
 
-        messages = []
+        grocery_list = []
         for entry in cookbook_entries:
             # Check if ingredient already exists in pantry with sufficient amount
             pantry_item = self.session.query(Pantry).filter(Pantry.ingredient_id == entry.ingredient_id).first()
@@ -82,35 +83,120 @@ class PantryManager:
             has_enough = pantry_item and pantry_item.amount >= entry.amount_id
             
             if not has_enough:
+                # Calculate how much more we need
+                current_amount = pantry_item.amount if pantry_item else 0
+                needed_amount = entry.amount_id - current_amount
+
                 # Either don't have it, or don't have enough - get from TJ inventory
                 tj_product = self.session.query(TJInventory).join(
                     TJInventory.ingredients
                 ).filter(
                     UsableIngredient.ingredient_id == entry.ingredient_id
                 ).first()
-                
-                if tj_product:
-                    if pantry_item:
-                        # Add to existing pantry item
-                        pantry_item.amount = (pantry_item.amount or 0) + tj_product.amount_id
-                        message = f"Added {tj_product.amount_id} {tj_product.unit} of {entry.ingredient.norm_name} from {tj_product.name} (now {pantry_item.amount} {tj_product.unit})"
-                    else:
-                        # Create new pantry item
-                        date_purchased = datetime.now().isoformat()
-                        pantry_item = Pantry(
-                            ingredient_id = entry.ingredient_id,
-                            amount = tj_product.amount_id,
-                            unit = tj_product.unit,
-                            date_purchased = date_purchased
-                        )
-                        self.session.add(pantry_item)
-                        message = f"Added {tj_product.amount_id} {tj_product.unit} of {entry.ingredient.norm_name} from {tj_product.name} to pantry"
-                    
-                    messages.append(message)
 
+                if tj_product:
+                    grocery_item = {
+                        'ingredient_name': entry.ingredient.norm_name,
+                        'product_name': tj_product.name,
+                        'amount': tj_product.amount_id,
+                        'unit': tj_product.unit,
+                        'needed_amount': needed_amount
+                    }
+                    grocery_list.append(grocery_item)
+                
+        return grocery_list
+    
+
+    def get_grocery_list(self, recipe_id_list):
+        """
+        Get combined grocery list for multiple recipes, combining duplicate products and only buying what's needed.
+        """
+
+        all_items = []
+        for recipe_id in recipe_id_list:
+            items = self.get_needed_recipe_items(recipe_id)
+            all_items.extend(items)
+
+        # Combine duplicates by product name, summing needed amounts
+        combined_items = {}
+        for item in all_items:
+            product_name = item['product_name']
+            
+            if product_name in combined_items:
+                # Product already in list, add to needed amount
+                combined_items[product_name]['total_needed'] += item['needed_amount']
+            else:
+                # New product, add to combined list
+                combined_items[product_name] = {
+                    'ingredient_name': item['ingredient_name'],
+                    'product_name': item['product_name'],
+                    'amount': item['amount'],  # Amount per product
+                    'unit': item['unit'],
+                    'total_needed': item['needed_amount']
+                }
+        
+        # Calculate combined grocery list
+        combined_grocery_list = []
+        for item in combined_items.values():        
+            quantity = math.ceil(item['total_needed'] / item['amount'])
+            
+            combined_grocery_list.append({
+                'ingredient_name': item['ingredient_name'],
+                'product_name': item['product_name'],
+                'amount': item['amount'],
+                'unit': item['unit'],
+                'quantity': quantity,
+                'total_needed': item['total_needed']
+            })
+        
+        return combined_grocery_list
+    
+
+    def add_grocery_list(self, grocery_list):
+        """
+        Add items from grocery list to pantry. If ingredient already exists in pantry, add to existing amount. If not,
+        create new pantry entry.
+        """
+
+        messages = []
+        for item in grocery_list:
+            total_amount = item['quantity'] * item['amount']
+            
+            ingredient = self.session.query(Ingredient).filter(
+                Ingredient.norm_name == item['ingredient_name']
+            ).first()
+            
+            if not ingredient:
+                messages.append(f"Warning: Could not find ingredient {item['ingredient_name']}")
+                continue
+            
+            # Check if ingredient already exists in pantry
+            pantry_item = self.session.query(Pantry).filter(
+                Pantry.ingredient_id == ingredient.id
+            ).first()
+            
+            if pantry_item:
+                # Add to existing pantry item
+                old_amount = pantry_item.amount
+                pantry_item.amount += total_amount
+                message = f"Updated {item['ingredient_name']}: {old_amount} → {pantry_item.amount} {item['unit']}"
+            else:
+                # Create new pantry item
+                date_purchased = datetime.now().isoformat()
+                pantry_item = Pantry(
+                    ingredient_id = ingredient.id,
+                    amount = total_amount,
+                    unit = item['unit'],
+                    date_purchased = date_purchased
+                )
+                self.session.add(pantry_item)
+                message = f"Added {total_amount} {item['unit']} of {item['ingredient_name']} to pantry"
+            
+            messages.append(message)
+        
         self.session.commit()
         
-        return "\n".join(messages)
+        return messages
 
 
     def delete_recipe_items(self, recipe_id):
