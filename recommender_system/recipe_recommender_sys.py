@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from services.pantry_manager import PantryManager
+from recommender_system.recipe_recommender_sys import RecipeRecommender
 from database.tables import Recipe, PantryItem
 from datetime import datetime
 
@@ -41,9 +42,7 @@ class RecipeRecommender:
             product_id = ing.matched_product_id
             recipe_amt = ing.amount or 0
 
-            # -------------------------------
             # Get pantry amount from virtual state
-            # -------------------------------
             if virtual_state is None:
                 pantry_item = (
                     self.session.query(PantryItem)
@@ -78,9 +77,7 @@ class RecipeRecommender:
             "external": external,
         }
 
-    # -------------------------------------------------
     # Recommend top recipes
-    # -------------------------------------------------
     def recommend_recipes(self, limit=5, max_missing=1, virtual_pantry_state=None):
         item_scores = self.calculate_item_scores(virtual_pantry_state)
         recipes = self.session.query(Recipe).all()
@@ -94,9 +91,7 @@ class RecipeRecommender:
         ranked = sorted(filtered, key=lambda x: x["score"], reverse=True)
         return ranked[:limit]
 
-    # -------------------------------------------------
     # Explain rationale
-    # -------------------------------------------------
     def get_rationale(self, recipe_id):
         recipe = (
             self.session.query(Recipe)
