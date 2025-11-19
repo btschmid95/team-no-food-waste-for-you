@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from services.recipe_manager import RecipeManager
 
 
 def get_forecast_waste_by_date(pantry_df):
@@ -18,32 +19,6 @@ def get_forecast_waste_by_date(pantry_df):
     )
     return daily
 
-
-def get_planned_consumption_by_date(engine):
-    """
-    Use recipe_selected + cookbook tables to compute how much
-    is planned to be consumed each day.
-    """
-    # Which recipes were selected, and when
-    selected = pd.read_sql("SELECT * FROM recipe_selected;", engine)
-    selected["date"] = pd.to_datetime(selected["sel_ts"]).dt.date
-
-    # Ingredient amounts per recipe
-    cookbook = pd.read_sql("SELECT * FROM cookbook;", engine)
-
-    # Join recipe selections with their ingredient amounts
-    df = selected.merge(cookbook, on="recipe_id", how="left")
-
-    df["date"] = pd.to_datetime(df["date"])
-
-    daily = (
-        df.groupby("date", as_index=False)["amount"]
-          .sum()
-          .rename(columns={"amount": "planned_consumption"})
-    )
-    return daily
-
-
 def plot_consumption_vs_waste(pantry_df, engine):
     """
     Visual 2: Dual-axis line chart:
@@ -53,7 +28,8 @@ def plot_consumption_vs_waste(pantry_df, engine):
     forecast_df = get_forecast_waste_by_date(pantry_df)
 
     # Right axis: planned consumption from recipe schedule
-    cons_df = get_planned_consumption_by_date(engine)
+    #cons_df = get_planned_consumption_by_date(engine)
+    cons_df = RecipeManager.get_planned_consumption_by_date()
 
     # Combine on date
     df = pd.merge(forecast_df, cons_df, on="date", how="outer").sort_values("date")

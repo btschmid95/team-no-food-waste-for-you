@@ -1,5 +1,5 @@
 # services/recipe_manager.py
-
+import pandas as pd
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from recommender_system.recipe_recommender_sys import RecipeRecommender
@@ -13,15 +13,12 @@ from database.tables import (
     RecipeSelected,
 )
 
-
 class RecipeManager:
 
     def __init__(self, session: Session):
         self.session = session
 
-    # ---------------------------------------------------------
     # 💡 1. Fetching Recipes & Ingredients
-    # ---------------------------------------------------------
     def get_all_recipes(self):
         return self.session.query(Recipe).all()
 
@@ -79,9 +76,57 @@ class RecipeManager:
 
         # Full FEFO-based consumption handled by PantryManager
         pm = PantryManager(self.session)
-        pm.apply_recipe(recipe_id)  # <-- one clean call
+        pm.apply_recipe(recipe_id)
 
         planned.cooked_at = datetime.now()
         self.session.commit()
 
         return planned
+    
+    def get_planned_consumption_by_date(self):
+        """
+        Returns a DataFrame:
+        date | planned_consumption
+        """
+
+        # 1. Load all planned recipes
+        selections = (
+            self.session.query(RecipeSelected)
+            .filter(RecipeSelected.planned_for.isnot(None))
+            .all()
+        )
+
+        if not selections:
+            return pd.DataFrame(columns=["date", "planned_consumption"])
+
+        rows = []
+
+        for sel in selections:
+            recipe_id = sel.recipe_id
+            date = sel.planned_for.date()
+
+            # 2. Ingredients for this recipe
+            ingredients = self.get_ingredients_for_recipe(recipe_id)
+
+            for ing in ingredients:
+                if ing.amount is None:
+                    continue
+
+                rows.append({
+                    "date": date,
+                    "amount": ing.amount
+                })
+
+        df = pd.DataFrame(rows)
+
+        if df.empty:
+            return pd.DataFrame(columns=["date", "planned_consumption"])
+
+        # 3. Aggregate by date
+        daily = (
+            df.groupby("date", as_index=False)["amount"]
+              .sum()
+              .rename(columns={"amount": "planned_consumption"})
+        )
+
+        return daily

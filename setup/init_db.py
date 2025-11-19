@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine
+from pathlib import Path
 from database.tables import create_all_tables
 from database.config import DB_FILE, DATABASE_URL
 
