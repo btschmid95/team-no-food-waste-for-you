@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from datetime import datetime
 
 def compute_waste_summary_from_events(engine):
@@ -45,6 +46,22 @@ def compute_waste_summary_from_events(engine):
 
     return summary
 
+def get_forecast_waste_by_date(pantry_df):
+    """
+    From pantry_df, compute how much is expiring each day.
+    """
+    df = pantry_df.copy()
+    df["expiration_date"] = pd.to_datetime(df["expiration_date"], errors="coerce")
+
+    df = df[df["expiration_date"].notna()]
+
+    daily = (
+        df.groupby("expiration_date", as_index=False)["amount"]
+          .sum()
+          .rename(columns={"expiration_date": "date", "amount": "forecast_waste"})
+    )
+    return daily
+
 def load_pantry_with_category(engine):
     """
     Query pantry + TJInventory categories for analytics.
@@ -84,4 +101,28 @@ def compute_expiry_buckets(pantry_df, today=None):
     df["expiry_bucket"] = pd.cut(df["days_to_expiry"], bins=bins, labels=labels)
 
     return df
+
+def load_recipe_product_data(engine):
+    """
+    Load recipe → ingredient → product mappings.
+    Only includes ingredients that have a matched_product_id.
+    """
+    recipes = pd.read_sql("""
+        SELECT recipe_id, title, category
+        FROM recipe;
+    """, engine)
+
+    # Includes matched_product_id link
+    ing = pd.read_sql("""
+        SELECT ingredient_id, recipe_id, matched_product_id
+        FROM ingredient
+        WHERE matched_product_id IS NOT NULL;
+    """, engine)
+
+    products = pd.read_sql("""
+        SELECT product_id, name, category, sub_category
+        FROM tj_inventory;
+    """, engine)
+
+    return recipes, products, ing
 

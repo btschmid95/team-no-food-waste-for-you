@@ -2,7 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from visuals.pantry_analytics import compute_waste_summary_from_pantry
 
-def plot_waste_waterfall(waste_summary):
+def plot_waste_waterfall(engine):
+    from visuals.pantry_analytics import compute_waste_summary_from_events
+
+    waste_summary = compute_waste_summary_from_events(engine)
     """
     Visual 3:
     Waterfall-style bar chart of realized vs avoided waste by category.

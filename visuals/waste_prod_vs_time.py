@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
-from visuals.pantry_analytics import compute_expiry_buckets
 
-def plot_expiring_food_histogram(pantry_df):
+def plot_expiring_food_histogram(engine):
+    from visuals.pantry_analytics import load_pantry_with_category, compute_expiry_buckets
+
+    pantry_df = load_pantry_with_category(engine)
     df = compute_expiry_buckets(pantry_df)
     df["category"] = df["category"].fillna("Unknown")
 

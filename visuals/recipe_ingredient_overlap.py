@@ -1,100 +1,94 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import networkx as nx
+from pantry_analytics import load_recipe_product_data
 
-def load_recipe_ingredient_data(engine):
+def build_recipe_product_graph(recipes_df, products_df, recipe_ing_map):
     """
-    Load recipes, ingredients, and their relationships from the database.
-    """
-    recipes = pd.read_sql("SELECT recipe_id, title, category FROM recipe;", engine)
-    ingredients = pd.read_sql(
-        "SELECT ingredient_id, norm_name FROM usable_ingredients;", engine
-    )
-    inv_idx = pd.read_sql(
-        "SELECT ingredient_id, recipe_id FROM ingredient_recipe_inverted_index;",
-        engine,
-    )
-
-    return recipes, ingredients, inv_idx
-
-
-def build_recipe_ingredient_graph(recipes_df, ingredients_df, inv_idx_df):
-    """
-    Build a NetworkX graph of recipes and ingredients.
+    Build a graph where:
+      - Recipe nodes connect to Product nodes
     """
     G = nx.Graph()
 
     # Add recipe nodes
-    for _, row in recipes_df.iterrows():
+    for _, r in recipes_df.iterrows():
         G.add_node(
-            f"recipe_{row['recipe_id']}",
+            f"recipe_{r.recipe_id}",
             type="recipe",
-            label=row["title"],
-            category=row.get("category", None),
+            label=r.title,
+            category=r.category
         )
 
-    # Add ingredient nodes
-    for _, row in ingredients_df.iterrows():
+    # Add product nodes
+    for _, p in products_df.iterrows():
         G.add_node(
-            f"ingredient_{row['ingredient_id']}",
-            type="ingredient",
-            label=row["norm_name"],
+            f"product_{p.product_id}",
+            type="product",
+            label=p.name,
+            category=p.category
         )
 
-    # Add edges between recipes and ingredients
-    for _, row in inv_idx_df.iterrows():
-        r_node = f"recipe_{row['recipe_id']}"
-        i_node = f"ingredient_{row['ingredient_id']}"
-        if r_node in G.nodes and i_node in G.nodes:
-            G.add_edge(r_node, i_node)
+    # Add edges: recipe → product
+    for _, row in recipe_ing_map.iterrows():
+        rec = f"recipe_{row.recipe_id}"
+        prod = f"product_{row.matched_product_id}"
+
+        if rec in G.nodes and prod in G.nodes:
+            G.add_edge(rec, prod)
 
     return G
 
 
 def plot_recipe_overlap_network(G, sample_n_recipes=30):
     """
-    Visual 4:
-    Plot a recipe–ingredient overlap network.
+    Plot a recipe–product overlap network (Visual 4).
 
     Nodes:
       - Squares = recipes
-      - Circles = ingredients
+      - Circles = products
     """
     H = G.copy()
 
-    # Recipe sample (to limit graph output, OPTIONAL)
+    # Optionally limit to a sample of recipes
     recipe_nodes = [n for n, d in H.nodes(data=True) if d.get("type") == "recipe"]
+
     if sample_n_recipes is not None and len(recipe_nodes) > sample_n_recipes:
-        sampled_recipes = set(recipe_nodes[:sample_n_recipes])
+        sampled = set(recipe_nodes[:sample_n_recipes])
         neighbors = set()
-        for r in sampled_recipes:
+        for r in sampled:
             neighbors.update(H.neighbors(r))
-        keep_nodes = sampled_recipes | neighbors
-        H = H.subgraph(keep_nodes).copy()
+        keep = sampled | neighbors
+        H = H.subgraph(keep).copy()
 
     # Layout
     pos = nx.spring_layout(H, k=0.3, iterations=50)
 
     recipe_nodes = [n for n, d in H.nodes(data=True) if d.get("type") == "recipe"]
-    ingredient_nodes = [n for n, d in H.nodes(data=True) if d.get("type") == "ingredient"]
+    product_nodes = [n for n, d in H.nodes(data=True) if d.get("type") == "product"]
 
-    # Visualize
-    fig, ax = plt.subplots(figsize=(10, 8))
+    # Plot
+    fig, ax = plt.subplots(figsize=(12, 9))
 
     nx.draw_networkx_nodes(
-        H, pos, nodelist=recipe_nodes, node_shape="s", node_size=400, label="Recipes", ax=ax
+        H, pos, nodelist=recipe_nodes, node_shape="s",
+        node_size=450, label="Recipes", ax=ax
     )
     nx.draw_networkx_nodes(
-        H, pos, nodelist=ingredient_nodes, node_shape="o", node_size=200, alpha=0.6, label="Ingredients", ax=ax
+        H, pos, nodelist=product_nodes, node_shape="o",
+        node_size=250, alpha=0.7, label="Products", ax=ax
     )
+
     nx.draw_networkx_edges(H, pos, alpha=0.3, ax=ax)
 
-    # Labels
-    labels = {n: d["label"] for n, d in H.nodes(data=True) if d.get("type") == "recipe"}
+    # Label only recipe nodes (products get messy)
+    labels = {n: d["label"] for n, d in H.nodes(data=True)
+              if d.get("type") == "recipe"}
+
     nx.draw_networkx_labels(H, pos, labels=labels, font_size=8, ax=ax)
 
-    ax.set_title("Recipe–Ingredient Overlap Network")
+    ax.set_title("Recipe–Product Overlap Network")
     ax.set_axis_off()
     ax.legend()
     fig.tight_layout()
+
     return fig

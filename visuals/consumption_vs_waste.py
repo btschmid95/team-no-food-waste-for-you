@@ -2,57 +2,40 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from services.recipe_manager import RecipeManager
 
-
-def get_forecast_waste_by_date(pantry_df):
-    """
-    From pantry_df, compute how much is expiring each day.
-    """
-    df = pantry_df.copy()
-    df["expiration_date"] = pd.to_datetime(df["expiration_date"], errors="coerce")
-
-    df = df[df["expiration_date"].notna()]
-
-    daily = (
-        df.groupby("expiration_date", as_index=False)["amount"]
-          .sum()
-          .rename(columns={"expiration_date": "date", "amount": "forecast_waste"})
-    )
-    return daily
-
-def plot_consumption_vs_waste(pantry_df, engine):
+def plot_consumption_vs_waste(engine):
     """
     Visual 2: Dual-axis line chart:
     Variables: Consumption via Recipe at X time, Waste, vs. Time
     """
-    # Left axis: forecast waste from pantry
+    from visuals.pantry_analytics import (
+        get_forecast_waste_by_date,
+        load_pantry_with_category
+    )
+
+    # Load pantry from DB
+    pantry_df = load_pantry_with_category(engine)
+
+    # Left axis: forecast waste
     forecast_df = get_forecast_waste_by_date(pantry_df)
 
-    # Right axis: planned consumption from recipe schedule
-    #cons_df = get_planned_consumption_by_date(engine)
+    # Right axis: planned consumption (from recipes)
     cons_df = RecipeManager.get_planned_consumption_by_date()
 
-    # Combine on date
+    # Merge timelines
     df = pd.merge(forecast_df, cons_df, on="date", how="outer").sort_values("date")
     df["forecast_waste"] = df["forecast_waste"].fillna(0)
     df["planned_consumption"] = df["planned_consumption"].fillna(0)
 
     fig, ax1 = plt.subplots(figsize=(10, 5))
 
-    # Left axis: forecast waste
     ax1.plot(df["date"], df["forecast_waste"], label="Forecast Waste", linewidth=2)
     ax1.set_xlabel("Date")
     ax1.set_ylabel("Forecast Waste")
 
-    # Right axis: planned consumption
     ax2 = ax1.twinx()
-    ax2.plot(
-        df["date"],
-        df["planned_consumption"],
-        linestyle="--",
-        label="Planned Consumption",
-        linewidth=2,
-        color="orange",
-    )
+    ax2.plot(df["date"], df["planned_consumption"],
+             linestyle="--", linewidth=2, color="orange",
+             label="Planned Consumption")
     ax2.set_ylabel("Planned Consumption")
 
     fig.suptitle("Planned Consumption vs Forecast Waste")
