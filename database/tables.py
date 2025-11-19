@@ -37,6 +37,9 @@ class Ingredient(Base):
     # Product assignment
     matched_product_id = Column(Integer, ForeignKey("tj_inventory.product_id"), nullable=True)
 
+    pantry_amount = Column(Float, nullable=True)
+    pantry_unit = Column(Text, nullable=True)
+
     recipe = relationship("Recipe", back_populates="ingredients")
     matched_product = relationship("TJInventory", back_populates="ingredients")
 
