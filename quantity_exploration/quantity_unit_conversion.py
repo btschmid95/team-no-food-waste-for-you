@@ -142,9 +142,8 @@ def run_pipeline(cookbook_file_path: str,
 
 
 if __name__ == "__main__":
-    # Example usage when you run the file directly
-    cookbook_path = "../quantity_exploration/parsed_raw_ingredients_all_mini_with_recipe_context.csv"
-    tj_path = "../data/trader_joes_products_v3.csv"
+    cookbook_path = "data/all_ingredients_mapped_to_products_original.csv"
+    tj_path = "data/trader_joes_products_v3.csv"
 
     result = run_pipeline(cookbook_path, tj_path)
     print(result.head())
