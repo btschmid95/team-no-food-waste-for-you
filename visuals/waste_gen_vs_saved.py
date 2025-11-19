@@ -1,32 +1,6 @@
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-from datetime import datetime
-
-
-def compute_waste_summary_from_pantry(pantry_df, today=None):
-    """
-    Compute a simple waste summary by category.
-    """
-    if today is None:
-        today = pd.Timestamp(datetime.today().date())
-
-    df = pantry_df.copy()
-    df["expiration_date"] = pd.to_datetime(df["expiration_date"], errors="coerce")
-    df["category"] = df["category"].fillna("Unknown")
-
-    expired = df[df["expiration_date"] < today]
-
-    realized = (
-        expired.groupby("category", as_index=False)["amount"]
-               .sum()
-               .rename(columns={"amount": "realized_waste"})
-    )
-
-    realized["avoided_waste"] = 0.0
-
-    return realized
-
+import numpy as np
+from visuals.pantry_analytics import compute_waste_summary_from_pantry
 
 def plot_waste_waterfall(waste_summary):
     """

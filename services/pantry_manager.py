@@ -3,7 +3,7 @@ from datetime import datetime
 import math
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ..database.tables import Cookbook, Ingredient, Pantry, TJInventory, UsableIngredient
+from ..database.tables import Cookbook, Ingredient, Pantry, TJInventory, UsableIngredient, PantryItem
 from database.config import DATABASE_URL
 from sqlalchemy import create_engine
 
@@ -231,3 +231,35 @@ class PantryManager:
         self.session.commit()
 
         return "\n".join(messages)
+    
+    def get_pantry_dataframe(self):
+        items = (
+            self.session.query(PantryItem)
+            .join(TJInventory, PantryItem.product_id == TJInventory.product_id)
+            .all()
+        )
+
+        rows = []
+        for p in items:
+            rows.append({
+                "pantry_id": p.pantry_id,
+                "product_id": p.product_id,
+                "name": p.product.name,
+                "category": p.product.category,
+                "amount": p.amount,
+                "unit": p.unit,
+                "date_added": p.date_added,
+                "expiration_date": p.expiration_date,
+            })
+
+        return pd.DataFrame(rows)
+#class pantryManager:
+
+#	def add_item_to_pantry() (add_item) (individual method for taking a product from tjinventory and adding it to the pantry)
+#	def remove_item_from_pantry() (remove_item) (is this consume item?)
+#	def consume_item() (individual method for consuming items. It removes it from the pantry. It updates the waste reduction tracker)
+#	def get_most_oldest_item() (individual method for getting the oldest item from the pantry if there are quantities remaining)
+#	def throw_away_item() () (individual method for updating the waste reduction tracker. removes item from the pantry. It updates the waste reduction tracker)
+#	def add_recipe_items_to_pantry() (add_recipe_items) (takes in a selected recipe name, queries for the ingredients, queries for the products, checks quantities, "buys" products if necessary)
+#	def remove_recipe_items_to_pantry() (delete_recipe_items) (takes in a selected recipe name, queries for the ingredients, queries for the products, deducts quantities based on "using" the recipe)
+#	def queryPantry() # returns all of the items from the pantry
