@@ -33,7 +33,7 @@ def parse_all_ingredients(limit=None):
         query = query.limit(limit)
 
     rows = query.all()
-    print(f"📦 Parsing {len(rows)} ingredients...")
+    print(f"Parsing {len(rows)} ingredients...")
 
     csv_rows = []   # <-- Save here for output CSV
 
@@ -43,8 +43,8 @@ def parse_all_ingredients(limit=None):
 
         if parsed.name:
             parsed_name = " ".join([n.text for n in parsed.name])
-            # Remove TJ branding
-            parsed_name = re.sub(r"(tj['’]s|trader\s*joe['’]s)\s*", "", parsed_name, flags=re.IGNORECASE)
+            parsed_name = re.sub(r"(tj['’]s|trader\s*joe['’]s)\s*",
+                                "", parsed_name, flags=re.IGNORECASE)
             name_conf = sum([n.confidence for n in parsed.name]) / len(parsed.name)
         else:
             parsed_name = None
@@ -59,11 +59,20 @@ def parse_all_ingredients(limit=None):
         preparation_text = parsed.preparation.text if parsed.preparation else None
         preparation_conf = parsed.preparation.confidence if parsed.preparation else None
 
-        if parsed_name:
-            preds = predict_category(parsed_name)
-            top_preds = preds[:3]
-        else:
+        try:
+            if parsed_name:
+                preds = predict_category(parsed_name)
+                top_preds = preds[:3]
+            else:
+                top_preds = [(None, None, None)] * 3
+
+        except Exception as e:
+            if not hasattr(parse_all_ingredients, "_prediction_error_logged"):
+                print("⚠️  WARNING: Category model not available. Skipping category predictions.")
+                print(f"⚙️  Details: {e}")
+                parse_all_ingredients._prediction_error_logged = True
             top_preds = [(None, None, None)] * 3
+
 
         ing.name = parsed_name
         ing.norm_name = norm_name
@@ -131,8 +140,8 @@ def parse_all_ingredients(limit=None):
     OUTPUT_CSV.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(OUTPUT_CSV, index=False)
 
-    print(f"📄 CSV saved to: {OUTPUT_CSV}")
-    print("✅ All ingredients parsed + stored in DB + exported.")
+    print(f"CSV saved to: {OUTPUT_CSV}")
+    print("All ingredients parsed + stored in DB + exported.")
 
 if __name__ == "__main__":
     parse_all_ingredients()

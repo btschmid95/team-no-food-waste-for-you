@@ -113,7 +113,7 @@ def run_mapping_pipeline():
     session.commit()
     session.close()
 
-    print("🎉 Finished mapping + DB update")
+    print("Finished mapping + DB update")
 
 
 if __name__ == "__main__":
