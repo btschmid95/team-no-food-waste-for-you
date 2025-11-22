@@ -259,6 +259,34 @@ def compute_optimal_date_for_recipe_no_override(recipe, virtual_state, planned_r
 
     return today + timedelta(days=1), list(slots)[0], earliest_exp
 
+def cleanup_past_planned_recipes(session):
+    today = datetime.now().date()
+
+    for sel_id, pdata in st.session_state.planned_recipes.items():
+        if pdata["status"] == "planned" and pdata["planned_for"]:
+            planned_day = datetime.fromisoformat(pdata["planned_for"]).date()
+
+            if planned_day < today:
+                # mark as "missed"
+                pdata["status"] = "missed"
+
+def cleanup_past_confirmed_recipes():
+    today = datetime.now().date()
+
+    to_delete = []
+    for sel_id, pdata in st.session_state.planned_recipes.items():
+        if pdata["status"] == "confirmed":
+            planned_day = datetime.fromisoformat(pdata["planned_for"]).date()
+            if planned_day < today:
+                to_delete.append(sel_id)
+
+    for sel_id in to_delete:
+        del st.session_state.planned_recipes[sel_id]
+
+def purge_missed_recipes():
+    to_remove = [sel for sel, pdata in st.session_state.planned_recipes.items() if pdata["status"] == "missed"]
+    for sel in to_remove:
+        del st.session_state.planned_recipes[sel]
 
 
 MEAL_SLOTS = ["Breakfast", "Lunch", "Dinner", "Snack", "Dessert", "Beverage"]
@@ -293,11 +321,13 @@ st.session_state.setdefault("virtual_pantry", None)
 if st.session_state.planned_recipes is None:
     load_planned_recipes_from_db(session)
 
-# ------------------------------------------------------
-# Build virtual pantry ONLY if not yet built
-# ------------------------------------------------------
-if st.session_state.virtual_pantry is None:
-    st.session_state.virtual_pantry = rebuild_virtual_pantry()
+# NEW:
+cleanup_past_planned_recipes(session)
+cleanup_past_confirmed_recipes()
+purge_missed_recipes()
+
+sync_planned_recipes_to_db(session)
+st.session_state.virtual_pantry = rebuild_virtual_pantry()
 # ------------------------------------------------------
 # PAGE HEADER
 # ------------------------------------------------------
@@ -526,7 +556,7 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
                             if remaining >0:
                                 matched_rows.append(
                                     f"- **{name}** — needs **{needed} {unit}**, "
-                                    f"uses **{used}**, remaining **{round(remaining,2)}**"
+                                    f"uses **{used}**/**{round(pantry_amount,2)}**, remaining **{round(remaining,2)}**"
                                 )
                             else:
                                 if pantry_amount == 0:
@@ -548,31 +578,30 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
                     # -------------------------------
                     # Add / Already in plan
                     # -------------------------------
-                    if not is_added:
-                        if st.button("➕ Add", key=f"catadd_{recipe_id}_{label}_{i}"):
 
-                            optimal_day, optimal_slot, _ = compute_optimal_date_for_recipe(
-                                recipe_obj,
-                                st.session_state.virtual_pantry,
-                                st.session_state.planned_recipes,
-                            )
+                    if st.button("➕ Add", key=f"catadd_{recipe_id}_{label}_{i}"):
 
-                            temp_sel = f"temp_{datetime.now().timestamp()}"
-                            st.session_state.planned_recipes[temp_sel] = {
-                                "recipe_id": recipe_id,
-                                "title": rec["title"],
-                                "added_at": datetime.now().isoformat(),
-                                "planned_for": str(optimal_day),
-                                "meal_slot": optimal_slot,
-                                "status": "planned",
-                            }
-                            sync_planned_recipes_to_db(session)
-                            #load_planned_recipes_from_db(session)    # ← ADD THIS
-                            st.session_state.virtual_pantry = rebuild_virtual_pantry()
-                            st.rerun()
+                        optimal_day, optimal_slot, _ = compute_optimal_date_for_recipe(
+                            recipe_obj,
+                            st.session_state.virtual_pantry,
+                            st.session_state.planned_recipes,
+                        )
 
-                    else:
-                        st.markdown("✔️ Already in plan")
+                        temp_sel = f"temp_{datetime.now().timestamp()}"
+                        st.session_state.planned_recipes[temp_sel] = {
+                            "recipe_id": recipe_id,
+                            "title": rec["title"],
+                            "added_at": datetime.now().isoformat(),
+                            "planned_for": str(optimal_day),
+                            "meal_slot": optimal_slot,
+                            "status": "planned",
+                        }
+                        sync_planned_recipes_to_db(session)
+                        #load_planned_recipes_from_db(session)    # ← ADD THIS
+                        st.session_state.virtual_pantry = rebuild_virtual_pantry()
+                        st.rerun()
+
+
 
                     # -------------------------------
                     # Meta info
@@ -681,6 +710,24 @@ else:
                     prefix = "🟨"   
 
                 with st.expander(f"{prefix} {title}"):
+
+                    # ---------------------------------------------------
+                    # If confirmed → READ-ONLY MODE
+                    # ---------------------------------------------------
+                    if status == "confirmed":
+                        st.markdown(
+                            f"""
+                            <div style="padding: 6px 10px; background-color: #d6f5d6;
+                                        border-radius: 6px; border-left: 5px solid #3CB371;">
+                                <strong>Confirmed</strong><br>
+                                <b>Date:</b> {pdata.get("planned_for")}<br>
+                                <b>Meal Slot:</b> {pdata.get("meal_slot")}
+                            </div>
+                            """,
+                            unsafe_allow_html=True
+                        )
+                        # Skip editable UI
+                        continue
 
                     # -------------------------------
                     # Compute recommended date & slot
