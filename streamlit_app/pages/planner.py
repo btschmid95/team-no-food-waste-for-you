@@ -249,7 +249,7 @@ with col1:
     with filter_cols[0]:
         max_missing = st.selectbox(
             "Max Missing Ingredients",
-            [0, 1, 2, 3],
+            [0, 1, 2, 3,4,5],
             index=1,
         )
         

@@ -162,102 +162,102 @@ with col2:
 
     if pantry_items.empty:
         st.info("No data to visualize.")
-        st.stop()
-
-    # Prep dataset
-    df = filtered_df.copy()
-    df["days_left"] = (df["expiration_date"] - datetime.now()).dt.days.clip(lower=0)
-
-    # Time windows
-    df_all = df
-    df_1d = df[df["days_left"] <= 1]
-    df_7d = df[df["days_left"] <= 7]
-
-    # Unique categories
-    categories = sorted(df["category"].dropna().unique().tolist())
-
-    # Toggle: totals or stacked product breakdown
-    chart_mode = st.radio(
-        "Chart Mode",
-        ["Category Totals", "Product-Level Stacked View"],
-        horizontal=True
-    )
-
-    # ---- Helper to shorten category labels ----
-    def shorten(cat):
-        return cat if len(cat) <= 12 else cat[:11] + "…"
-
-    short_map = {c: shorten(c) for c in categories}
-
-    # =============== MODE A: Category Totals ===============
-    def render_category_totals(dfx, title):
-        chart_df = (
-            dfx.groupby("category")["amount"]
-            .sum()
-            .reindex(categories)
-            .fillna(0)
-            .reset_index()
-        )
-        chart_df["cat_short"] = chart_df["category"].map(short_map)
-
-        chart = (
-            alt.Chart(chart_df)
-            .mark_bar(size=28)
-            .encode(
-                x=alt.X("cat_short:N", title="Category", axis=alt.Axis(labelAngle=0)),
-                y=alt.Y("amount:Q", title="Total Amount"),
-                tooltip=["category", "amount"]
-            )
-            .properties(title=title, width="container", height=250)
-        )
-        st.altair_chart(chart, use_container_width=True)
-
-    # =============== MODE B: Product-Level Stacked ===============
-    def render_product_stacked(dfx, title):
-        # if dfx.empty:
-        #     st.info(f"No items for {title}")
-        #     return
-
-        chart_df = dfx.copy()
-        chart_df["cat_short"] = chart_df["category"].map(short_map)
-
-        # Sorting products within each category by expiration → bottom is most urgent
-        chart_df = chart_df.sort_values(["category", "days_left", "product_name"])
-
-        chart = (
-            alt.Chart(chart_df)
-            .mark_bar()
-            .encode(
-                x=alt.X("cat_short:N", title="Category", axis=alt.Axis(labelAngle=0)),
-                y=alt.Y("amount:Q", stack="zero", title="Total Amount"),
-                color=alt.Color(
-                    "product_name:N",
-                    legend=None  # turn on if you want a legend
-                ),
-                tooltip=[
-                    "product_name",
-                    "amount",
-                    "unit",
-                    "expiration_date",
-                    "days_left"
-                ]
-            )
-            .properties(title=title, width="container", height=250)
-        )
-
-        st.altair_chart(chart, use_container_width=True)
-
-    # =============== RENDER 3 CHARTS BASED ON MODE ===============
-    if chart_mode == "Category Totals":
-        render_category_totals(df_all, "Total Amount by Category")
-        render_category_totals(df_1d, "Expiring in Next 1 Day")
-        render_category_totals(df_7d, "Expiring in Next 7 Days")
     else:
-        render_product_stacked(df_all, "Stacked: All Pantry Items")
-        render_product_stacked(df_1d, "Stacked: Expiring in Next 1 Day")
-        render_product_stacked(df_7d, "Stacked: Expiring in Next 7 Days")
 
-    st.markdown("---")
+        # Prep dataset
+        df = filtered_df.copy()
+        df["days_left"] = (df["expiration_date"] - datetime.now()).dt.days.clip(lower=0)
+
+        # Time windows
+        df_all = df
+        df_1d = df[df["days_left"] <= 1]
+        df_7d = df[df["days_left"] <= 7]
+
+        # Unique categories
+        categories = sorted(df["category"].dropna().unique().tolist())
+
+        # Toggle: totals or stacked product breakdown
+        chart_mode = st.radio(
+            "Chart Mode",
+            ["Category Totals", "Product-Level Stacked View"],
+            horizontal=True
+        )
+
+        # ---- Helper to shorten category labels ----
+        def shorten(cat):
+            return cat if len(cat) <= 12 else cat[:11] + "…"
+
+        short_map = {c: shorten(c) for c in categories}
+
+        # =============== MODE A: Category Totals ===============
+        def render_category_totals(dfx, title):
+            chart_df = (
+                dfx.groupby("category")["amount"]
+                .sum()
+                .reindex(categories)
+                .fillna(0)
+                .reset_index()
+            )
+            chart_df["cat_short"] = chart_df["category"].map(short_map)
+
+            chart = (
+                alt.Chart(chart_df)
+                .mark_bar(size=28)
+                .encode(
+                    x=alt.X("cat_short:N", title="Category", axis=alt.Axis(labelAngle=0)),
+                    y=alt.Y("amount:Q", title="Total Amount"),
+                    tooltip=["category", "amount"]
+                )
+                .properties(title=title, width="container", height=250)
+            )
+            st.altair_chart(chart, use_container_width=True)
+
+        # =============== MODE B: Product-Level Stacked ===============
+        def render_product_stacked(dfx, title):
+            # if dfx.empty:
+            #     st.info(f"No items for {title}")
+            #     return
+
+            chart_df = dfx.copy()
+            chart_df["cat_short"] = chart_df["category"].map(short_map)
+
+            # Sorting products within each category by expiration → bottom is most urgent
+            chart_df = chart_df.sort_values(["category", "days_left", "product_name"])
+
+            chart = (
+                alt.Chart(chart_df)
+                .mark_bar()
+                .encode(
+                    x=alt.X("cat_short:N", title="Category", axis=alt.Axis(labelAngle=0)),
+                    y=alt.Y("amount:Q", stack="zero", title="Total Amount"),
+                    color=alt.Color(
+                        "product_name:N",
+                        legend=None  # turn on if you want a legend
+                    ),
+                    tooltip=[
+                        "product_name",
+                        "amount",
+                        "unit",
+                        "expiration_date",
+                        "days_left"
+                    ]
+                )
+                .properties(title=title, width="container", height=250)
+            )
+
+            st.altair_chart(chart, use_container_width=True)
+
+        # =============== RENDER 3 CHARTS BASED ON MODE ===============
+        if chart_mode == "Category Totals":
+            render_category_totals(df_all, "Total Amount by Category")
+            render_category_totals(df_1d, "Expiring in Next 1 Day")
+            render_category_totals(df_7d, "Expiring in Next 7 Days")
+        else:
+            render_product_stacked(df_all, "Stacked: All Pantry Items")
+            render_product_stacked(df_1d, "Stacked: Expiring in Next 1 Day")
+            render_product_stacked(df_7d, "Stacked: Expiring in Next 7 Days")
+
+        st.markdown("---")
 
 
 # ======================================================
@@ -330,60 +330,60 @@ st.markdown("## 📊 Pantry Insights")
 
 if pantry_items.empty:
     st.info("No insights available — your pantry is empty.")
-    st.stop()
+    #st.stop()
+else:
+    # ======================================================
+    # VISUAL 2 — Pantry Roll-Up (Total Amount per Product)
+    # ======================================================
+    st.subheader("📦 Pantry Roll-Up (Totals Per Item)")
 
-# ======================================================
-# VISUAL 2 — Pantry Roll-Up (Total Amount per Product)
-# ======================================================
-st.subheader("📦 Pantry Roll-Up (Totals Per Item)")
+    rollup_df = (
+        pantry_items.groupby("product_name")["amount"]
+        .sum()
+        .reset_index()
+        .sort_values("amount", ascending=False)
+    )
 
-rollup_df = (
-    pantry_items.groupby("product_name")["amount"]
-    .sum()
-    .reset_index()
-    .sort_values("amount", ascending=False)
-)
+    st.dataframe(rollup_df, hide_index=True, height=250)
 
-st.dataframe(rollup_df, hide_index=True, height=250)
+    # ======================================================
+    # VISUAL 3 — Items Expiring Soon
+    # ======================================================
+    st.subheader("⏳ Items Expiring Soon")
 
-# ======================================================
-# VISUAL 3 — Items Expiring Soon
-# ======================================================
-st.subheader("⏳ Items Expiring Soon")
+    exp_df = pantry_items.copy()
+    exp_df["days_left"] = (exp_df["expiration_date"] - datetime.now()).dt.days
+    exp_df = exp_df.sort_values("days_left").head(10)
 
-exp_df = pantry_items.copy()
-exp_df["days_left"] = (exp_df["expiration_date"] - datetime.now()).dt.days
-exp_df = exp_df.sort_values("days_left").head(10)
+    st.dataframe(
+        exp_df[["product_name", "amount", "unit", "days_left", "expiration_date"]],
+        hide_index=True,
+        height=300
+    )
 
-st.dataframe(
-    exp_df[["product_name", "amount", "unit", "days_left", "expiration_date"]],
-    hide_index=True,
-    height=300
-)
+    # ======================================================
+    # VISUAL 4 — Expiring Food Histogram
+    # ======================================================
+    st.subheader("📉 Expiration Forecast Histogram")
 
-# ======================================================
-# VISUAL 4 — Expiring Food Histogram
-# ======================================================
-st.subheader("📉 Expiration Forecast Histogram")
+    # Visual 4: Expiration Histogram
+    from visuals.waste_prod_vs_time import plot_expiring_food_histogram
 
-# Visual 4: Expiration Histogram
-from visuals.waste_prod_vs_time import plot_expiring_food_histogram
+    # Visual 5: Consumption vs Waste
+    from visuals.consumption_vs_waste import plot_consumption_vs_waste
 
-# Visual 5: Consumption vs Waste
-from visuals.consumption_vs_waste import plot_consumption_vs_waste
+    # Visual 6: Recipe–Product Overlap Graph
+    from visuals.recipe_ingredient_overlap import (
+        build_recipe_product_graph,
+        plot_recipe_overlap_network
+    )
 
-# Visual 6: Recipe–Product Overlap Graph
-from visuals.recipe_ingredient_overlap import (
-    build_recipe_product_graph,
-    plot_recipe_overlap_network
-)
+    # Visual 3: Waste Waterfall (optional)
+    from visuals.waste_gen_vs_saved import plot_waste_waterfall
 
-# Visual 3: Waste Waterfall (optional)
-from visuals.waste_gen_vs_saved import plot_waste_waterfall
-
-try:
-    fig = plot_expiring_food_histogram(session.bind)
-    st.pyplot(fig)
-except Exception as e:
-    st.warning(f"Histogram unavailable: {e}")
+    try:
+        fig = plot_expiring_food_histogram(session.bind)
+        st.pyplot(fig)
+    except Exception as e:
+        st.warning(f"Histogram unavailable: {e}")
 

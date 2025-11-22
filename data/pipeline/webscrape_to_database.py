@@ -24,6 +24,59 @@ RECIPES_CSV = DATA_DIR / "trader_joes_recipes.csv"
 engine = create_engine(DATABASE_URL, echo=False)
 Session = sessionmaker(bind=engine)
 
+def normalize_unit(quantity, unit):
+    """
+    Normalize Trader Joe's product units into consistent forms:
+    - lbs → oz
+    - oz → oz
+    - fl oz → fl oz
+    - pints, quarts, gallons → fl oz
+    - dozen → each
+    """
+
+    if quantity is None:
+        return None, None
+
+    if not unit:
+        return quantity, None
+
+    u = unit.lower().strip().replace(".", "")
+
+    # ------------------------------
+    # WEIGHT → OZ
+    # ------------------------------
+    if u in ["lb", "lbs", "pound", "pounds"]:
+        return quantity * 16.0, "Oz"
+
+    # plain oz (weight)
+    if u in ["oz"]:
+        return quantity, "Oz"
+
+    # ------------------------------
+    # VOLUME → FL OZ
+    # ------------------------------
+    if u in ["floz", "fl oz", "fluidounce", "fluidounces"]:
+        return quantity, "Fl Oz"
+
+    if u in ["pint", "pt"]:
+        return quantity * 16.0, "Fl Oz"
+
+    if u in ["quart", "qt"]:
+        return quantity * 32.0, "Fl Oz"
+
+    if u in ["gallon", "gal"]:
+        return quantity * 128.0, "Fl Oz"
+
+    # ------------------------------
+    # COUNT-BASED
+    # ------------------------------
+    if u in ["doz", "dozen"]:
+        return quantity * 12.0, "Each"
+
+    # ------------------------------
+    # Default — no change
+    # ------------------------------
+    return quantity, unit
 
 def parse_price(p):
     if pd.isna(p):
@@ -115,7 +168,8 @@ def populate_database(recipe_df, products_df):
             continue
 
         raw_unit = row.get("unit")
-        quantity, clean_unit = parse_size_string(raw_unit)
+        quantity, parsed_unit = parse_size_string(raw_unit)
+        quantity, clean_unit = normalize_unit(quantity, parsed_unit)
 
         product = TJInventory(
             name=product_name,
