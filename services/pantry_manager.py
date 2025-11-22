@@ -3,7 +3,14 @@ from datetime import datetime, timedelta
 import math
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ..database.tables import Ingredient, PantryItem, TJInventory
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]  # the repo's root directory
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
+
+from database.tables import Ingredient, PantryItem, TJInventory
 from database.config import DATABASE_URL
 from sqlalchemy import create_engine
 
@@ -34,8 +41,8 @@ class PantryManager:
             product_id = product_id,
             amount = amount,
             unit = unit,
-            date_added = date_added.isoformat(),
-            expiration_date = expiration_date.isoformat()
+            date_added = date_added,
+            expiration_date = expiration_date
         )
         self.session.add(new_pantry_item)
         message = f"Added {amount} {unit} of {tj_product.norm_name}"
@@ -79,11 +86,11 @@ class PantryManager:
             pantry_items = self.session.query(PantryItem).filter(PantryItem.product_id == ingredient.matched_product_id).all()
             
             current_amount = sum(item.amount for item in pantry_items) if pantry_items else 0
-            has_enough = current_amount >= ingredient.amount
+            has_enough = current_amount >= ingredient.pantry_amount
             
             if not has_enough:
                 # Calculate how much more we need
-                needed_amount = ingredient.amount - current_amount
+                needed_amount = ingredient.pantry_amount - current_amount
 
                 # Get product from TJ inventory
                 tj_product = self.session.query(TJInventory).filter(TJInventory.product_id == ingredient.matched_product_id).first()
@@ -177,8 +184,8 @@ class PantryManager:
                     ingredient_id = ingredient.id,
                     amount = item['amount'],
                     unit = item['unit'],
-                    date_purchased = date_purchased.isoformat(),
-                    expiration_date = expiration_date.isoformat()
+                    date_purchased = date_purchased,
+                    expiration_date = expiration_date
                 )
                 self.session.add(pantry_item)
                 message = f"Added {item['quantity']} package(s) of {item['product_name']} ({item['amount']} {item['unit']} each)"
@@ -212,7 +219,7 @@ class PantryManager:
                 messages.append(f"Warning: {ingredient.norm_name} not found in pantry")
                 continue
             
-            amount_needed = ingredient.amount
+            amount_needed = ingredient.pantry_amount
             items_used = []
             
             # Use items starting with oldest (earliest expiration)
@@ -243,26 +250,32 @@ class PantryManager:
     def get_pantry_items(self):
         """
         Get all items currently in the pantry as a DataFrame.
+        Includes category + subcategory for filtering and visualizations.
         """
-        
+
         pantry_items = self.session.query(PantryItem).all()
-        
+
         items_data = []
         for pantry_item in pantry_items:
-            tj_product = self.session.query(TJInventory).filter(TJInventory.product_id == pantry_item.product_id).first()
-            
+            tj_product = (
+                self.session.query(TJInventory)
+                .filter(TJInventory.product_id == pantry_item.product_id)
+                .first()
+            )
+
             if tj_product:
-                item_info = {
+                items_data.append({
                     'pantry_id': pantry_item.pantry_id,
                     'product_id': pantry_item.product_id,
                     'product_name': tj_product.name,
+                    'category': tj_product.category,
+                    'sub_category': tj_product.sub_category,
                     'amount': pantry_item.amount,
                     'unit': pantry_item.unit,
                     'date_added': pantry_item.date_added,
                     'expiration_date': pantry_item.expiration_date
-                }
-                items_data.append(item_info)
-        
+                })
+
         return pd.DataFrame(items_data)
     
 
@@ -295,5 +308,41 @@ class PantryManager:
         }
         
         return item_info
-        
+    
+    def get_all_items(self):
+        """
+        Return pantry items in list-of-dict format for the recommender.
+        """
+        df = self.get_pantry_items()
+        if df.empty:
+            return []
 
+        return [
+            {
+                "product_id": row.product_id,
+                "amount": row.amount,
+                "expiration_date": row.expiration_date
+            }
+            for _, row in df.iterrows()
+        ]
+    
+    def import_state(self, virtual_state: dict):
+        """
+        Convert a virtual pantry dict into list-of-dicts format.
+        """
+        items = []
+        for pid, data in virtual_state.items():
+            items.append({
+                "product_id": pid,
+                "amount": data.get("amount", 0),
+                "expiration_date": data.get("expiration_date")
+            })
+        return items
+        
+if __name__ == "__main__":
+    pantry_ids = set(item.product_id for item in session.query(PantryItem).all())
+    inventory_ids = set(item.product_id for item in session.query(TJInventory).all())
+
+    missing = pantry_ids - inventory_ids
+
+    print(len(missing), missing)

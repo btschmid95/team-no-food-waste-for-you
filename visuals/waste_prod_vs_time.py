@@ -1,5 +1,12 @@
 import matplotlib.pyplot as plt
+import sys
+from pathlib import Path
+import pandas as pd
 
+# Make repo root importable
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
 def plot_expiring_food_histogram(engine):
     from visuals.pantry_analytics import load_pantry_with_category, compute_expiry_buckets
 

@@ -21,17 +21,14 @@ def populate_ingredient_mappings():
     df = pd.read_excel(DATA_FILE)
 
     for _, row in df.iterrows():
-
         recipe_title = str(row["recipe_title"]).strip()
-        raw_text = str(row["original_text"]).strip()  # matches Ingredient.raw_text
+        raw_text = str(row["original_text"]).strip()
 
-        # --- 1. Find recipe ---
         recipe = session.query(Recipe).filter_by(title=recipe_title).first()
         if not recipe:
             print(f"❌ Recipe not found: {recipe_title}")
             continue
 
-        # --- 2. Find ingredient by exact raw_text match ---
         ingredient = (
             session.query(Ingredient)
             .filter_by(recipe_id=recipe.recipe_id, raw_text=raw_text)
@@ -52,9 +49,14 @@ def populate_ingredient_mappings():
         if pd.notna(unit):
             ingredient.unit = unit
 
+        # 🔁 Always reset mapping first so stale mappings are removed
+        ingredient.matched_product_id = None
+
         # --- 4. Extract matched products ---
         matched = row.get("matched_products")
-        if pd.isna(matched) or matched == "[]":
+
+        # If the cell is empty / NaN / "[]", we leave matched_product_id = None
+        if pd.isna(matched) or str(matched).strip() in ("", "[]"):
             continue
 
         matched_list = (
@@ -65,13 +67,13 @@ def populate_ingredient_mappings():
         if not matched_list:
             continue
 
-        # Only use the first match
         product_name = matched_list[0]
 
         # --- 5. Look up product ---
         product = session.query(TJInventory).filter_by(name=product_name).first()
         if not product:
             print(f"❌ Product not found in TJInventory: {product_name}")
+            # matched_product_id already None from above
             continue
 
         ingredient.matched_product_id = product.product_id
@@ -79,7 +81,6 @@ def populate_ingredient_mappings():
     session.commit()
     session.close()
     print("✅ Ingredient → Product mappings updated successfully!")
-
 
 if __name__ == "__main__":
     populate_ingredient_mappings()

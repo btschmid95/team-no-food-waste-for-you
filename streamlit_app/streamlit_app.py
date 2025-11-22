@@ -4,12 +4,12 @@ import streamlit as st
 from config.theme_config import apply_base_config
 from components.sidebar import render_sidebar
 from utils.session import get_session
-from pathlib import Path
 import sys
+from pathlib import Path
 
-# Ensure root import path
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-sys.path.append(str(PROJECT_ROOT))
+ROOT = Path(__file__).resolve().parents[1]  # the repo's root directory
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
 
 from database.tables import PantryItem, RecipeSelected
 

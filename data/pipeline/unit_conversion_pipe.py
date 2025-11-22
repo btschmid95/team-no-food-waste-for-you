@@ -57,8 +57,7 @@ def convert_units_for_all_ingredients(session: Session):
             continue
 
         # -------- CASE 3: use matched Trader Joe's product --------
-        if prod is not None and prod.quantity is not None:
-            # store_amount = product.quantity (e.g., "16 oz")
+        if prod is not None and prod.quantity is not None and ing.amount is not None:
             ing.pantry_amount = ing.amount * prod.quantity
             ing.pantry_unit = prod.unit
             updated_count += 1

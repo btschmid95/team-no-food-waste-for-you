@@ -1,6 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from visuals.pantry_analytics import compute_waste_summary_from_pantry
+import sys
+from pathlib import Path
+import pandas as pd
+
+# Make repo root importable
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
 
 def plot_waste_waterfall(engine):
     from visuals.pantry_analytics import compute_waste_summary_from_events

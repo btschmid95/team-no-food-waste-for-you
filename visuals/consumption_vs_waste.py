@@ -1,4 +1,11 @@
+import sys
+from pathlib import Path
 import pandas as pd
+
+# Make repo root importable
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
 import matplotlib.pyplot as plt
 from services.recipe_manager import RecipeManager
 

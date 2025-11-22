@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database.tables import TJInventory
+from database.tables import TJInventory, Ingredient
 from database.config import DATABASE_URL
 from database.normalization import normalize
 
@@ -151,7 +151,40 @@ class ProductManager:
             "sub_category": product.sub_category,
             "shelf_life_days": product.shelf_life_days,
         }
+    def get_valid_products_for_pantry(self):
+        return (
+            self.session.query(TJInventory)
+            .join(Ingredient, Ingredient.matched_product_id == TJInventory.product_id)
+            .filter(Ingredient.pantry_amount.isnot(None))
+            .filter(Ingredient.pantry_unit.isnot(None))
+            .order_by(TJInventory.name)
+            .distinct()
+            .all()
+        )
+        
+    def get_valid_products_dict(self):
+        products = self.get_valid_products_for_pantry()
+        out = []
 
+        for p in products:
+            # Pull ingredient-level pantry mappings (guaranteed at least 1)
+            ing = next((i for i in p.ingredients if i.pantry_amount is not None), None)
+
+            if ing is None:
+                continue  # should not happen, but safe
+
+            out.append({
+                "product_id": p.product_id,
+                "name": p.name,
+                "unit": p.unit,
+                "pantry_unit": ing.pantry_unit,
+                "pantry_amount": ing.pantry_amount,
+                "category": p.category,
+                "shelf_life_days": p.shelf_life_days,
+            })
+
+        return out
+    
 if __name__ == "__main__":
     pm = ProductManager()
 

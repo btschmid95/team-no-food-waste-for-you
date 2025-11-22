@@ -10,6 +10,7 @@ sys.path.append(str(PROJECT_ROOT))
 
 from database.tables import Base, TJInventory, Recipe, Ingredient
 from database.config import DATABASE_URL
+import re
 
 try:
     from web_scraper import run_web_scraper
@@ -35,6 +36,28 @@ def parse_price(p):
         return float(s)
     except ValueError:
         return None
+
+
+def parse_size_string(size):
+    """
+    Parse a size string like '/16 Oz', '/1 Each', '32 oz', '18.3 Oz'.
+    Returns (quantity: float or None, unit: str or None)
+    """
+    if not size or pd.isna(size):
+        return None, None
+    
+    # remove leading slash
+    size = str(size).strip().lstrip("/")
+    
+    # extract: number (int or float) + unit text
+    match = re.match(r"([0-9]*\.?[0-9]+)\s*(.*)", size)
+    if not match:
+        return None, size  # weird case – return unit only
+    
+    quantity = float(match.group(1))
+    unit = match.group(2).strip() if match.group(2) else None
+    
+    return quantity, unit
 
 
 def convert_shelf_life(days_value, unit):
@@ -91,10 +114,14 @@ def populate_database(recipe_df, products_df):
         if session.query(TJInventory).filter_by(name=product_name).first():
             continue
 
+        raw_unit = row.get("unit")
+        quantity, clean_unit = parse_size_string(raw_unit)
+
         product = TJInventory(
             name=product_name,
             norm_name=product_name.lower() if product_name else None,
-            unit=row.get("unit"),
+            unit=clean_unit,
+            quantity=quantity,
             price=parse_price(row.get("price")),
             url=row.get("url"),
             category=row.get("category"),
@@ -103,6 +130,7 @@ def populate_database(recipe_df, products_df):
                 row.get("shelf_life"), row.get("shelf_life_unit")
             ),
         )
+
 
         session.add(product)
 
