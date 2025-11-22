@@ -429,6 +429,117 @@ class PantryManager:
 
         self.session.commit()
 
+    def clear_pantry(self):
+        """
+        Completely remove ALL pantry items and ALL planned recipes.
+        Logs a trash event for each pantry item removed.
+        """
+
+        messages = []
+
+        # 1. Log and delete pantry items
+        pantry_items = self.session.query(PantryItem).all()
+        for pi in pantry_items:
+            event = PantryEvent(
+                pantry_id=pi.pantry_id,
+                event_type="trash",
+                amount=pi.amount,
+                unit=pi.unit,
+                recipe_selection_id=None
+            )
+            self.session.add(event)
+
+            self.session.delete(pi)
+            messages.append(f"Removed {pi.amount} {pi.unit} of product_id={pi.product_id}")
+
+        # 2. Delete all planned recipes
+        planned = self.session.query(RecipeSelected).all()
+        for p in planned:
+            self.session.delete(p)
+        messages.append("All planned recipes cleared.")
+
+        self.session.commit()
+
+        return messages
+    
+    def trash_pantry(self, category=None):
+        """
+        Throw away all pantry items, OR only items of a given category.
+        Logs PantryEvent(event_type='trash') for each removal.
+        """
+
+        messages = []
+
+        q = self.session.query(PantryItem).join(TJInventory)
+        if category:
+            q = q.filter(TJInventory.category == category)
+
+        items = q.all()
+
+        for pi in items:
+            # Log the trash event
+            event = PantryEvent(
+                pantry_id=pi.pantry_id,
+                event_type="trash",
+                amount=pi.amount,
+                unit=pi.unit,
+                recipe_selection_id=None
+            )
+            self.session.add(event)
+
+            self.session.delete(pi)
+
+            messages.append(
+                f"Trashed {pi.amount} {pi.unit} of product_id={pi.product_id}"
+            )
+
+        self.session.commit()
+
+        if category:
+            messages.append(f"All items in category '{category}' trashed.")
+        else:
+            messages.append("All pantry items trashed.")
+
+        return messages
+
+    def trash_expired_items(self):
+        """
+        Remove all expired items from the pantry.
+        Logs PantryEvent(event_type='trash') for each expired item.
+        """
+
+        today = datetime.now().date()
+        messages = []
+
+        expired_items = (
+            self.session.query(PantryItem)
+            .filter(PantryItem.expiration_date < today)
+            .all()
+        )
+
+        if not expired_items:
+            return ["No expired items found."]
+
+        for pi in expired_items:
+            event = PantryEvent(
+                pantry_id=pi.pantry_id,
+                event_type="trash",
+                amount=pi.amount,
+                unit=pi.unit,
+                recipe_selection_id=None
+            )
+            self.session.add(event)
+
+            self.session.delete(pi)
+
+            messages.append(
+                f"Trashed expired item: {pi.amount} {pi.unit} of product_id={pi.product_id}"
+            )
+
+        self.session.commit()
+
+        messages.append(f"Removed {len(expired_items)} expired item(s).")
+        return messages
 
 
 if __name__ == "__main__":

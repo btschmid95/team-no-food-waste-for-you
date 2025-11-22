@@ -103,7 +103,6 @@ class RecipeManager:
         # 2. Compute missing ingredients (grocery list)
         # -----------------------------------------------
         grocery_list = pm.get_grocery_list([recipe_id])
-        print(grocery_list)
         # -----------------------------------------------
         # 3. Add missing pantry items (purchase flow)
         # -----------------------------------------------
@@ -197,3 +196,4 @@ class RecipeManager:
             self.session.commit()
             return True
         return False
+

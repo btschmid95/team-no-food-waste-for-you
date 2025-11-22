@@ -74,8 +74,70 @@ session = get_session()
 pm = PantryManager(session)
 pm_products = ProductManager(session)
 
-st.title("🥫 Pantry Dashboard")
+header_col1, header_col2 = st.columns([6, 4])
 
+with header_col1:
+    st.title("🥫 Pantry Dashboard")
+
+with header_col2:
+    st.write("")  # spacing
+    c1, c2, c3 = st.columns([1, 1, 1])
+
+    with c1:
+        if st.button("❌ Clear Pantry", key="btn_clear_all"):
+            st.session_state["confirm_clear_all"] = True
+
+    with c2:
+        if st.button("🗑 Trash Pantry", key="btn_trash_all"):
+            st.session_state["confirm_trash_all"] = True
+
+    with c3:
+        if st.button("⏳ Trash Expired", key="btn_trash_expired"):
+            st.session_state["confirm_trash_expired"] = True
+# CLEAR PANTRY
+if st.session_state.get("confirm_clear_all"):
+    st.error("⚠ This will permanently delete ALL pantry items AND ALL planned recipes.")
+    cA, cB = st.columns(2)
+    with cA:
+        if st.button("Yes, Clear Everything", key="yes_clear_all"):
+            msgs = pm.clear_pantry()
+            st.success("Pantry has been completely cleared.")
+            st.session_state["confirm_clear_all"] = False
+            st.rerun()
+    with cB:
+        if st.button("Cancel", key="cancel_clear_all"):
+            st.session_state["confirm_clear_all"] = False
+
+
+# TRASH ENTIRE PANTRY
+if st.session_state.get("confirm_trash_all"):
+    st.warning("⚠ This will trash ALL items in the pantry (logged as waste).")
+    cA, cB = st.columns(2)
+    with cA:
+        if st.button("Yes, Trash Pantry", key="yes_trash_all"):
+            msgs = pm.trash_pantry(category=None)
+            st.success("All pantry items have been trashed.")
+            st.session_state["confirm_trash_all"] = False
+            st.rerun()
+    with cB:
+        if st.button("Cancel", key="cancel_trash_all"):
+            st.session_state["confirm_trash_all"] = False
+
+
+# TRASH EXPIRED ITEMS
+if st.session_state.get("confirm_trash_expired"):
+    st.warning("⚠ This will remove ONLY expired items and log them as waste.")
+    cA, cB = st.columns(2)
+    with cA:
+        if st.button("Yes, Remove Expired Items", key="yes_trash_expired"):
+            msgs = pm.trash_expired_items()
+            st.success("Expired items have been removed.")
+            st.session_state["confirm_trash_expired"] = False
+            st.rerun()
+    with cB:
+        if st.button("Cancel", key="cancel_trash_expired"):
+            st.session_state["confirm_trash_expired"] = False
+            
 # Load pantry items
 pantry_items = pm.get_pantry_items()
 if not pantry_items.empty:
