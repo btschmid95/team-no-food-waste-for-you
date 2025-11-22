@@ -249,7 +249,7 @@ with col1:
     with filter_cols[0]:
         max_missing = st.selectbox(
             "Max Missing Ingredients",
-            [0, 1, 2, 3,4,5],
+            [0, 1, 2, 3,4,5,10],
             index=1,
         )
         
@@ -455,8 +455,8 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
                             or getattr(ing, "display_name", None) \
                             or "Unknown Ingredient"
 
-                        needed = ing.amount or 0
-                        unit = ing.unit or ""
+                        needed = ing.pantry_amount or 0
+                        unit = ing.pantry_unit or ""
                         pid = getattr(ing, "matched_product_id", None)
 
                         # -------------------------------------------------------
@@ -472,11 +472,16 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
                             pantry_amount = vp[pid]["amount"] or 0
                             used = min(pantry_amount, needed)
                             remaining = max(pantry_amount - used, 0)
-
-                            matched_rows.append(
-                                f"- **{name}** — needs **{needed} {unit}**, "
-                                f"uses **{used}**, remaining **{remaining}**"
-                            )
+                            if remaining >0:
+                                matched_rows.append(
+                                    f"- **{name}** — needs **{needed} {unit}**, "
+                                    f"uses **{used}**, remaining **{remaining}**"
+                                )
+                            else:
+                                matched_rows.append(
+                                    f"- **{name}** — needs **{needed} {unit}**, "
+                                    f"uses **{used}**, Nothing Left!"
+                                )       
                             continue
 
                         # -------------------------------------------------------

@@ -33,42 +33,38 @@ class RecipeRecommender:
     # Calculate waste score for all pantry items
     def calculate_item_scores(self, virtual_state=None):
         """
-        Returns a list of {product_id, pantry_id, score} for EACH pantry entry.
-        No aggregation, no deduplication.
+        Returns list of:
+            { product_id, amount, expiration_date, per_unit_score }
         """
 
         if virtual_state is None:
             items = self.pm.get_all_items()
         else:
-            items = self.pm.import_state(virtual_state) 
+            items = self.pm.import_state(virtual_state)
 
         scored = []
         for item in items:
+
+            per_unit = self._compute_waste_score(item)
+
             scored.append({
                 "product_id": item["product_id"],
                 "expiration_date": item["expiration_date"],
                 "amount": item["amount"],
-                "waste_score": self._compute_waste_score(item)
+                "per_unit_score": per_unit,
             })
 
         return scored
 
 
-    def score_recipe(self, recipe: Recipe, item_scores, virtual_state=None):
-        """
-        Score a recipe based on:
-        - waste urgency of each pantry entry (entry-by-entry)
-        - FIFO consumption (oldest expiring items used first)
-        - utilization ratio per entry
-        """
 
+    def score_recipe(self, recipe: Recipe, item_scores, virtual_state=None):
         total_score = 0
         matched = 0
         missing = 0
         external = 0
 
-        # item_scores is now a list, not a dict
-        # Convert it to a list of entries per product_id
+        # Build product_id → list of entries
         score_map = {}
         for entry in item_scores:
             pid = entry["product_id"]
@@ -77,56 +73,45 @@ class RecipeRecommender:
         for ing in recipe.ingredients:
 
             pid = ing.matched_product_id
-
-            # Ingredient not linked to TJ product
             if not pid:
                 external += 1
                 continue
 
-            recipe_amt = ing.pantry_amount or 0
+            needed = ing.pantry_amount or 0
 
-            # Collect all pantry entries for this product
             entries = score_map.get(pid, [])
-
             if not entries:
                 missing += 1
                 continue
-
-            # We DO have entries, so this ingredient is matched
+            
             matched += 1
 
-            # Sort entries FIFO by expiration date
+            # FIFO by exp date
             entries = sorted(entries, key=lambda e: e["expiration_date"])
 
-            required = recipe_amt
+            required = needed
             local_score = 0
-            local_missing = False
 
             for entry in entries:
                 if required <= 0:
                     break
 
-                available = entry["amount"]
-
-                if available <= 0:
+                avail = entry["amount"]
+                if avail <= 0:
                     continue
 
-                # How much we use from this entry
-                used = min(required, available)
+                used = min(required, avail)
 
-                # Utilization of THIS pantry entry
-                utilization = used / available
+                per_unit = entry["per_unit_score"]
 
-                # Waste score contribution from THIS entry
-                contrib = entry["waste_score"] * utilization
+                # Proportional score
+                contrib = per_unit * used
                 local_score += contrib
+                #st.write(local_score, per_unit, contrib, used, required, avail)
 
-                # Reduce remaining required amount
                 required -= used
 
-            # After consuming all entries:
             if required > 0:
-                # We didn't have enough stock
                 missing += 1
 
             total_score += local_score
@@ -139,6 +124,7 @@ class RecipeRecommender:
             "missing": missing,
             "external": external,
         }
+
     # Recommend top recipes
     def recommend_recipes(self, limit=5, max_missing=1, virtual_pantry_state=None):
         item_scores = self.calculate_item_scores(virtual_pantry_state)
@@ -249,10 +235,8 @@ class RecipeRecommender:
 
     def _compute_waste_score(self, item):
         """
-        Compute waste score incorporating:
-        - shelf-life urgency
-        - quantity
-        - perishability multiplier based on category
+        Returns per-unit waste urgency score.
+        NOT multiplied by quantity.
         """
 
         exp = item.get("expiration_date")
@@ -261,32 +245,29 @@ class RecipeRecommender:
         if not exp or amt <= 0:
             return 0
 
-        # Days until expiration
         days_remaining = (exp - datetime.now()).days
-
-        # Get product category
+        if days_remaining < 0:
+            return 0
+        # Load category multiplier
         product = (
             self.session.query(TJInventory)
             .filter_by(product_id=item["product_id"])
             .first()
         )
         category = (product.sub_category or product.category or "").lower()
-        
-        # Default multiplier
         mult = CATEGORY_MULTIPLIERS.get(category, CATEGORY_MULTIPLIERS["other"])
 
-        # Expired → highest urgency
-        if days_remaining < 0:
-            return amt * mult * 5.0
+        # Expired = max urgency
+        # if days_remaining < 0:
+        #     return 5.0 * mult   # per-unit urgent
 
-        # Typical curve:
-        #   0–3 days → very high urgency
-        #   4–10 days → medium
-        #   >10 days → low
+        # 0–3 days = very urgent
+        # 4–10 = medium
+        # >10 = low
         urgency = 1 / max(days_remaining, 1)
 
-        score = amt * urgency * mult
-        return max(score, 0)
+        # RETURN PER-UNIT URGENCY SCORE
+        return urgency * mult
     
     def normalize_category_label(self, recipe: Recipe):
         """Return a clean category label to display on tiles."""

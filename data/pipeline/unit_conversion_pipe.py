@@ -24,7 +24,20 @@ DOES_NOT_WORK = {
     "slice", "slices", "clove", "cloves",
     "handful", "sprig", "sprigs",
     "loaf", "pound", "scoops", "bar",
-    "pint", "heads"
+    "pint", "heads", "egg","eggs"
+}
+
+CONTAINER_UNITS = {
+    "box", "boxes",
+    "package", "packages",
+    "bag", "bags",
+    "container",
+    "jar", "jars",
+    "tub",
+    "pack",
+    "carton",
+    "sheet", "sheets",
+    "package", "packages"
 }
 
 def convert_units_for_all_ingredients(session: Session):
@@ -57,7 +70,28 @@ def convert_units_for_all_ingredients(session: Session):
             continue
 
         # -------- CASE 3: use matched Trader Joe's product --------
-        if prod is not None and prod.quantity is not None and ing.amount is not None:
+        if (
+            prod is not None 
+            and prod.quantity is not None 
+            and ing.amount is not None
+        ):
+
+            # FIX: If ingredient has no real unit, treat amount as atomic
+            if not ing.unit or ing.unit.strip() == "":
+                # No multiplication — keep raw amount
+                ing.pantry_amount = ing.amount
+                ing.pantry_unit = "count"
+                updated_count += 1
+                continue
+
+            # --- Container units (box, package, bag, etc.) ---
+            if ing.unit in CONTAINER_UNITS:
+                ing.pantry_amount = ing.amount * prod.quantity
+                ing.pantry_unit = prod.unit
+                #print(ing.amount, prod.quantity, ing.unit, ing.pantry_amount)
+                updated_count += 1
+
+            # Otherwise multiply normally:
             ing.pantry_amount = ing.amount * prod.quantity
             ing.pantry_unit = prod.unit
             updated_count += 1
