@@ -122,6 +122,7 @@ class RecipeSelected(Base):
     planned_for = Column(DateTime, nullable=True)
     # When they actually cooked it (optional)
     cooked_at = Column(DateTime, nullable=True)
+    meal_slot = Column(Text, nullable=True)
 
     recipe = relationship("Recipe")
     pantry_events = relationship("PantryEvent", back_populates="recipe_selection")

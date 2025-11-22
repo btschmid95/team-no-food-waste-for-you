@@ -5,12 +5,11 @@ from datetime import datetime
 import streamlit as st
 
 CATEGORY_MULTIPLIERS = {
-    "fresh fruits & veggies": 3.0,
-    "fresh prepared foods": 3.0,
-    "meat, seafood & plant-based": 3.0,
-
-    "cheese": 2.2,
-    "dairy & eggs": 2.0,
+    "meat, seafood & plant-based": 8,
+    "fresh fruits & veggies": 5,
+    "fresh prepared foods": 5,
+    "cheese": 2.5,
+    "dairy & eggs": 2.5,
     "bakery": 1.8,
 
     "dips, sauces & dressings": 1.0,

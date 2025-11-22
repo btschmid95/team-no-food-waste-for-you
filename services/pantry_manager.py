@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import math
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import json
 import sys
 from pathlib import Path
 
@@ -10,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]  # the repo's root directory
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-from database.tables import Ingredient, PantryItem, TJInventory
+from database.tables import Ingredient, PantryItem, TJInventory, PantryEvent, RecipeSelected
 from database.config import DATABASE_URL
 from sqlalchemy import create_engine
 
@@ -19,12 +20,14 @@ engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind = engine)
 session = Session()
 
+
+
 class PantryManager:
     def __init__(self, session):
         self.session = session
 
 
-    def add_item(self, product_id, amount, unit):
+    def add_item(self, product_id, amount, unit, planned_date = None):
         """
         Adds a single item to pantry. Each item is tracked separately for expiration tracking.
         """
@@ -33,15 +36,23 @@ class PantryManager:
 
         if not tj_product:
             return f"Error: Product {product_id} not found"
+        
+        if planned_date:
+            # planned_date might be a date; normalize to datetime
+            if isinstance(planned_date, datetime):
+                date_purchased = planned_date
+            else:
+                date_purchased = datetime.combine(planned_date, datetime.min.time())
+        else:
+            date_purchased = datetime.now()
 
-        date_added = datetime.now()
-        expiration_date = date_added + timedelta(days = tj_product.shelf_life_days)
+        expiration_date = date_purchased + timedelta(days = tj_product.shelf_life_days)
 
         new_pantry_item = PantryItem(
             product_id = product_id,
             amount = amount,
             unit = unit,
-            date_added = date_added,
+            date_added = date_purchased,
             expiration_date = expiration_date
         )
         self.session.add(new_pantry_item)
@@ -82,12 +93,16 @@ class PantryManager:
 
         grocery_list = []
         for ingredient in ingredients:
+            pid = getattr(ingredient, "matched_product_id", None)
+            needed = ingredient.pantry_amount
+            if pid is None or needed is None:
+                continue
             # Check if ingredient already exists in pantry with sufficient amount
             pantry_items = self.session.query(PantryItem).filter(PantryItem.product_id == ingredient.matched_product_id).all()
             
             current_amount = sum(item.amount for item in pantry_items) if pantry_items else 0
             has_enough = current_amount >= ingredient.pantry_amount
-            
+
             if not has_enough:
                 # Calculate how much more we need
                 needed_amount = ingredient.pantry_amount - current_amount
@@ -99,8 +114,9 @@ class PantryManager:
                     grocery_item = {
                         'ingredient_name': ingredient.norm_name,
                         'product_name': tj_product.name,
-                        'amount': ingredient.amount_id,
-                        'unit': ingredient.unit,
+                        'product_id': ingredient.matched_product_id,
+                        'amount': tj_product.quantity,      
+                        'unit': tj_product.unit,  
                         'needed_amount': needed_amount
                     }
                     grocery_list.append(grocery_item)
@@ -131,10 +147,12 @@ class PantryManager:
                 combined_items[product_name] = {
                     'ingredient_name': item['ingredient_name'],
                     'product_name': item['product_name'],
-                    'amount': item['amount'],  # Amount per product
+                    'product_id': item['product_id'],      # ✅ keep product_id
+                    'amount': item['amount'],              # Amount per product
                     'unit': item['unit'],
                     'total_needed': item['needed_amount']
                 }
+
         
         # Calculate combined grocery list
         combined_grocery_list = []
@@ -144,6 +162,7 @@ class PantryManager:
             combined_grocery_list.append({
                 'ingredient_name': item['ingredient_name'],
                 'product_name': item['product_name'],
+                'product_id': item['product_id'],
                 'amount': item['amount'],
                 'unit': item['unit'],
                 'quantity': quantity,
@@ -153,47 +172,66 @@ class PantryManager:
         return combined_grocery_list
     
 
-    def add_grocery_list(self, grocery_list):
+    def add_grocery_list(self, grocery_list, planned_date=None):
         """
-        Add items from grocery list to pantry. Each package of an item is tracked separately for expiration purposes.
+        Add items from grocery list to pantry. Each package of an item is tracked
+        separately for expiration purposes, using the planned_date as the purchase
+        date (if provided).
         """
 
         messages = []
+
         for item in grocery_list:
-            total_amount = item['quantity'] * item['amount']
-            
-            ingredient = self.session.query(Ingredient).filter(Ingredient.norm_name == item['ingredient_name']).first()
-            
-            if not ingredient:
-                messages.append(f"Warning: Could not find ingredient {item['ingredient_name']}")
-                continue
-            
-            # Get TJ product for shelf life
-            tj_product = self.session.query(TJInventory).filter(TJInventory.product_id == ingredient.matched_product_id).first()
+            product_id = item["product_id"]
+            amount_per_package = item["amount"]   # how much 1 unit contributes
+            unit = item["unit"]
+            qty = item["quantity"]
+
+            # Look up the Trader Joe's product directly by product_id
+            tj_product = (
+                self.session.query(TJInventory)
+                .filter(TJInventory.product_id == product_id)
+                .first()
+            )
 
             if not tj_product:
-                messages.append(f"Warning: Could not find TJ product for {item['ingredient_name']}")
+                messages.append(
+                    f"Warning: Could not find TJ product for product_id {product_id} "
+                    f"({item.get('product_name', 'Unknown')})"
+                )
                 continue
 
-            # Create separate pantry entries for each package
-            for i in range(item['quantity']):
+            # Purchase date = planned_date if provided, else "now"
+            if planned_date:
+                # planned_date might be a date; normalize to datetime
+                if isinstance(planned_date, datetime):
+                    date_purchased = planned_date
+                else:
+                    date_purchased = datetime.combine(planned_date, datetime.min.time())
+            else:
                 date_purchased = datetime.now()
-                expiration_date = date_purchased + timedelta(days = tj_product.shelf_life_days)
 
+            # Expiration date based on shelf life
+            shelf_days = tj_product.shelf_life_days or 0
+            expiration_date = date_purchased + timedelta(days=shelf_days)
+
+            # Create one PantryItem per "package"
+            for _ in range(qty):
                 pantry_item = PantryItem(
-                    ingredient_id = ingredient.id,
-                    amount = item['amount'],
-                    unit = item['unit'],
-                    date_purchased = date_purchased,
-                    expiration_date = expiration_date
+                    product_id=product_id,
+                    amount=amount_per_package,
+                    unit=unit,
+                    date_added=date_purchased,
+                    expiration_date=expiration_date,
                 )
                 self.session.add(pantry_item)
-                message = f"Added {item['quantity']} package(s) of {item['product_name']} ({item['amount']} {item['unit']} each)"
-            
-            messages.append(message)
-        
+
+            messages.append(
+                f"Added {qty} package(s) of {tj_product.name} "
+                f"({amount_per_package} {unit} each)"
+            )
+            print(messages)
         self.session.commit()
-        
         return messages
 
 
@@ -207,7 +245,7 @@ class PantryManager:
 
         messages = []
         for ingredient in ingredients:
-            if not ingredient.matched_product_id:
+            if ingredient.matched_product_id is None or ingredient.pantry_amount is None:
                 messages.append(f"Warning: No product matched for {ingredient.norm_name}")
                 continue
 
@@ -338,7 +376,61 @@ class PantryManager:
                 "expiration_date": data.get("expiration_date")
             })
         return items
-        
+    
+    def consume_recipe(self, recipe_id: int, sel_id: int):
+        """
+        Consume pantry items FIFO/FEFO for a recipe.
+        Logs PantryEvent(event_type='consume') for each usage.
+        """
+
+        ingredients = (
+            self.session.query(Ingredient)
+            .filter(Ingredient.recipe_id == recipe_id)
+            .all()
+        )
+
+        for ing in ingredients:
+            if not ing.matched_product_id:
+                continue
+
+            needed = ing.pantry_amount
+            if needed is None or needed <= 0:
+                continue
+
+            pantry_items = (
+                self.session.query(PantryItem)
+                .filter(PantryItem.product_id == ing.matched_product_id)
+                .order_by(PantryItem.expiration_date.asc())  # FEFO
+                .all()
+            )
+
+            for pi in pantry_items:
+                if needed <= 0:
+                    break
+
+                used = min(pi.amount, needed)
+                needed -= used
+
+                # Log event
+                event = PantryEvent(
+                    pantry_id=pi.pantry_id,
+                    event_type="consume",
+                    amount=used,
+                    unit=pi.unit,
+                    recipe_selection_id=sel_id
+                )
+                self.session.add(event)
+
+                # Remove or update PantryItem
+                if used == pi.amount:
+                    self.session.delete(pi)
+                else:
+                    pi.amount -= used
+
+        self.session.commit()
+
+
+
 if __name__ == "__main__":
     pantry_ids = set(item.product_id for item in session.query(PantryItem).all())
     inventory_ids = set(item.product_id for item in session.query(TJInventory).all())

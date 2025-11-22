@@ -1,5 +1,6 @@
 # services/recipe_manager.py
 import pandas as pd
+import streamlit as st
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from recommender_system.recipe_recommender_sys import RecipeRecommender
@@ -59,29 +60,73 @@ class RecipeManager:
             .all()
         )
 
-    def update_planned_date(self, sel_id: int, date):
-        planned = self.session.query(RecipeSelected).filter_by(sel_id=sel_id).first()
-        if planned:
-            planned.planned_for = date
-            self.session.commit()
-        return planned
-    
-    # ✔️ 4. Confirm Recipe (Core Logic)
-    def confirm_recipe(self, sel_id: int):
+    def update_planned_date(self, sel_id: int, planned_str):
+        """planned_str may be a string ('2025-11-22') or a datetime/date object."""
         planned = self.session.query(RecipeSelected).filter_by(sel_id=sel_id).first()
         if not planned:
             return None
 
+        if isinstance(planned_str, str):
+            try:
+                planned_date = datetime.fromisoformat(planned_str)
+            except ValueError:
+                planned_date = None
+        elif isinstance(planned_str, datetime):
+            planned_date = planned_str
+        elif hasattr(planned_str, "isoformat"):  # date object
+            planned_date = datetime.combine(planned_str, datetime.min.time())
+        else:
+            planned_date = None
+
+        planned.planned_for = planned_date
+        self.session.commit()
+        return planned
+    
+    # ✔️ 4. Confirm Recipe (Core Logic)
+    def confirm_recipe(self, sel_id: int):
+
+        # 1. Load existing planned selection
+        planned = (
+            self.session.query(RecipeSelected)
+            .filter_by(sel_id=sel_id)
+            .first()
+        )
+        if not planned:
+            return None
+
         recipe_id = planned.recipe_id
+        planned_date = planned.planned_for.date() if planned.planned_for else datetime.now().date()
 
-        # Full FEFO-based consumption handled by PantryManager
         pm = PantryManager(self.session)
-        pm.apply_recipe(recipe_id)
 
+        # -----------------------------------------------
+        # 2. Compute missing ingredients (grocery list)
+        # -----------------------------------------------
+        grocery_list = pm.get_grocery_list([recipe_id])
+        print(grocery_list)
+        # -----------------------------------------------
+        # 3. Add missing pantry items (purchase flow)
+        # -----------------------------------------------
+        if grocery_list:
+            pm.add_grocery_list(grocery_list, planned_date)
+
+            # We also need to log purchase events for each new pantry item.
+            # This is handled inside add_grocery_list.
+            # If not, we can implement it there.
+
+        # -----------------------------------------------
+        # 4. Consume ingredients FIFO/FEFO (core logic)
+        # -----------------------------------------------
+        pm.consume_recipe(recipe_id, sel_id)
+
+        # -----------------------------------------------
+        # 5. Mark as cooked & persist
+        # -----------------------------------------------
         planned.cooked_at = datetime.now()
         self.session.commit()
 
         return planned
+
     
     def get_planned_consumption_by_date(self):
         """
@@ -130,3 +175,25 @@ class RecipeManager:
         )
 
         return daily
+
+    def update_meal_slot(self, sel_id: int, slot: str):
+        """Update meal slot for a planned recipe."""
+        planned = self.session.query(RecipeSelected).filter_by(sel_id=sel_id).first()
+        if not planned:
+            return None
+
+        planned.meal_slot = slot
+        self.session.commit()
+        return planned
+    
+    def delete_planned_recipe(self, sel_id: int):
+        planned = (
+            self.session.query(RecipeSelected)
+            .filter_by(sel_id=sel_id)
+            .first()
+        )
+        if planned:
+            self.session.delete(planned)
+            self.session.commit()
+            return True
+        return False

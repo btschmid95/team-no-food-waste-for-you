@@ -25,7 +25,6 @@ rm = RecipeManager(session)
 pm = PantryManager(session)
 recommender = RecipeRecommender(session)
 
-
 # ------------------------------------------------------
 # Helper: rebuild virtual pantry from real pantry + planned recipes
 # ------------------------------------------------------
@@ -51,14 +50,85 @@ def rebuild_virtual_pantry():
         key=lambda kv: kv[1]["planned_for"] or "9999-99-99",
     )
 
-    for rid, pdata in sorted_planned:
+    for sel_id, pdata in sorted_planned:
+        rid = pdata["recipe_id"]
         recipe_obj = rm.get_recipe_by_id(rid)
         if recipe_obj:
             state = recommender._apply_recipe_to_virtual_state(recipe_obj, state)
 
     return state
 
-from datetime import datetime, timedelta
+def load_planned_recipes_from_db(session):
+    """Load DB rows into session_state.planned_recipes."""
+    from database.tables import RecipeSelected
+    from services.recipe_manager import RecipeManager
+
+    rm = RecipeManager(session)
+    entries = rm.get_planning_queue()
+    st.session_state.planned_recipes = {
+        entry.sel_id: {
+            "recipe_id": entry.recipe_id,
+            "title": entry.recipe.title,
+            "planned_for": entry.planned_for.date().isoformat() if entry.planned_for else None,
+            "meal_slot": entry.meal_slot,
+            "status": "confirmed" if entry.cooked_at else "planned",
+            "added_at": entry.selected_at.isoformat(),
+        }
+        for entry in entries
+    }
+
+
+def sync_planned_recipes_to_db(session):
+    from services.recipe_manager import RecipeManager
+    rm = RecipeManager(session)
+
+    # 1. Determine what exists in DB vs session_state
+    existing_db_ids = {r.sel_id for r in rm.get_planning_queue()}
+    current_ids = {
+        sel_id for sel_id in st.session_state.planned_recipes.keys()
+        if not (isinstance(sel_id, str) and sel_id.startswith("temp_"))
+    }
+
+    # 2. DB rows not present in session_state → delete them
+    to_delete_db = existing_db_ids - current_ids
+    for sel_id in to_delete_db:
+        rm.delete_planned_recipe(sel_id)
+
+    # 3. Add/update remaining items
+    to_delete = []
+    to_add = []
+
+    for sel_id, pdata in st.session_state.planned_recipes.items():
+
+        # TEMPORARY ENTRY → Create DB record
+        if isinstance(sel_id, str) and sel_id.startswith("temp_"):
+            raw_date = pdata.get("planned_for")
+
+            planned_for = None
+            if raw_date:
+                try:
+                    planned_for = datetime.fromisoformat(raw_date)
+                except:
+                    pass
+
+            new = rm.add_recipe_to_planning_queue(
+                pdata["recipe_id"],
+                planned_for=planned_for
+            )
+            new_sel_id = new.sel_id
+            to_add.append((new_sel_id, pdata))
+            to_delete.append(sel_id)
+
+        else:
+            # EXISTING DB ROW → update
+            rm.update_planned_date(sel_id, pdata["planned_for"])
+            rm.update_meal_slot(sel_id, pdata["meal_slot"])
+
+    # Apply changes
+    for old_key in to_delete:
+        del st.session_state.planned_recipes[old_key]
+    for new_key, pdata in to_add:
+        st.session_state.planned_recipes[new_key] = pdata
 
 def compute_optimal_date_for_recipe(
     recipe,
@@ -66,7 +136,7 @@ def compute_optimal_date_for_recipe(
     planned_recipes,
     current_day=None,
     current_slot=None,
-    recipe_id=None
+    sel_id=None
 ):
     """Return optimal date/slot with no flip-flop and respecting user selections."""
 
@@ -101,7 +171,7 @@ def compute_optimal_date_for_recipe(
     # STEP C — If user picked something, keep it *only if*
     #          it is still optimal or better
     # ----------------------------------------------------
-    if current_day and current_slot and recipe_id:
+    if current_day and current_slot and sel_id:
 
         # Must still be an allowed slot
         if current_slot in allowed_slots:
@@ -110,8 +180,8 @@ def compute_optimal_date_for_recipe(
             conflict = any(
                 pdata.get("planned_for") == str(current_day)
                 and pdata.get("meal_slot") == current_slot
-                and rid2 != recipe_id
-                for rid2, pdata in planned_recipes.items()
+                and other_sel_id != sel_id
+                for other_sel_id, pdata in planned_recipes.items()
             )
 
             if not conflict:
@@ -212,19 +282,22 @@ CATEGORIES = {
     "Beverages": "beverage",
 }
 # ------------------------------------------------------
-# Session state for planning
+# Initialize session_state keys ONLY ONCE
 # ------------------------------------------------------
-if "planned_recipes" not in st.session_state:
-    # {recipe_id: {"title": str, "added_at": iso_str, "planned_for": iso_date_str or None, "status": "planned"/"confirmed"}}
-    st.session_state.planned_recipes = {}
+st.session_state.setdefault("planned_recipes", None)
+st.session_state.setdefault("virtual_pantry", None)
 
-if "rec_start_idx" not in st.session_state:
-    st.session_state.rec_start_idx = 0   # for simple window paging
+# ------------------------------------------------------
+# Load planned recipes from DB ONLY if not yet loaded
+# ------------------------------------------------------
+if st.session_state.planned_recipes is None:
+    load_planned_recipes_from_db(session)
 
-if "virtual_pantry" not in st.session_state:
-    st.session_state.virtual_pantry = None
-
-
+# ------------------------------------------------------
+# Build virtual pantry ONLY if not yet built
+# ------------------------------------------------------
+if st.session_state.virtual_pantry is None:
+    st.session_state.virtual_pantry = rebuild_virtual_pantry()
 # ------------------------------------------------------
 # PAGE HEADER
 # ------------------------------------------------------
@@ -274,7 +347,8 @@ with col2:
             date_str = str(d)
 
             entry = None
-            for rid, pdata in st.session_state.planned_recipes.items():
+            for sel_id, pdata in st.session_state.planned_recipes.items():
+                rid = pdata["recipe_id"]
                 if pdata.get("planned_for") == date_str and pdata.get("meal_slot") == slot:
                     entry = pdata
                     break
@@ -288,11 +362,11 @@ with col2:
                 # ------------------------------------------
                 # 🔍 Check if any ingredient will be expired
                 # ------------------------------------------
-                rid = next(
-                    rid2 for rid2, pdata2 in st.session_state.planned_recipes.items()
+                sel_id = next(
+                    sel for sel, pdata2 in st.session_state.planned_recipes.items()
                     if pdata2 is entry
                 )
-
+                rid = st.session_state.planned_recipes[sel_id]["recipe_id"]
                 recipe_obj = rm.get_recipe_by_id(rid)
                 planned_day = d
 
@@ -339,28 +413,20 @@ with col2:
 
     # Fixed discrete mapping:
     # 0 -> gray, 1 -> yellow, 2 -> green
-    colorscale = [
-        [0.0, "#F5F5F5"],   # 0 → empty (gray)
-        [0.49, "#F5F5F5"],
-
-        [0.50, "#FFF8C6"],  # 1 → planned (yellow)
-        [0.74, "#FFF8C6"],
-
-        [0.75, "#3CB371"],  # 2 → confirmed (green)
-        [0.89, "#3CB371"],
-
-        [0.90, "#FF4C4C"],  # 3 → expired (red)
-        [1.0, "#FF4C4C"],
-    ]
 
     fig = go.Figure(
-        data=go.Heatmap(
+        data = go.Heatmap(
             z=matrix,
             x=[d.strftime("%a %m/%d") for d in dates],
             y=display_slots,
-            colorscale=colorscale,
-            zmin=0,           # 👈 force fixed range
-            zmax=2,           # 👈 so 0/1/2 map to gray/yellow/green
+            colorscale=[
+                [0/3, "#F5F5F5"],  # 0 empty
+                [1/3, "#FFF8C6"],  # 1 planned
+                [2/3, "#3CB371"],  # 2 confirmed
+                [3/3, "#FF4C4C"],  # 3 expired
+            ],
+            zmin=0,
+            zmax=3,
             hoverinfo="text",
             text=hover_text,
             showscale=False,
@@ -388,22 +454,6 @@ with col2:
 
     st.plotly_chart(fig, use_container_width=True)
 
-
-
-
-# ------------------------------------------------------
-# Initialize virtual pantry (if first time)
-# ------------------------------------------------------
-if st.session_state.virtual_pantry is None:
-    st.session_state.virtual_pantry = {
-        int(item["product_id"]): {
-            "amount": item["amount"],
-            "expiration_date": item["expiration_date"],
-        }
-        for item in recommender.pm.get_all_items()
-    }
-
-
 # ------------------------------------------------------
 # Category-Based Recommendations
 # ------------------------------------------------------
@@ -429,7 +479,8 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
         for i, (col, rec) in enumerate(zip(cols, category_recs)):
             recipe_id = rec["recipe_id"]
             recipe_obj = rm.get_recipe_by_id(recipe_id)
-            is_added = recipe_id in st.session_state.planned_recipes
+            is_added = any(pdata["recipe_id"] == recipe_id for pdata in st.session_state.planned_recipes.values())
+
 
             with col:
                 with st.container(border=True):
@@ -468,20 +519,26 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
                         # -------------------------------------------------------
                         # CASE 2 — Matched product exists in pantry → matched
                         # -------------------------------------------------------
-                        if pid in vp:
+                        if pid in vp and vp[pid]["amount"] > 0:
                             pantry_amount = vp[pid]["amount"] or 0
                             used = min(pantry_amount, needed)
                             remaining = max(pantry_amount - used, 0)
                             if remaining >0:
                                 matched_rows.append(
                                     f"- **{name}** — needs **{needed} {unit}**, "
-                                    f"uses **{used}**, remaining **{remaining}**"
+                                    f"uses **{used}**, remaining **{round(remaining,2)}**"
                                 )
                             else:
-                                matched_rows.append(
-                                    f"- **{name}** — needs **{needed} {unit}**, "
-                                    f"uses **{used}**, Nothing Left!"
-                                )       
+                                if pantry_amount == 0:
+                                    matched_rows.append(
+                                        f"- **{name}** — needs **{needed} {unit}**, "
+                                        f"Pantry contains **{pantry_amount}** "
+                                    )
+                                else:
+                                    matched_rows.append(
+                                        f"- **{name}** — needs **{needed} {unit}**, "
+                                        f"uses **{used}**, Nothing Left!"
+                                    )
                             continue
 
                         # -------------------------------------------------------
@@ -496,30 +553,24 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
 
                             optimal_day, optimal_slot, _ = compute_optimal_date_for_recipe(
                                 recipe_obj,
-                                st.session_state.virtual_pantry or {
-                                    item["product_id"]: {
-                                        "amount": item["amount"],
-                                        "expiration_date": item["expiration_date"],
-                                    }
-                                    for item in recommender.pm.get_all_items()
-                                },
+                                st.session_state.virtual_pantry,
                                 st.session_state.planned_recipes,
                             )
 
-                            st.session_state.planned_recipes[recipe_id] = {
+                            temp_sel = f"temp_{datetime.now().timestamp()}"
+                            st.session_state.planned_recipes[temp_sel] = {
+                                "recipe_id": recipe_id,
                                 "title": rec["title"],
                                 "added_at": datetime.now().isoformat(),
                                 "planned_for": str(optimal_day),
                                 "meal_slot": optimal_slot,
                                 "status": "planned",
                             }
-
-                            st.session_state.virtual_pantry = recommender._apply_recipe_to_virtual_state(
-                                recipe_obj,
-                                st.session_state.virtual_pantry,
-                            )
-
+                            sync_planned_recipes_to_db(session)
+                            #load_planned_recipes_from_db(session)    # ← ADD THIS
+                            st.session_state.virtual_pantry = rebuild_virtual_pantry()
                             st.rerun()
+
                     else:
                         st.markdown("✔️ Already in plan")
 
@@ -541,7 +592,7 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
 # ------------------------------------------------------
 st.markdown("## 📝 Your Planning Queue")
 
-if not st.session_state.planned_recipes:
+if st.session_state.planned_recipes is None:
     st.warning("No recipes added to the planner yet.")
 else:
     # Known order for columns
@@ -550,7 +601,8 @@ else:
     # Build grouping by inferred normalized category
     grouped = {c: [] for c in CATEGORY_COLUMNS}
 
-    for rid, pdata in st.session_state.planned_recipes.items():
+    for sel_id, pdata in st.session_state.planned_recipes.items():
+        rid = pdata["recipe_id"]
         recipe_obj = rm.get_recipe_by_id(rid)
         category = recommender.normalize_category_label(recipe_obj)
 
@@ -573,7 +625,7 @@ else:
             # fallback: stick in Snack column or another default
             matched = "Snack"
 
-        grouped[matched].append((rid, pdata, recipe_obj))
+        grouped[matched].append((sel_id, pdata, recipe_obj))
 
     # Create 6 columns
     cols = st.columns(len(CATEGORY_COLUMNS))
@@ -591,10 +643,44 @@ else:
             # Sort recipes by added_at for consistency
             items = sorted(items, key=lambda x: x[1]["added_at"])
 
-            for rid, pdata, recipe_obj in items:
+            for sel_id, pdata, recipe_obj in items:
                 title = pdata["title"]
+                
+                # Determine expired flag
+                planned_day = (
+                    datetime.fromisoformat(pdata["planned_for"]).date()
+                    if pdata.get("planned_for")
+                    else None
+                )
 
-                with st.expander(f"{title}"):
+                expired_flag = False
+                if planned_day:
+                    for ing in recipe_obj.ingredients:
+                        pid = getattr(ing, "matched_product_id", None)
+                        if not pid:
+                            continue
+
+                        item = st.session_state.virtual_pantry.get(pid)
+                        if not item:
+                            continue
+
+                        exp = item.get("expiration_date")
+                        if isinstance(exp, datetime):
+                            exp = exp.date()
+
+                        if exp and exp < planned_day:
+                            expired_flag = True
+                            break
+                status = pdata.get("status", "planned")
+
+                if status == "confirmed":
+                    prefix = "🟩"
+                elif expired_flag:
+                    prefix = "🟥"
+                else:
+                    prefix = "🟨"   
+
+                with st.expander(f"{prefix} {title}"):
 
                     # -------------------------------
                     # Compute recommended date & slot
@@ -611,7 +697,7 @@ else:
                         st.session_state.planned_recipes,
                         current_day=current_day,
                         current_slot=current_slot,
-                        recipe_id=rid,   # ← pass the actual recipe ID
+                        sel_id=sel_id,
                     )
 
                     # -------------------------------
@@ -646,7 +732,7 @@ else:
                     date = st.date_input(
                         "Choose a cooking date:",
                         default_date,
-                        key=f"date_picker_{rid}",
+                        key=f"date_picker_{sel_id}",
                     )
                     chosen_date_str = str(date)
 
@@ -674,8 +760,8 @@ else:
                     # Remove slots already taken on that date
                     taken_slots = {
                         pdata2.get("meal_slot")
-                        for rid2, pdata2 in st.session_state.planned_recipes.items()
-                        if pdata2.get("planned_for") == chosen_date_str and rid2 != rid
+                        for other_sel_id, pdata2 in st.session_state.planned_recipes.items()
+                        if pdata2.get("planned_for") == chosen_date_str and other_sel_id != sel_id
                     }
                     available_slots = [s for s in allowed_slots if s not in taken_slots]
 
@@ -698,17 +784,19 @@ else:
                             "Meal Slot",
                             available_slots,
                             index=available_slots.index(default_slot),
-                            key=f"slot_picker_{rid}",
+                            key=f"slot_picker_{sel_id}",
                         )
 
                     # Store changes + rerun
                     prev_date = pdata.get("planned_for")
                     prev_slot = pdata.get("meal_slot")
 
-                    st.session_state.planned_recipes[rid]["planned_for"] = chosen_date_str
-                    st.session_state.planned_recipes[rid]["meal_slot"] = slot
+                    st.session_state.planned_recipes[sel_id]["planned_for"] = chosen_date_str
+                    st.session_state.planned_recipes[sel_id]["meal_slot"] = slot
 
                     if chosen_date_str != prev_date or slot != prev_slot:
+                        sync_planned_recipes_to_db(session)
+                        st.session_state.virtual_pantry = rebuild_virtual_pantry()
                         st.rerun()
 
                     # -------------------------------
@@ -716,16 +804,20 @@ else:
                     # -------------------------------
                     c1, c2 = st.columns(2)
                     with c1:
-                        if st.button("🗑 Remove", key=f"remove_{rid}"):
-                            del st.session_state.planned_recipes[rid]
+                        if st.button("🗑 Remove", key=f"remove_{sel_id}"):
+                            del st.session_state.planned_recipes[sel_id]
+                            sync_planned_recipes_to_db(session)
                             st.session_state.virtual_pantry = rebuild_virtual_pantry()
                             st.rerun()
 
                     with c2:
-                        if st.button("✔️ Confirm", key=f"confirm_{rid}"):
-                            st.session_state.planned_recipes[rid]["status"] = "confirmed"
-                            pm.apply_recipe(rid)
-                            del st.session_state.planned_recipes[rid]
+                        #confirm_key = f"confirm_btn_{rid}"
+                        #confirm_state_key = f"confirm_state_{rid}"
+                        if st.button("✔️ Confirm", key=f"confirm_{sel_id}"):
+                            st.session_state.planned_recipes[sel_id]["status"] = "confirmed"
+
+                            rm.confirm_recipe(sel_id)
+
                             st.session_state.virtual_pantry = rebuild_virtual_pantry()
                             st.rerun()
 

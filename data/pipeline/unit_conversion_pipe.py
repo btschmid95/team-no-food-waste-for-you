@@ -27,6 +27,10 @@ DOES_NOT_WORK = {
     "pint", "heads", "egg","eggs"
 }
 
+PKG_KEYWORDS = {
+    "pkg", "pkg.", "pkgs", "package", "packages"
+}
+
 CONTAINER_UNITS = {
     "box", "boxes",
     "package", "packages",
@@ -55,7 +59,12 @@ def convert_units_for_all_ingredients(session: Session):
     updated_count = 0
 
     for ing, prod in ingredients:
+        raw_text = (ing.raw_text or "").lower().strip()
+        raw_contains_pkg = any(k in raw_text for k in PKG_KEYWORDS)
 
+        # If scraper failed to set unit but raw text clearly says “pkg”
+        if (ing.unit is None or ing.unit.strip() == "") and raw_contains_pkg:
+            ing.unit = "package"
         # -------- CASE 1: convert cup/tbsp/tsp/oz directly --------
         if ing.unit in FIRST_UNITS:
             ing.pantry_amount = ing.amount * FIRST_UNITS[ing.unit]
