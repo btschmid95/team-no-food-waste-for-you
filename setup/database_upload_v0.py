@@ -6,7 +6,7 @@ from sqlalchemy import create_engine, text
 from data.ingredient_normalization import normalize
 
 recipes = pd.read_csv("../data/trader_joes_recipes.csv")
-tj_inventory = pd.read_csv("../data/trader_joes_products_v2.csv")
+tj_inventory = pd.read_csv("../data/trader_joes_products_v3.csv")
 
 # creating TJ inventory
 def parse_price_to_float(p):
