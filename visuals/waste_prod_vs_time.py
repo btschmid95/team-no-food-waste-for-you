@@ -9,8 +9,15 @@ if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 def plot_expiring_food_histogram(engine):
     from visuals.pantry_analytics import load_pantry_with_category, compute_expiry_buckets
-
     pantry_df = load_pantry_with_category(engine)
+
+    if pantry_df.empty:
+        fig, ax = plt.subplots(figsize=(8, 4))
+        ax.text(0.5, 0.5, "No pantry items available.\nAdd items to view forecast.",
+                ha="center", va="center", fontsize=14)
+        ax.set_axis_off()
+        return fig
+   
     df = compute_expiry_buckets(pantry_df)
     df["category"] = df["category"].fillna("Unknown")
 

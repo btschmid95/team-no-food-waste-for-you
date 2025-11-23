@@ -15,7 +15,7 @@ from components.sidebar import render_sidebar
 from utils.session import get_session
 from services.pantry_manager import PantryManager
 from services.product_manager import ProductManager
-from database.tables import PantryItem, TJInventory
+from database.tables import PantryItem, TJInventory, Ingredient
 
 # Visual imports
 from visuals.waste_prod_vs_time import plot_expiring_food_histogram
@@ -86,11 +86,17 @@ with header_col2:
     with c1:
         if st.button("❌ Clear Pantry", key="btn_clear_all"):
             st.session_state["confirm_clear_all"] = True
-
+            st.session_state.planned_recipes = {}
+            st.session_state.virtual_pantry = {}
+            st.success("Pantry and planning queue have been fully cleared.")
+            st.rerun()
     with c2:
         if st.button("🗑 Trash Pantry", key="btn_trash_all"):
             st.session_state["confirm_trash_all"] = True
-
+            st.session_state.planned_recipes = {}
+            st.session_state.virtual_pantry = {}
+            st.success("Pantry and planning queue have been fully cleared.")
+            st.rerun()
     with c3:
         if st.button("⏳ Trash Expired", key="btn_trash_expired"):
             st.session_state["confirm_trash_expired"] = True
@@ -137,7 +143,7 @@ if st.session_state.get("confirm_trash_expired"):
     with cB:
         if st.button("Cancel", key="cancel_trash_expired"):
             st.session_state["confirm_trash_expired"] = False
-            
+
 # Load pantry items
 pantry_items = pm.get_pantry_items()
 if not pantry_items.empty:
@@ -379,14 +385,59 @@ with col3:
             ].values[0]
         )
 
-        if st.button("Remove"):
-            pm.remove_item(pid)
-            st.rerun()
+    if st.button("Remove"):
+        msg = pm.remove_item(pid)
+
+        # Clean session_state planned_recipes
+        removed_ids = []
+        for sel_id, pdata in list(st.session_state.planned_recipes.items()):
+            rid = pdata["recipe_id"]
+
+            # Check if this recipe needs the trashed product
+            ingredients = session.query(Ingredient).filter(Ingredient.recipe_id == rid).all()
+            for ing in ingredients:
+                if ing.matched_product_id == pantry_items.loc[
+                    pantry_items["pantry_id"] == pid, "product_id"
+                ].values[0]:
+                    removed_ids.append(sel_id)
+                    del st.session_state.planned_recipes[sel_id]
+                    break
+
+        if removed_ids:
+            st.info(f"Removed {len(removed_ids)} planned recipe(s) because they needed this item.")
+
+        st.session_state.virtual_pantry = {}
+        st.rerun()
 
         if st.button("Trash"):
-            pm.remove_item(pid)
-            st.rerun()
+            msg = pm.trash_item(pid)
 
+            # Remove dependent planned recipes from session state
+            trashed_product_id = pantry_items.loc[
+                pantry_items["pantry_id"] == pid, "product_id"
+            ].values[0]
+
+            removed_ids = []
+            for sel_id, pdata in list(st.session_state.planned_recipes.items()):
+                rid = pdata["recipe_id"]
+
+                ingredients = session.query(Ingredient).filter(
+                    Ingredient.recipe_id == rid
+                ).all()
+
+                for ing in ingredients:
+                    if ing.matched_product_id == trashed_product_id:
+                        removed_ids.append(sel_id)
+                        del st.session_state.planned_recipes[sel_id]
+                        break
+
+            if removed_ids:
+                st.info(f"{msg} Also removed {len(removed_ids)} planned recipe(s).")
+            else:
+                st.success(msg)
+
+            st.session_state.virtual_pantry = {}
+            st.rerun()
 
 st.markdown("## 📊 Pantry Insights")
 

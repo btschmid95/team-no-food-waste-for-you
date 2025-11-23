@@ -65,22 +65,35 @@ class PantryManager:
 
     def remove_item(self, pantry_id):
         """
-        Remove a single item from pantry by pantry_id. This deletes the entire pantry entry.
+        Remove a single item from pantry by pantry_id.
+        Also removes planned recipes that require this ingredient.
         """
 
-        pantry_item = self.session.query(PantryItem).filter(PantryItem.pantry_id == pantry_id).first()
+        pantry_item = (
+            self.session.query(PantryItem)
+            .filter(PantryItem.pantry_id == pantry_id)
+            .first()
+        )
 
-        if pantry_item:
-            tj_product = self.session.query(TJInventory).filter(TJInventory.product_id == pantry_item.product_id).first()
+        if not pantry_item:
+            return f"Pantry item {pantry_id} not found"
 
-            product_name = tj_product.norm_name
+        product_id = pantry_item.product_id
 
-            self.session.delete(pantry_item)
-            self.session.commit()
+        # Delete pantry item
+        self.session.delete(pantry_item)
+        self.session.commit()
 
-            return f"Removed {product_name}"
-        
-        return f"Pantry item {pantry_id} not found"
+        # Remove related planned recipes
+        removed_recipes = self.remove_related_planned_recipes(product_id)
+
+        if removed_recipes:
+            return (
+                f"Removed product_id {product_id} from pantry. "
+                f"Also removed {len(removed_recipes)} planned recipe(s)."
+            )
+        else:
+            return f"Removed product_id {product_id} from pantry."
 
 
     def get_needed_recipe_items(self, recipe_id):
@@ -541,7 +554,78 @@ class PantryManager:
         messages.append(f"Removed {len(expired_items)} expired item(s).")
         return messages
 
+    def remove_related_planned_recipes(self, product_id):
+        """
+        Remove planned/confirmed recipes that rely on a specific pantry product.
+        Returns the sel_id values of the removed recipes.
+        """
+        removed = []
 
+        # Find all planned/confirmed recipes
+        planned = self.session.query(RecipeSelected).all()
+
+        for p in planned:
+            rid = p.recipe_id
+            ingredients = (
+                self.session.query(Ingredient)
+                .filter(Ingredient.recipe_id == rid)
+                .all()
+            )
+
+            # Does this recipe rely on the removed product?
+            for ing in ingredients:
+                if ing.matched_product_id == product_id:
+                    removed.append(p.sel_id)
+                    self.session.delete(p)
+                    break 
+
+        if removed:
+            self.session.commit()
+
+        return removed
+    
+    def trash_item(self, pantry_id):
+        """
+        Trash a single pantry item.
+        Logs a trash event and removes planned recipes depending on this product.
+        """
+
+        pantry_item = (
+            self.session.query(PantryItem)
+            .filter(PantryItem.pantry_id == pantry_id)
+            .first()
+        )
+
+        if not pantry_item:
+            return f"Pantry item {pantry_id} not found"
+
+        product_id = pantry_item.product_id
+
+        # Log trash event
+        event = PantryEvent(
+            pantry_id=pantry_item.pantry_id,
+            event_type="trash",
+            amount=pantry_item.amount,
+            unit=pantry_item.unit,
+            recipe_selection_id=None
+        )
+        self.session.add(event)
+
+        # Remove pantry item
+        self.session.delete(pantry_item)
+        self.session.commit()
+
+        # Remove any planned recipes that need this ingredient
+        removed_recipes = self.remove_related_planned_recipes(product_id)
+
+        if removed_recipes:
+            return (
+                f"Trashed product_id {product_id}. "
+                f"Removed {len(removed_recipes)} dependent planned recipe(s)."
+            )
+        else:
+            return f"Trashed product_id {product_id}."
+    
 if __name__ == "__main__":
     pantry_ids = set(item.product_id for item in session.query(PantryItem).all())
     inventory_ids = set(item.product_id for item in session.query(TJInventory).all())
