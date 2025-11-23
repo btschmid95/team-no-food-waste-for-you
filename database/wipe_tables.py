@@ -1,5 +1,3 @@
-# wipe_tables.py
-
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from database.config import DATABASE_URL

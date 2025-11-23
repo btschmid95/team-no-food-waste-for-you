@@ -213,7 +213,7 @@ model = AutoModelForSequenceClassification.from_pretrained(
 )
 
 training_args = TrainingArguments(
-    output_dir="./tj_product_classifier",
+    output_dir="models/tj_product_classifier",
     per_device_train_batch_size=16,
     per_device_eval_batch_size=32,
     eval_strategy="epoch",
