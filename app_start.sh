@@ -33,7 +33,7 @@ else
 fi
 
 # === 7. Activate virtual environment ===
-source venv/bin/activate
+source .venv/bin/activate
 
 # === 8. Run Streamlit app ===
-streamlit run streamlit_app\streamlit_app.py
+streamlit run streamlit_app/streamlit_app.py
