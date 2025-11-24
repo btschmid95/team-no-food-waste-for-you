@@ -22,7 +22,7 @@ else
     python3 database/init_db.py
     python3 data/pipeline/webscrape_to_database.py
     python3 data/pipeline/ingredient_parser_pipe.py
-    python3 data/pipeline/run_product_mapping_pipe.py
+    # === python3 data/pipeline/run_product_mapping_pipe.py will not be run ===
     python3 data/pipeline/populate_mapped_ingredients.py
     python3 data/pipeline/unit_conversion_pipe.py
 

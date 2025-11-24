@@ -23,7 +23,7 @@ REM === 5. Run initial setup scripts ===
 python database\init_db.py
 python data\pipeline\webscrape_to_database.py
 python data\pipeline\ingredient_parser_pipe.py
-python data\pipeline\run_product_mapping_pipe.py
+REM === python data\pipeline\run_product_mapping_pipe.py won't be ran ===
 python data\pipeline\populate_mapped_ingredients.py
 python data\pipeline\unit_conversion_pipe.py
 
