@@ -10,7 +10,10 @@ sys.path.append(str(PROJECT_ROOT))
 
 from database.tables import Ingredient, IngredientParseMeta, Recipe
 from database.config import DATABASE_URL
-from data.pipeline.ingredient_category_classifier import predict_category
+try:
+    from data.pipeline.ingredient_category_classifier import predict_category
+except:
+    pass
 from ingredient_parser import parse_ingredient
 from database.normalization import normalize
 
