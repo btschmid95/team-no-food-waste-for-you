@@ -36,7 +36,7 @@ echo First-time setup complete. Launching app...
 REM === 7. Activate virtual environment ===
 call venv\Scripts\activate
 
-REM === 8. Run Streamlit app ===
-streamlit run app\streamlit_app.py
+REM === 8. Run Streamlit app (✔ corrected path)
+streamlit run streamlit_app\streamlit_app.py
 
 pause
