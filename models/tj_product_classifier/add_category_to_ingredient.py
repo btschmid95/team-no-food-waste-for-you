@@ -186,12 +186,10 @@ test_labels_enc = label_encoder.transform(test_labels)
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments
 from datasets import Dataset
 
-# Convert to HF Dataset
 train_dataset = Dataset.from_dict({'text': train_texts, 'label': train_labels_enc})
 test_dataset = Dataset.from_dict({'text': test_texts, 'label': test_labels_enc})
 
-# Tokenizer
-model_name = "distilbert-base-uncased"  # small and fast
+model_name = "distilbert-base-uncased"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 def tokenize(batch):
@@ -201,11 +199,9 @@ def tokenize(batch):
 train_dataset = train_dataset.map(tokenize, batched=True)
 test_dataset = test_dataset.map(tokenize, batched=True)
 
-# Set format for PyTorch
 train_dataset.set_format('torch', columns=['input_ids', 'attention_mask', 'label'])
 test_dataset.set_format('torch', columns=['input_ids', 'attention_mask', 'label'])
 
-# Model
 from transformers import AutoModelForSequenceClassification
 
 model = AutoModelForSequenceClassification.from_pretrained(
@@ -240,11 +236,9 @@ import joblib
 MODEL_DIR = Path("models/tj_product_classifier")
 MODEL_DIR.mkdir(parents=True, exist_ok=True)
 
-# Save model + tokenizer
 model.save_pretrained(MODEL_DIR)
 tokenizer.save_pretrained(MODEL_DIR)
 
-# Save label encoder
 joblib.dump(label_encoder, MODEL_DIR / "label_encoder.pkl")
 
 from torch.nn.functional import softmax
@@ -266,13 +260,12 @@ def classify_ingredient_subcat(ingredient_name, top_k=3):
 
     results = []
     for subcat, score in zip(top_subcats, top_scores):
-        # Lookup main category from dataframe
+
         main_cat = df[df['sub_category'] == subcat]['category'].iloc[0]
         results.append((subcat, main_cat, score))
     
     return results
 
-# ---- Example predictions ----
 print(classify_ingredient_subcat("Mashed Sweet Potatoes"))
 print(classify_ingredient_subcat("Pork Tenderloin"))
 print(classify_ingredient_subcat("Egg"))

@@ -35,14 +35,12 @@ def wipe_tables():
         print("\n=== BEFORE DELETE ===")
         show_counts(session)
 
-        # SQLite: disable FK checks temporarily
         session.execute(text("PRAGMA foreign_keys = OFF;"))
 
         for table in TABLES_TO_CLEAR:
             print(f"Clearing: {table}")
             session.execute(text(f"DELETE FROM {table};"))
 
-        # Reset autoincrement counters (SQLite only; ignore error on other DBs)
         try:
             session.execute(text("DELETE FROM sqlite_sequence;"))
         except Exception as e:

@@ -38,7 +38,7 @@ def parse_all_ingredients(limit=None):
     rows = query.all()
     print(f"Parsing {len(rows)} ingredients...")
 
-    csv_rows = []   # <-- Save here for output CSV
+    csv_rows = []
 
     for ing, recipe_title, recipe_category in rows:
         raw_text = ing.raw_text
@@ -71,8 +71,8 @@ def parse_all_ingredients(limit=None):
 
         except Exception as e:
             if not hasattr(parse_all_ingredients, "_prediction_error_logged"):
-                print("⚠️  WARNING: Category model not available. Skipping category predictions.")
-                print(f"⚙️  Details: {e}")
+                print("Category model not available. Skipping category predictions.")
+                print(f"Details: {e}")
                 parse_all_ingredients._prediction_error_logged = True
             top_preds = [(None, None, None)] * 3
 
@@ -137,7 +137,7 @@ def parse_all_ingredients(limit=None):
     session.commit()
     session.close()
 
-    print("✅ All ingredients parsed and metadata saved to DB.")
+    print("All ingredients parsed and metadata saved to DB.")
 
     df = pd.DataFrame(csv_rows)
     OUTPUT_CSV.parent.mkdir(parents=True, exist_ok=True)

@@ -19,7 +19,6 @@ class RecipeManager:
     def __init__(self, session: Session):
         self.session = session
 
-    # 💡 1. Fetching Recipes & Ingredients
     def get_all_recipes(self):
         return self.session.query(Recipe).all()
 
@@ -33,7 +32,6 @@ class RecipeManager:
             .all()
         )
 
-    # ⭐ 2. Recommendation API Hook (stub)
     def get_recommendations(self, max_missing=1, limit=5, virtual_state=None):
         rr = RecipeRecommender(self.session)
         return rr.recommend_recipes(
@@ -42,7 +40,6 @@ class RecipeManager:
             virtual_pantry_state=virtual_state
         )
 
-    # 📌 3. Planning Queue Management
     def add_recipe_to_planning_queue(self, recipe_id: int, planned_for=None):
         planned = RecipeSelected(
             recipe_id=recipe_id,
@@ -73,7 +70,7 @@ class RecipeManager:
                 planned_date = None
         elif isinstance(planned_str, datetime):
             planned_date = planned_str
-        elif hasattr(planned_str, "isoformat"):  # date object
+        elif hasattr(planned_str, "isoformat"):
             planned_date = datetime.combine(planned_str, datetime.min.time())
         else:
             planned_date = None
@@ -81,11 +78,9 @@ class RecipeManager:
         planned.planned_for = planned_date
         self.session.commit()
         return planned
-    
-    # ✔️ 4. Confirm Recipe (Core Logic)
+
     def confirm_recipe(self, sel_id: int):
 
-        # 1. Load existing planned selection
         planned = (
             self.session.query(RecipeSelected)
             .filter_by(sel_id=sel_id)
@@ -98,29 +93,13 @@ class RecipeManager:
         planned_date = planned.planned_for.date() if planned.planned_for else datetime.now().date()
 
         pm = PantryManager(self.session)
-
-        # -----------------------------------------------
-        # 2. Compute missing ingredients (grocery list)
-        # -----------------------------------------------
         grocery_list = pm.get_grocery_list([recipe_id])
-        # -----------------------------------------------
-        # 3. Add missing pantry items (purchase flow)
-        # -----------------------------------------------
+
         if grocery_list:
             pm.add_grocery_list(grocery_list, planned_date)
 
-            # We also need to log purchase events for each new pantry item.
-            # This is handled inside add_grocery_list.
-            # If not, we can implement it there.
-
-        # -----------------------------------------------
-        # 4. Consume ingredients FIFO/FEFO (core logic)
-        # -----------------------------------------------
         pm.consume_recipe(recipe_id, sel_id)
 
-        # -----------------------------------------------
-        # 5. Mark as cooked & persist
-        # -----------------------------------------------
         planned.cooked_at = datetime.now()
         self.session.commit()
 
@@ -132,8 +111,6 @@ class RecipeManager:
         Returns a DataFrame:
         date | planned_consumption
         """
-
-        # 1. Load all planned recipes
         selections = (
             self.session.query(RecipeSelected)
             .filter(RecipeSelected.planned_for.isnot(None))
@@ -148,8 +125,6 @@ class RecipeManager:
         for sel in selections:
             recipe_id = sel.recipe_id
             date = sel.planned_for.date()
-
-            # 2. Ingredients for this recipe
             ingredients = self.get_ingredients_for_recipe(recipe_id)
 
             for ing in ingredients:
@@ -166,7 +141,6 @@ class RecipeManager:
         if df.empty:
             return pd.DataFrame(columns=["date", "planned_consumption"])
 
-        # 3. Aggregate by date
         daily = (
             df.groupby("date", as_index=False)["amount"]
               .sum()

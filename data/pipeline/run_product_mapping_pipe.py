@@ -41,7 +41,6 @@ def run_mapping_pipeline():
 
     products = session.query(TJInventory).all()
 
-    # Build ingredient DataFrame
     ing_records = []
 
     for ing in ingredients:
@@ -53,7 +52,6 @@ def run_mapping_pipeline():
             "recipe_title": ing.recipe.title if ing.recipe else None,
             "recipe_category": ing.recipe.category if ing.recipe else None,
 
-            # ML predictions
             "likely_sub_category_1": meta.subcat_1 if meta else None,
             "likely_sub_category_1_score": meta.subcat_1_score if meta else None,
             "main_category_1": meta.maincat_1 if meta else None,
@@ -69,7 +67,6 @@ def run_mapping_pipeline():
 
     ing_df = pd.DataFrame(ing_records)
 
-    # Build product DataFrame
     prod_df = pd.DataFrame([{
         "product_id": p.product_id,
         "product_name": p.name,
@@ -78,7 +75,6 @@ def run_mapping_pipeline():
         "sub_category": p.sub_category
     } for p in products])
 
-    # Call your mapping function EXACTLY AS IS
     print("🔍 Running exact matching logic…")
     mapped_df = ing_df.copy()
     map_to_product_top_n_sub_main_expanded(
@@ -88,10 +84,8 @@ def run_mapping_pipeline():
         top_n=TOP_N
     )
 
-    print(f"📄 CSV written → {OUTPUT_CSV}")
-
-    # Update Ingredient.matched_product_id with the FIRST match
-    print("💾 Updating DB with top-1 matches…")
+    print(f"CSV written → {OUTPUT_CSV}")
+    print("Updating DB with top-1 matches...")
 
     for _, row in mapped_df.iterrows():
         ingredient_id = row["ingredient_id"]
@@ -102,7 +96,6 @@ def run_mapping_pipeline():
 
         first_product_name = row["matched_products"].split("; ")[0]
 
-        # find product_id from name
         product = session.query(TJInventory).filter(
             TJInventory.name == first_product_name
         ).first()
@@ -114,7 +107,6 @@ def run_mapping_pipeline():
     session.close()
 
     print("Finished mapping + DB update")
-
 
 if __name__ == "__main__":
     run_mapping_pipeline()

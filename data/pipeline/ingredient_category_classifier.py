@@ -88,17 +88,15 @@ def predict_category(ingredient_name, top_k=3):
         logits = model(**inputs).logits
         probs = softmax(logits, dim=1)
 
-    # Get top_k predictions safely
     k = min(top_k, probs.shape[1])
     top_probs, top_indices = torch.topk(probs, k=k)
 
     results = []
     for idx, score in zip(top_indices[0], top_probs[0]):
         sub_cat = label_encoder.classes_[idx]
-        main_cat = sub_to_main_category.get(sub_cat, "Unknown")  # default if not found
+        main_cat = sub_to_main_category.get(sub_cat, "Unknown")
         results.append((sub_cat, score.item(), main_cat))
 
-    # Fill to always have top_k results
     while len(results) < top_k:
         results.append((None, None, None))
 

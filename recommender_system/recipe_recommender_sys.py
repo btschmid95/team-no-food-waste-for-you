@@ -27,9 +27,6 @@ class RecipeRecommender:
         self.session = session
         self.pm = PantryManager(session)
 
-        
-
-    # Calculate waste score for all pantry items
     def calculate_item_scores(self, virtual_state=None):
         """
         Returns list of:
@@ -63,7 +60,6 @@ class RecipeRecommender:
         missing = 0
         external = 0
 
-        # Build product_id → list of entries
         score_map = {}
         for entry in item_scores:
             pid = entry["product_id"]
@@ -85,7 +81,6 @@ class RecipeRecommender:
             
             matched += 1
 
-            # FIFO by exp date
             entries = sorted(entries, key=lambda e: e["expiration_date"])
 
             required = needed
@@ -100,14 +95,9 @@ class RecipeRecommender:
                     continue
 
                 used = min(required, avail)
-
                 per_unit = entry["per_unit_score"]
-
-                # Proportional score
                 contrib = per_unit * used
                 local_score += contrib
-                #st.write(local_score, per_unit, contrib, used, required, avail)
-
                 required -= used
 
             if required > 0:
@@ -124,7 +114,6 @@ class RecipeRecommender:
             "external": external,
         }
 
-    # Recommend top recipes
     def recommend_recipes(self, limit=5, max_missing=1, virtual_pantry_state=None):
         item_scores = self.calculate_item_scores(virtual_pantry_state)
         recipes = self.session.query(Recipe).all()
@@ -135,18 +124,17 @@ class RecipeRecommender:
         ]
 
         scored = [s for s in scored if s["matched"] > 0]
-
         scored = [s for s in scored if s["missing"] <= max_missing]
         scored = [s for s in scored if s["score"] > 0]
         ranked = sorted(scored, key=lambda x: x["score"], reverse=True)
 
         return ranked[:limit]
+    
     def recommend_by_category(self, category, limit=5, max_missing=1, virtual_pantry_state=None):
 
         item_scores = self.calculate_item_scores(virtual_pantry_state)
         category = category.lower()
 
-        # Select only recipes that match the category
         recipes = [
             r for r in self.session.query(Recipe).all()
             if self.recipe_matches_category(r, category)
@@ -157,14 +145,13 @@ class RecipeRecommender:
             for r in recipes
         ]
 
-        # Apply your existing filters
         scored = [s for s in scored if s["matched"] > 0]
         scored = [s for s in scored if s["missing"] <= max_missing]
         scored = [s for s in scored if s["score"] > 0]
 
         ranked = sorted(scored, key=lambda x: x["score"], reverse=True)
         return ranked[:limit]
-    # Explain rationale
+
     def get_rationale(self, recipe_id):
         recipe = (
             self.session.query(Recipe)
@@ -193,6 +180,7 @@ class RecipeRecommender:
             })
 
         return rationale
+    
     def recipe_matches_category(self, recipe, category):
         """Return True if a recipe belongs to the given category keyword."""
         if not recipe.category:
@@ -247,7 +235,7 @@ class RecipeRecommender:
         days_remaining = (exp - datetime.now()).days
         if days_remaining < 0:
             return 0
-        # Load category multiplier
+
         product = (
             self.session.query(TJInventory)
             .filter_by(product_id=item["product_id"])
@@ -256,16 +244,7 @@ class RecipeRecommender:
         category = (product.sub_category or product.category or "").lower()
         mult = CATEGORY_MULTIPLIERS.get(category, CATEGORY_MULTIPLIERS["other"])
 
-        # Expired = max urgency
-        # if days_remaining < 0:
-        #     return 5.0 * mult   # per-unit urgent
-
-        # 0–3 days = very urgent
-        # 4–10 = medium
-        # >10 = low
         urgency = 1 / max(days_remaining, 1)
-
-        # RETURN PER-UNIT URGENCY SCORE
         return urgency * mult
     
     def normalize_category_label(self, recipe: Recipe):

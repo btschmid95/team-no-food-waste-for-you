@@ -1,7 +1,6 @@
 import re
 import nltk
 
-# ensure nltk resources available
 nltk.download('punkt', quiet=True)
 nltk.download('punkt_tab', quiet=True)
 nltk.download('averaged_perceptron_tagger', quiet=True)
@@ -13,7 +12,6 @@ def normalize(text):
     fluff = r'\b(?:organic|favorite|fresh|freeze-dried|large|les|natural|petite|petites|raw|teeny|tiny)\b'
     allowed_tokens = {'?', '!', '&', 'with', 'and', 'or', 'in'}
 
-    # Clean TJ branding + any parenthetical content
     text = re.sub(r"(TJ[’']?s|Joe[’']?s|Joseph[’']?s)", "", text, flags=re.I)
     text = re.sub(r'\([^)]*\)', '', text)
     text = re.sub(r'\b\d+(\.\d+)?\b', '', text)
@@ -35,7 +33,6 @@ def normalize(text):
             keep.append(lw)
         elif lw in allowed_tokens: keep.append(lw)
 
-    # Special cases
     if 'olive' in lower_tokens and 'oil' in lower_tokens and 'popcorn' not in lower_tokens:
         if 'spray' in lower_tokens:
             return 'extra virgin olive oil spray'

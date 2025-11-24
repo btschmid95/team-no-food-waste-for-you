@@ -307,8 +307,3 @@ print(f"Saved merged TJ products with shelf life to {output_file}")
 print(merged_df[['product_name', 'shelf_life', 'shelf_life_unit']].head(10))
 
 print(tj_df[['product_name', 'FK_Category', 'shelf_life', 'shelf_life_unit', 'Expiration_Date']].head(10))
-
-
-
-# print(fk_products[fk_products['Name'].str.contains('Lemon', case=False)])
-# print(fk_products[fk_products['text'].str.contains('lemon')])

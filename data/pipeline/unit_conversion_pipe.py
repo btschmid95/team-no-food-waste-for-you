@@ -15,6 +15,7 @@ from database.tables import Ingredient, TJInventory
 FIRST_UNITS = {
     "cup": 8, "cups": 8,
     "tablespoon": 0.5, "tablespoons": 0.5,
+    "Tbsp": 0.5,
     "teaspoon": 0.1667, "teaspoons": 0.1667,
     "ounce": 1, "ounces": 1,
     "oz": 1, "Oz": 1
@@ -62,60 +63,47 @@ def convert_units_for_all_ingredients(session: Session):
         raw_text = (ing.raw_text or "").lower().strip()
         raw_contains_pkg = any(k in raw_text for k in PKG_KEYWORDS)
 
-        # If scraper failed to set unit but raw text clearly says “pkg”
         if (ing.unit is None or ing.unit.strip() == "") and raw_contains_pkg:
             ing.unit = "package"
-        # -------- CASE 1: convert cup/tbsp/tsp/oz directly --------
+
         if ing.unit in FIRST_UNITS:
             ing.pantry_amount = ing.amount * FIRST_UNITS[ing.unit]
             ing.pantry_unit = "oz"
             updated_count += 1
             continue
 
-        # -------- CASE 2: ignore weird units --------
         if ing.unit in DOES_NOT_WORK:
             ing.pantry_amount = ing.amount
             ing.pantry_unit = ing.unit
             continue
 
-        # -------- CASE 3: use matched Trader Joe's product --------
         if (
             prod is not None 
             and prod.quantity is not None 
             and ing.amount is not None
         ):
 
-            # FIX: If ingredient has no real unit, treat amount as atomic
             if not ing.unit or ing.unit.strip() == "":
-                # No multiplication — keep raw amount
                 ing.pantry_amount = ing.amount
                 ing.pantry_unit = "count"
                 updated_count += 1
                 continue
 
-            # --- Container units (box, package, bag, etc.) ---
             if ing.unit in CONTAINER_UNITS:
                 ing.pantry_amount = ing.amount * prod.quantity
                 ing.pantry_unit = prod.unit
-                #print(ing.amount, prod.quantity, ing.unit, ing.pantry_amount)
                 updated_count += 1
 
-            # Otherwise multiply normally:
             ing.pantry_amount = ing.amount * prod.quantity
             ing.pantry_unit = prod.unit
             updated_count += 1
             continue
 
-        # -------- CASE 4: fallback (no conversion) --------
         ing.pantry_amount = ing.amount
         ing.pantry_unit = ing.unit
 
     session.commit()
     return updated_count
-
-# data/pipeline/unit_conversion_pipe.py
-
-
 
 def run_unit_conversion():
     """
@@ -127,10 +115,10 @@ def run_unit_conversion():
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    print("🔄 Converting ingredient units into normalized pantry units...")
+    print("Converting ingredient units into normalized pantry units.")
     updated = convert_units_for_all_ingredients(session)
 
-    print(f"✅ Completed unit conversion. {updated} ingredients updated.")
+    print(f"Completed unit conversion. {updated} ingredients updated.")
 
 
 if __name__ == "__main__":

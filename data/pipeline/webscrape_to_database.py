@@ -42,19 +42,12 @@ def normalize_unit(quantity, unit):
 
     u = unit.lower().strip().replace(".", "")
 
-    # ------------------------------
-    # WEIGHT → OZ
-    # ------------------------------
     if u in ["lb", "lbs", "pound", "pounds"]:
         return quantity * 16.0, "Oz"
 
-    # plain oz (weight)
     if u in ["oz"]:
         return quantity, "Oz"
 
-    # ------------------------------
-    # VOLUME → FL OZ
-    # ------------------------------
     if u in ["floz", "fl oz", "fluidounce", "fluidounces"]:
         return quantity, "Fl Oz"
 
@@ -67,15 +60,9 @@ def normalize_unit(quantity, unit):
     if u in ["gallon", "gal"]:
         return quantity * 128.0, "Fl Oz"
 
-    # ------------------------------
-    # COUNT-BASED
-    # ------------------------------
     if u in ["doz", "dozen"]:
         return quantity * 12.0, "Each"
 
-    # ------------------------------
-    # Default — no change
-    # ------------------------------
     return quantity, unit
 
 def parse_price(p):
@@ -99,13 +86,11 @@ def parse_size_string(size):
     if not size or pd.isna(size):
         return None, None
     
-    # remove leading slash
     size = str(size).strip().lstrip("/")
     
-    # extract: number (int or float) + unit text
     match = re.match(r"([0-9]*\.?[0-9]+)\s*(.*)", size)
     if not match:
-        return None, size  # weird case – return unit only
+        return None, size
     
     quantity = float(match.group(1))
     unit = match.group(2).strip() if match.group(2) else None
@@ -188,14 +173,12 @@ def populate_database(recipe_df, products_df):
 
         session.add(product)
 
-    # 2. Insert RECIPES + RAW INGREDIENTS
     for _, row in recipe_df.iterrows():
         title = row.get("title")
 
         if session.query(Recipe).filter_by(title=title).first():
             continue
 
-        # Create recipe
         recipe = Recipe(
             title=title,
             category=row.get("category"),
@@ -206,9 +189,8 @@ def populate_database(recipe_df, products_df):
         )
 
         session.add(recipe)
-        session.flush()  # get recipe.recipe_id
+        session.flush()
 
-        # Load ingredients
         ingredients_list = row.get("ingredients")
 
         if isinstance(ingredients_list, str):
@@ -220,7 +202,6 @@ def populate_database(recipe_df, products_df):
         if not isinstance(ingredients_list, list):
             ingredients_list = [str(ingredients_list)]
 
-        # Insert ingredient rows
         for raw_ing in ingredients_list:
             ingredient = Ingredient(
                 recipe_id=recipe.recipe_id,

@@ -101,32 +101,24 @@ weekly_count = (
 )
 
 colB.metric("Meals Planned This Week", weekly_count)
+st.markdown("## Waste & Pantry Analytics")
 
-# ============================================================
-# Analytics Section
-# ============================================================
-st.markdown("## 📊 Waste & Pantry Analytics")
-
-# --- Visual 1: Expiring Food Forecast ---
-st.markdown("### 🥫 Expiring Food Forecast")
+st.markdown("### Expiring Food Forecast")
 fig1 = plot_expiring_food_histogram(engine)
 st.pyplot(fig1)
 st.markdown("---")
 
-# --- Visual 2: Consumption vs Waste ---
-st.markdown("### 🔄 Consumption vs Waste Over Time")
+st.markdown("### Consumption vs Waste Over Time")
 fig2 = plot_consumption_vs_waste(engine, recipe_mgr)
 st.pyplot(fig2)
 st.markdown("---")
 
-# --- Visual 3: Realized vs Avoided Waste ---
-st.markdown("### 🚯 Realized vs Avoided Waste")
+st.markdown("### Realized vs Avoided Waste")
 fig3 = plot_waste_waterfall(engine)
 st.pyplot(fig3)
 st.markdown("---")
 
-# --- Visual 4: Recipe–Product Overlap Network ---
-st.markdown("### 🥗 Recipe–Product Overlap Network")
+st.markdown("### Recipe–Product Overlap Network")
 
 recipes_df, products_df, recipe_ing_map = load_recipe_product_data(engine)
 G = build_recipe_product_graph(recipes_df, products_df, recipe_ing_map)

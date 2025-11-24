@@ -39,7 +39,6 @@ def populate_ingredient_mappings():
             print(f"❌ Ingredient not found: '{raw_text}' (recipe: {recipe_title})")
             continue
 
-        # --- 3. Update amount/unit from hand-edited file (optional) ---
         amt = row.get("amount")
         unit = row.get("unit")
 
@@ -49,13 +48,10 @@ def populate_ingredient_mappings():
         if pd.notna(unit):
             ingredient.unit = unit
 
-        # 🔁 Always reset mapping first so stale mappings are removed
         ingredient.matched_product_id = None
 
-        # --- 4. Extract matched products ---
         matched = row.get("matched_products")
 
-        # If the cell is empty / NaN / "[]", we leave matched_product_id = None
         if pd.isna(matched) or str(matched).strip() in ("", "[]"):
             continue
 
@@ -69,11 +65,9 @@ def populate_ingredient_mappings():
 
         product_name = matched_list[0]
 
-        # --- 5. Look up product ---
         product = session.query(TJInventory).filter_by(name=product_name).first()
         if not product:
             print(f"❌ Product not found in TJInventory: {product_name}")
-            # matched_product_id already None from above
             continue
 
         ingredient.matched_product_id = product.product_id
