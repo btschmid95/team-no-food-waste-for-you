@@ -2,39 +2,31 @@ import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
 from datetime import datetime, timedelta
-
+import plotly.graph_objects as go
 from config.theme_config import apply_base_config
 from components.sidebar import render_sidebar
 from utils.session import get_session
-
+from database.tables import TJInventory
 from services.recipe_manager import RecipeManager
 from services.pantry_manager import PantryManager
 from recommender_system.recipe_recommender_sys import RecipeRecommender
 
-
-# ------------------------------------------------------
-# Base setup
-# ------------------------------------------------------
 apply_base_config()
 render_sidebar()
 
-session = get_session()  # should give you a SQLAlchemy Session
+session = get_session()
 
-# Instantiate managers / services
+
 rm = RecipeManager(session)
 pm = PantryManager(session)
 recommender = RecipeRecommender(session)
 
-# ------------------------------------------------------
-# Helper: rebuild virtual pantry from real pantry + planned recipes
-# ------------------------------------------------------
 def rebuild_virtual_pantry():
     """
     Start from the real pantry, then virtually consume ingredients
     for each planned recipe (in planned date order) to simulate
     future usage. This state feeds back into the recommender.
     """
-    # 1) Start from real pantry
     items = recommender.pm.get_all_items()
     state = {
         int(item["product_id"]): {
@@ -44,7 +36,6 @@ def rebuild_virtual_pantry():
         for item in items
     }
 
-    # 2) Apply planned recipes in date order (soonest first)
     sorted_planned = sorted(
         st.session_state.planned_recipes.items(),
         key=lambda kv: kv[1]["planned_for"] or "9999-99-99",
@@ -57,6 +48,29 @@ def rebuild_virtual_pantry():
             state = recommender._apply_recipe_to_virtual_state(recipe_obj, state)
 
     return state
+
+def virtual_pantry_to_df(session, vp_state):
+    """
+    Convert st.session_state.virtual_pantry to a full pantry DataFrame,
+    matching the structure returned by PantryManager.get_pantry_items().
+    """
+    rows = []
+
+    for pid, data in vp_state.items():
+        product = session.query(TJInventory).get(pid)
+
+        rows.append({
+            "product_id": pid,
+            "product_name": product.name if product else "Unknown",
+            "category": product.category if product else "Other",
+            "sub_category": product.sub_category if product else None,
+            "amount": data.get("amount", 0),
+            "unit": product.unit if product else None,
+            "date_added": None,  # not relevant for virtual state
+            "expiration_date": data.get("expiration_date"),
+        })
+
+    return pd.DataFrame(rows)
 
 def load_planned_recipes_from_db(session):
     """Load DB rows into session_state.planned_recipes."""
@@ -82,25 +96,21 @@ def sync_planned_recipes_to_db(session):
     from services.recipe_manager import RecipeManager
     rm = RecipeManager(session)
 
-    # 1. Determine what exists in DB vs session_state
     existing_db_ids = {r.sel_id for r in rm.get_planning_queue()}
     current_ids = {
         sel_id for sel_id in st.session_state.planned_recipes.keys()
         if not (isinstance(sel_id, str) and sel_id.startswith("temp_"))
     }
 
-    # 2. DB rows not present in session_state → delete them
     to_delete_db = existing_db_ids - current_ids
     for sel_id in to_delete_db:
         rm.delete_planned_recipe(sel_id)
 
-    # 3. Add/update remaining items
     to_delete = []
     to_add = []
 
     for sel_id, pdata in st.session_state.planned_recipes.items():
 
-        # TEMPORARY ENTRY → Create DB record
         if isinstance(sel_id, str) and sel_id.startswith("temp_"):
             raw_date = pdata.get("planned_for")
 
@@ -120,11 +130,9 @@ def sync_planned_recipes_to_db(session):
             to_delete.append(sel_id)
 
         else:
-            # EXISTING DB ROW → update
             rm.update_planned_date(sel_id, pdata["planned_for"])
             rm.update_meal_slot(sel_id, pdata["meal_slot"])
 
-    # Apply changes
     for old_key in to_delete:
         del st.session_state.planned_recipes[old_key]
     for new_key, pdata in to_add:
@@ -142,9 +150,6 @@ def compute_optimal_date_for_recipe(
 
     today = datetime.now().date()
 
-    # ----------------------------------------------------
-    # STEP A — Allowed meal slots
-    # ----------------------------------------------------
     norm_cat = recommender.normalize_category_label(recipe).lower()
 
     allowed_slots = set()
@@ -160,23 +165,13 @@ def compute_optimal_date_for_recipe(
     if not allowed_slots:
         allowed_slots = set(MEAL_SLOTS)
 
-    # ----------------------------------------------------
-    # STEP B — Compute raw optimal (no override)
-    # ----------------------------------------------------
     raw_day, raw_slot, earliest_exp = compute_optimal_date_for_recipe_no_override(
         recipe, virtual_state, planned_recipes
     )
-
-    # ----------------------------------------------------
-    # STEP C — If user picked something, keep it *only if*
-    #          it is still optimal or better
-    # ----------------------------------------------------
     if current_day and current_slot and sel_id:
 
-        # Must still be an allowed slot
         if current_slot in allowed_slots:
 
-            # Slot must not be taken by another recipe
             conflict = any(
                 pdata.get("planned_for") == str(current_day)
                 and pdata.get("meal_slot") == current_slot
@@ -185,13 +180,9 @@ def compute_optimal_date_for_recipe(
             )
 
             if not conflict:
-                # RULE: keep user's choice if it is ≤ raw recommended day
                 if current_day <= raw_day:
                     return current_day, current_slot, earliest_exp
 
-    # ----------------------------------------------------
-    # STEP D — Otherwise return the raw optimal
-    # ----------------------------------------------------
     return raw_day, raw_slot, earliest_exp
 
 def compute_optimal_date_for_recipe_no_override(recipe, virtual_state, planned_recipes):
@@ -219,7 +210,7 @@ def compute_optimal_date_for_recipe_no_override(recipe, virtual_state, planned_r
 
     earliest_exp = min(exp_dates) if exp_dates else today + timedelta(days=10)
 
-    # allowed slots
+
     norm_cat = recommender.normalize_category_label(recipe).lower()
     slots = set()
     if "breakfast" in norm_cat: slots.add("Breakfast")
@@ -231,7 +222,6 @@ def compute_optimal_date_for_recipe_no_override(recipe, virtual_state, planned_r
     if not slots:
         slots = set(MEAL_SLOTS)
 
-    # search before expiration
     for offset in range(SEARCH_RANGE):
         d = today + timedelta(days=offset)
         if d > earliest_exp:
@@ -265,7 +255,6 @@ def cleanup_past_planned_recipes(session):
             planned_day = datetime.fromisoformat(pdata["planned_for"]).date()
 
             if planned_day < today:
-                # mark as "missed"
                 pdata["status"] = "missed"
 
 def cleanup_past_confirmed_recipes():
@@ -345,58 +334,132 @@ with col2:
 
     import plotly.graph_objects as go
 
-    DAYS_TO_SHOW = 7
+    # Controls
+    col_1, col_2 = st.columns(2)
+    with col_1:
+        include_planned = st.checkbox(
+            "Include planned meals in waste forecast", 
+            value=True
+        )
+
+    with col_2:
+        forecast_range = st.selectbox(
+            "Forecast Range",
+            ["1 Week", "2 Weeks"],
+            index=0
+        )
+
+    # Days → numeric
+    DAYS_TO_SHOW = 7 if forecast_range == "1 Week" else 14
     today = datetime.now().date()
     dates = [today + timedelta(days=i) for i in range(DAYS_TO_SHOW)]
-    display_slots = ["Breakfast", "Lunch", "Dinner", "Snack", "Dessert"]
 
+    # Dataframe source
+    if include_planned:
+        df = virtual_pantry_to_df(session, st.session_state.virtual_pantry)
+    else:
+        df = pm.get_pantry_items()
+
+    # Colors
+    CATEGORY_COLORS = {
+        "Fresh Fruits & Veggies": "#69e169",
+        "Meat, Seafood & Plant-based": "#f0695a",
+        "Cheese": "#e6da71",
+        "Bakery": "#805d35",
+        "For the Pantry": "#87a752",
+        "From The Freezer": "#7adfeb",
+        "Dairy & Eggs": "#999999",
+        "Fresh Prepared Foods": "#57A444"
+    }
+
+    # Compute expiration timeline
+    waste_data = {}
+    for _, row in df.iterrows():
+        exp = row["expiration_date"]
+        if isinstance(exp, datetime): 
+            exp = exp.date()
+        if not exp:
+            continue
+
+        if today <= exp < today + timedelta(days=DAYS_TO_SHOW):
+            idx = (exp - today).days
+            cat = row.get("category") or "Other"
+            amt = row.get("amount", 1)
+
+            waste_data.setdefault(cat, [0]*DAYS_TO_SHOW)
+            CATEGORY_COLORS.setdefault(cat, "#cccccc")
+            waste_data[cat][idx] += amt
+
+    # --- TOP CHART (stacked area, no x-labels) ---
+    fig_waste = go.Figure()
+
+    for cat, values in waste_data.items():
+        if sum(values) > 0:
+            fig_waste.add_trace(
+                go.Scatter(
+                    x=list(range(DAYS_TO_SHOW)),  # no date labels
+                    y=values,
+                    stackgroup="one",
+                    name=cat,
+                    mode="lines",
+                    line=dict(width=1),
+                    fillcolor=CATEGORY_COLORS.get(cat, "#cccccc"),
+                )
+            )
+
+    fig_waste.update_layout(
+        height=160,
+        margin=dict(l=6, r=6, t=10, b=0),
+        showlegend=True,
+        legend=dict(orientation="h", yanchor="bottom", y=1.04),
+        xaxis=dict(showticklabels=False, showgrid=False, zeroline=False),
+        yaxis=dict(title="Expiring Qty", rangemode="tozero"),
+    )
+
+    st.plotly_chart(fig_waste, use_container_width=True)
+
+    # ======= MEAL HEATMAP (bottom chart; with grid + labels) =======
+
+    display_slots = ["Breakfast", "Lunch", "Dinner", "Snack", "Dessert"]
     matrix = []
     hover_text = []
 
     for slot in display_slots:
         row = []
         hover_row = []
-        for d in dates:
-            date_str = str(d)
 
-            entry = None
-            for sel_id, pdata in st.session_state.planned_recipes.items():
-                rid = pdata["recipe_id"]
-                if pdata.get("planned_for") == date_str and pdata.get("meal_slot") == slot:
-                    entry = pdata
-                    break
+        for d in dates:
+            d_str = str(d)
+
+            # Match recipe to date/slot
+            entry = next(
+                (pdata for sel_id, pdata in st.session_state.planned_recipes.items()
+                 if pdata.get("planned_for") == d_str and pdata.get("meal_slot") == slot),
+                None
+            )
 
             if entry is None:
                 row.append(0)
                 hover_row.append(f"{slot}<br>{d}<br>No recipe")
             else:
                 status = entry.get("status", "planned")
-
-                sel_id = next(
-                    sel for sel, pdata2 in st.session_state.planned_recipes.items()
-                    if pdata2 is entry
-                )
-                rid = st.session_state.planned_recipes[sel_id]["recipe_id"]
+                rid = entry["recipe_id"]
                 recipe_obj = rm.get_recipe_by_id(rid)
-                planned_day = d
 
                 expired_flag = False
-                for ing in recipe_obj.ingredients:
-                    pid = getattr(ing, "matched_product_id", None)
-                    if not pid:
-                        continue
+                if recipe_obj:
+                    for ing in recipe_obj.ingredients:
+                        pid = getattr(ing, "matched_product_id", None)
+                        if not pid: continue
 
-                    state_item = st.session_state.virtual_pantry.get(pid)
-                    if not state_item:
-                        continue
+                        vp_item = st.session_state.virtual_pantry.get(pid)
+                        if not vp_item: continue
 
-                    exp = state_item.get("expiration_date")
-                    if exp and isinstance(exp, datetime):
-                        exp = exp.date()
-
-                    if exp and exp < planned_day:
-                        expired_flag = True
-                        break
+                        exp = vp_item.get("expiration_date")
+                        if isinstance(exp, datetime): exp = exp.date()
+                        if exp and exp < d:
+                            expired_flag = True
+                            break
 
                 if expired_flag:
                     val = 3
@@ -406,56 +469,57 @@ with col2:
                     val = 1
 
                 row.append(val)
-
                 hover_row.append(
-                    f"{slot}<br>{d}"
-                    f"<br><b>{entry['title']}</b>"
-                    f"<br>Status: {'Confirmed' if status=='confirmed' else 'Planned'}"
-                    + ("<br><span style='color:red'>⚠ Uses expired items!</span>" if expired_flag else "")
+                    f"{slot}<br>{d}<br><b>{entry['title']}</b>"
+                    f"<br>Status: {status}"
+                    + ("<br><span style='color:red;'>⚠ Uses expired items</span>" if expired_flag else "")
                 )
 
         matrix.append(row)
         hover_text.append(hover_row)
 
+    # BOTTOM HEATMAP
     fig = go.Figure(
         data = go.Heatmap(
             z=matrix,
             x=[d.strftime("%a %m/%d") for d in dates],
             y=display_slots,
+            text=hover_text,
+            hoverinfo="text",
             colorscale=[
-                [0/3, "#F5F5F5"],  # 0 empty
-                [1/3, "#FFF8C6"],  # 1 planned
-                [2/3, "#3CB371"],  # 2 confirmed
-                [3/3, "#FF4C4C"],  # 3 expired
+                [0/3, "#F5F5F5"],
+                [1/3, "#FFF8C6"],
+                [2/3, "#3CB371"],
+                [3/3, "#FF4C4C"],
             ],
             zmin=0,
             zmax=3,
-            hoverinfo="text",
-            text=hover_text,
             showscale=False,
         )
     )
 
+    fig.update_layout(
+        height=200,
+        margin=dict(l=6, r=6, t=6, b=6),
+    )
+
+    # **Gridlines for squares**
     fig.update_xaxes(
         showgrid=True,
-        gridwidth=1,
         gridcolor="#CCCCCC",
-        ticks="",
-        side="top",
+        gridwidth=1,
+        ticks="outside",
+        side="bottom"
     )
     fig.update_yaxes(
         showgrid=True,
-        gridwidth=1,
         gridcolor="#CCCCCC",
-        ticks="",
-    )
-
-    fig.update_layout(
-        height=320,
-        margin=dict(l=10, r=10, t=10, b=10),
+        gridwidth=1,
+        ticks="outside"
     )
 
     st.plotly_chart(fig, use_container_width=True)
+
 
 st.markdown("## Recommendations by Category")
 

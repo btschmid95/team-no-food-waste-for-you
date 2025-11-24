@@ -57,36 +57,26 @@ st.title("🏠 Home Dashboard")
 total_items = session.query(PantryItem).count()
 planned_recipes = session.query(RecipeSelected).count()
 
-col1, col2 = st.columns(2)
+col1, col2, col3, col4 = st.columns(4)
 col1.metric("Total Pantry Items", total_items)
 col2.metric("Recipes Planned", planned_recipes)
 
-# ============================================================
-# Meal Planner KPIs
-# ============================================================
-st.markdown("## 🍽️ Meal Planner Insights")
-
-# Next Meal
 next_meal = (
     session.query(RecipeSelected)
     .filter(RecipeSelected.planned_for.isnot(None))
     .order_by(RecipeSelected.planned_for.asc())
     .first()
 )
-
-colA, colB = st.columns(2)
-
 if next_meal:
     next_recipe = session.query(Recipe).filter_by(recipe_id=next_meal.recipe_id).first()
-    colA.metric(
+    col3.metric(
         "Next Meal Planned",
         next_recipe.title if next_recipe else "Unknown",
         next_meal.planned_for.strftime("%b %d, %Y")
     )
 else:
-    colA.metric("Next Meal Planned", "None", "—")
+    col3.metric("No meals currently planned!", "")
 
-# Meals planned this week
 from datetime import datetime, timedelta
 today = datetime.now().date()
 end_of_week = today + timedelta(days=7)
@@ -100,28 +90,34 @@ weekly_count = (
     .count()
 )
 
-colB.metric("Meals Planned This Week", weekly_count)
+col4.metric("Meals Planned This Week", weekly_count)
 st.markdown("## Waste & Pantry Analytics")
 
-st.markdown("### Expiring Food Forecast")
-fig1 = plot_expiring_food_histogram(engine)
-st.pyplot(fig1)
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown("### Expiring Food Forecast")
+    fig1 = plot_expiring_food_histogram(engine)
+    st.pyplot(fig1)
+
+with col2:
+    st.markdown("### Consumption vs Waste Over Time")
+    fig2 = plot_consumption_vs_waste(engine, recipe_mgr)
+    st.pyplot(fig2)
+
 st.markdown("---")
 
-st.markdown("### Consumption vs Waste Over Time")
-fig2 = plot_consumption_vs_waste(engine, recipe_mgr)
-st.pyplot(fig2)
-st.markdown("---")
+col3, col4 = st.columns(2)
 
-st.markdown("### Realized vs Avoided Waste")
-fig3 = plot_waste_waterfall(engine)
-st.pyplot(fig3)
-st.markdown("---")
+with col3:
+    st.markdown("### Realized vs Avoided Waste")
+    fig3 = plot_waste_waterfall(engine)
+    st.pyplot(fig3)
 
-st.markdown("### Recipe–Product Overlap Network")
+with col4:
+    st.markdown("### Recipe–Product Overlap Network")
+    recipes_df, products_df, recipe_ing_map = load_recipe_product_data(engine)
+    G = build_recipe_product_graph(recipes_df, products_df, recipe_ing_map)
+    fig4 = plot_recipe_overlap_network(G, sample_n_recipes=30)
+    st.pyplot(fig4)
 
-recipes_df, products_df, recipe_ing_map = load_recipe_product_data(engine)
-G = build_recipe_product_graph(recipes_df, products_df, recipe_ing_map)
-
-fig4 = plot_recipe_overlap_network(G, sample_n_recipes=30)
-st.pyplot(fig4)
