@@ -4,13 +4,13 @@ from datetime import datetime
 
 def compute_waste_summary_from_events(engine):
     """
-    Compute realized waste by category using PantryEvent + PantryItem + TJInventory.
+    Compute realized and avoided waste by category using PantryEvent + PantryItem + TJInventory.
 
-    Realized waste = sum of PantryEvent.amount where event_type='trash'
-    Category comes from TJInventory.
+    realized_waste = sum(amount where event_type='trash')
+    avoided_waste  = sum(amount where event_type='avoid')
     """
 
-    # Load events
+    # Load all events with category information
     events = pd.read_sql("""
         SELECT 
             pe.id,
@@ -26,25 +26,35 @@ def compute_waste_summary_from_events(engine):
         JOIN tj_inventory ti ON p.product_id = ti.product_id
     """, engine)
 
-    # Filter only waste events
-    wasted = events[events["event_type"] == "trash"]
-
-    # Aggregate waste by category
-    if wasted.empty:
+    if events.empty:
         return pd.DataFrame({
             "category": [],
-            "realized_waste": []
+            "realized_waste": [],
+            "avoided_waste": []
         })
 
-    summary = (
-        wasted.groupby("category", as_index=False)["amount"]
-              .sum()
-              .rename(columns={"amount": "realized_waste"})
+    wasted = (
+        events[events["event_type"] == "trash"]
+        .groupby("category", as_index=False)["amount"]
+        .sum()
+        .rename(columns={"amount": "realized_waste"})
     )
 
-    summary["avoided_waste"] = 0.0
+    avoided = (
+        events[events["event_type"] == "avoid"]
+        .groupby("category", as_index=False)["amount"]
+        .sum()
+        .rename(columns={"amount": "avoided_waste"})
+    )
+
+    summary = pd.merge(wasted, avoided, on="category", how="outer")
+
+    summary = summary.fillna({"realized_waste": 0.0, "avoided_waste": 0.0})
+
+    summary = summary.sort_values("realized_waste", ascending=False)
 
     return summary
+
 
 def get_forecast_waste_by_date(pantry_df):
     """

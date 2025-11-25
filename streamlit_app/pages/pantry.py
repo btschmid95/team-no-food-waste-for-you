@@ -66,7 +66,7 @@ with header_col1:
 
 with header_col2:
     st.write("")
-    c1, c2, c3 = st.columns([1, 1, 1])
+    c1, c2, c3, c4 = st.columns([1, 1, 1, 1])
 
     with c1:
         if st.button("❌ Clear Pantry", key="btn_clear_all"):
@@ -75,6 +75,7 @@ with header_col2:
             st.session_state.virtual_pantry = {}
             st.success("Pantry and planning queue have been fully cleared.")
             st.rerun()
+
     with c2:
         if st.button("🗑 Trash Pantry", key="btn_trash_all"):
             st.session_state["confirm_trash_all"] = True
@@ -82,9 +83,15 @@ with header_col2:
             st.session_state.virtual_pantry = {}
             st.success("Pantry and planning queue have been fully cleared.")
             st.rerun()
+
     with c3:
         if st.button("⏳ Trash Expired", key="btn_trash_expired"):
             st.session_state["confirm_trash_expired"] = True
+
+    # ⭐ NEW BUTTON: Generate Sample Pantry
+    with c4:
+        if st.button("🌱 Sample Pantry", key="btn_sample_pantry"):
+            st.session_state["confirm_sample_pantry"] = True
 
     if st.session_state.get("confirm_clear_all"):
         st.error("⚠ This will permanently delete ALL pantry items AND ALL planned recipes.")
@@ -125,6 +132,30 @@ with header_col2:
         with cB:
             if st.button("Cancel", key="cancel_trash_expired"):
                 st.session_state["confirm_trash_expired"] = False
+                
+    if st.session_state.get("confirm_sample_pantry"):
+        st.info("This will generate a demo pantry with items from several categories.")
+        cA, cB = st.columns(2)
+
+        with cA:
+            if st.button("Yes, Generate", key="yes_sample_pantry"):
+                msgs = pm.generate_sample_pantry()
+
+                st.success("Sample pantry generated successfully!")
+
+                # Display details from the generator
+                for m in msgs:
+                    st.write(f"• {m}")
+
+                st.session_state["confirm_sample_pantry"] = False
+                st.rerun()
+
+        with cB:
+            if st.button("Cancel", key="cancel_sample_pantry"):
+                st.session_state["confirm_sample_pantry"] = False
+
+
+
 st.markdown("---")
 pantry_items = pm.get_pantry_items()
 if not pantry_items.empty:

@@ -835,7 +835,7 @@ else:
 
 
 
-with st.sidebar.expander("ℹHow Planning Works"):
+with st.sidebar.expander("How Planning Works"):
     st.write(
         """
         **Planning Dashboard Workflow**
@@ -847,6 +847,7 @@ with st.sidebar.expander("ℹHow Planning Works"):
         - “Confirm” a recipe to lock it in  
         - Confirmation will:
           - Deduct ingredients that will be used  
-          - Feed into waste-forecasting and future recommendations  
+          - Feed into waste-forecasting and future recommendations 
+          - "Buy" items that are missing and add them to pantry 
         """
     )

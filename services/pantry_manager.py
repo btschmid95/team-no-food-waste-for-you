@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from datetime import datetime, timedelta
 import math
 from sqlalchemy import create_engine
@@ -11,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]  # the repo's root directory
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-from database.tables import Ingredient, PantryItem, TJInventory, PantryEvent, RecipeSelected
+from database.tables import Ingredient, PantryItem, TJInventory, PantryEvent, RecipeSelected, Recipe
 from database.config import DATABASE_URL
 from sqlalchemy import create_engine
 
@@ -61,7 +62,6 @@ class PantryManager:
         self.session.commit()
         
         return message
-
 
     def remove_item(self, pantry_id):
         """
@@ -423,6 +423,22 @@ class PantryManager:
                 used = min(pi.amount, needed)
                 needed -= used
 
+
+                expiring_soon = (
+                    pi.expiration_date.date() - datetime.now().date()
+                ) <= timedelta(days=2)
+
+                if expiring_soon:
+                    # Log avoided waste event
+                    avoid_event = PantryEvent(
+                        pantry_id=pi.pantry_id,
+                        event_type="avoid",   # <-- new event type
+                        amount=used,
+                        unit=pi.unit,
+                        recipe_selection_id=sel_id
+                    )
+                    self.session.add(avoid_event)
+
                 # Log event
                 event = PantryEvent(
                     pantry_id=pi.pantry_id,
@@ -624,7 +640,153 @@ class PantryManager:
             )
         else:
             return f"Trashed product_id {product_id}."
-    
+
+    def generate_sample_pantry(self, seed: int = 42):
+        """
+        Generate a deterministic, category-balanced sample pantry.
+
+        Rules:
+        - Meat: pick the 2 shortest-shelf-life items; force expiration to 12 hours from now.
+        - Pick ANY recipe that uses at least 1 of those meats; add full ingredient set.
+        - Add category samples:
+            fresh fruits & veggies: 10 items
+            bakery: 4 items
+            for the pantry: 4 items
+            from the freezer: 5 items
+        """
+
+        rng = np.random.default_rng(seed)
+        messages = []
+
+        # Load full Trader Joe's inventory
+        inv = pd.read_sql("SELECT * FROM tj_inventory", self.session.bind)
+
+        # ----------------------------------------
+        # 1. SAMPLE MEATS — pick 2 shortest shelf life
+        # ----------------------------------------
+        meats = inv[inv["category"] == "Meat, Seafood & Plant-based"].copy()
+
+        if meats.empty:
+            return ["ERROR: No meat items in TJInventory"]
+
+        meats = meats.sort_values("shelf_life_days", ascending=True)
+        chosen_meats = meats.head(2)
+
+        # Insert adjusted meat items with forced expiration
+        for _, row in chosen_meats.iterrows():
+            expiration = datetime.now() + timedelta(hours=12)
+
+            pantry_item = PantryItem(
+                product_id=row.product_id,
+                amount=row.quantity,
+                unit=row.unit,
+                date_added=datetime.now(),
+                expiration_date=expiration,
+            )
+            self.session.add(pantry_item)
+
+            messages.append(
+                f"Added MEAT item '{row['name']}' (forced expiring in 12 hours)"
+            )
+
+        # ----------------------------------------
+        # 2. Select ANY recipe using at least 1 of the chosen meats
+        # ----------------------------------------
+        meat_ids = set(int(x) for x in chosen_meats["product_id"].values)
+
+        recipe_candidates = (
+            self.session.query(Recipe)
+            .join(Ingredient)
+            .filter(Ingredient.matched_product_id.in_(meat_ids))
+            .all()
+        )
+
+        if not recipe_candidates:
+            messages.append("WARNING: No recipes found with chosen meat items.")
+            recipe_choice = None
+        else:
+            recipe_choice = recipe_candidates[0]  # deterministic first match
+            messages.append(
+                f"Chosen recipe using meat: {recipe_choice.title} (recipe_id={recipe_choice.recipe_id})"
+            )
+
+        # ----------------------------------------
+        # 3. Add all ingredients for that recipe
+        # ----------------------------------------
+        if recipe_choice:
+            ingredients = (
+                self.session.query(Ingredient)
+                .filter(Ingredient.recipe_id == recipe_choice.recipe_id)
+                .all()
+            )
+
+            for ing in ingredients:
+                if not ing.matched_product_id or not ing.pantry_amount:
+                    continue  # skip unmatched or zero-amount ingredients
+
+                product = (
+                    self.session.query(TJInventory)
+                    .filter(TJInventory.product_id == ing.matched_product_id)
+                    .first()
+                )
+
+                if not product:
+                    continue
+
+                # Normal expiration calculation
+                expiration = datetime.now() + timedelta(days=product.shelf_life_days)
+
+                pantry_item = PantryItem(
+                    product_id=product.product_id,
+                    amount=product.quantity,
+                    unit=product.unit,
+                    date_added=datetime.now(),
+                    expiration_date=expiration,
+                )
+                self.session.add(pantry_item)
+
+                messages.append(f"Added RECIPE ingredient '{product.name}'")
+
+        # ----------------------------------------
+        # Helper function: deterministic random-category sampling
+        # ----------------------------------------
+        def add_random_items(category_name, count):
+            subset = inv[inv["category"] == category_name]
+
+            if subset.empty:
+                messages.append(f"WARNING: No items in category '{category_name}'.")
+                return
+
+            # Deterministic random sampling
+            sample = subset.sample(n=min(count, len(subset)), random_state=seed)
+
+            for _, row in sample.iterrows():
+                expiration = datetime.now() + timedelta(days=row.shelf_life_days)
+
+                pantry_item = PantryItem(
+                    product_id=row.product_id,
+                    amount=row.quantity,
+                    unit=row.unit,
+                    date_added=datetime.now(),
+                    expiration_date=expiration,
+                )
+                self.session.add(pantry_item)
+
+                messages.append(f"Added {category_name} item '{row['name']}'")
+
+        # ----------------------------------------
+        # 4. Add category samples
+        # ----------------------------------------
+        add_random_items("Fresh Fruits & Veggies", 10)
+        add_random_items("Bakery", 4)
+        add_random_items("For the Pantry", 4)
+        add_random_items("From Fhe Freezer", 5)
+        add_random_items("Dairy & Eggs",3)
+
+        self.session.commit()
+        return messages
+
+
 if __name__ == "__main__":
     pantry_ids = set(item.product_id for item in session.query(PantryItem).all())
     inventory_ids = set(item.product_id for item in session.query(TJInventory).all())
@@ -632,3 +794,4 @@ if __name__ == "__main__":
     missing = pantry_ids - inventory_ids
 
     print(len(missing), missing)
+

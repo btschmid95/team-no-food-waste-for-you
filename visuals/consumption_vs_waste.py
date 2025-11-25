@@ -38,7 +38,7 @@ def plot_consumption_vs_waste(engine, recipe_mgr):
         pd.merge(forecast_df, cons_df, on="date", how="outer")
           .sort_values("date")
     )
-
+    df = df[df["date"] <= (pd.Timestamp.today() + pd.Timedelta(days=30))]
     df["forecast_waste"] = df["forecast_waste"].fillna(0)
     df["planned_consumption"] = df["planned_consumption"].fillna(0)
 
