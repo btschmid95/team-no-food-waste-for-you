@@ -36,7 +36,7 @@ class PantryManager:
 
         if not tj_product:
             return f"Error: Product {product_id} not found"
-        
+        planned_date = None
         if planned_date:
             # planned_date might be a date; normalize to datetime
             if isinstance(planned_date, datetime):
@@ -215,8 +215,8 @@ class PantryManager:
                 continue
 
             # Purchase date = planned_date if provided, else "now"
+            planned_date = None # note to self, update this in the future to account for a "shopping list"
             if planned_date:
-                # planned_date might be a date; normalize to datetime
                 if isinstance(planned_date, datetime):
                     date_purchased = planned_date
                 else:
@@ -228,7 +228,6 @@ class PantryManager:
             shelf_days = tj_product.shelf_life_days or 0
             expiration_date = date_purchased + timedelta(days=shelf_days)
 
-            # Create one PantryItem per "package"
             for _ in range(qty):
                 pantry_item = PantryItem(
                     product_id=product_id,

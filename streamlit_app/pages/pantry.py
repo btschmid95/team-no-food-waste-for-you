@@ -59,7 +59,7 @@ session = get_session()
 pm = PantryManager(session)
 pm_products = ProductManager(session)
 
-header_col1, header_col2 = st.columns([6, 4])
+header_col1, header_col2 = st.columns([10, 4])
 
 with header_col1:
     st.title("Pantry Dashboard")
@@ -86,46 +86,46 @@ with header_col2:
         if st.button("⏳ Trash Expired", key="btn_trash_expired"):
             st.session_state["confirm_trash_expired"] = True
 
-if st.session_state.get("confirm_clear_all"):
-    st.error("⚠ This will permanently delete ALL pantry items AND ALL planned recipes.")
-    cA, cB = st.columns(2)
-    with cA:
-        if st.button("Yes, Clear Everything", key="yes_clear_all"):
-            msgs = pm.clear_pantry()
-            st.success("Pantry has been completely cleared.")
-            st.session_state["confirm_clear_all"] = False
-            st.rerun()
-    with cB:
-        if st.button("Cancel", key="cancel_clear_all"):
-            st.session_state["confirm_clear_all"] = False
+    if st.session_state.get("confirm_clear_all"):
+        st.error("⚠ This will permanently delete ALL pantry items AND ALL planned recipes.")
+        cA, cB = st.columns(2)
+        with cA:
+            if st.button("Yes, Clear Everything", key="yes_clear_all"):
+                msgs = pm.clear_pantry()
+                st.success("Pantry has been completely cleared.")
+                st.session_state["confirm_clear_all"] = False
+                st.rerun()
+        with cB:
+            if st.button("Cancel", key="cancel_clear_all"):
+                st.session_state["confirm_clear_all"] = False
 
 
-if st.session_state.get("confirm_trash_all"):
-    st.warning("⚠ This will trash ALL items in the pantry (logged as waste).")
-    cA, cB = st.columns(2)
-    with cA:
-        if st.button("Yes, Trash Pantry", key="yes_trash_all"):
-            msgs = pm.trash_pantry(category=None)
-            st.success("All pantry items have been trashed.")
-            st.session_state["confirm_trash_all"] = False
-            st.rerun()
-    with cB:
-        if st.button("Cancel", key="cancel_trash_all"):
-            st.session_state["confirm_trash_all"] = False
+    if st.session_state.get("confirm_trash_all"):
+        st.warning("⚠ This will trash ALL items in the pantry (logged as waste).")
+        cA, cB = st.columns(2)
+        with cA:
+            if st.button("Yes, Trash Pantry", key="yes_trash_all"):
+                msgs = pm.trash_pantry(category=None)
+                st.success("All pantry items have been trashed.")
+                st.session_state["confirm_trash_all"] = False
+                st.rerun()
+        with cB:
+            if st.button("Cancel", key="cancel_trash_all"):
+                st.session_state["confirm_trash_all"] = False
 
-if st.session_state.get("confirm_trash_expired"):
-    st.warning("⚠ This will remove ONLY expired items and log them as waste.")
-    cA, cB = st.columns(2)
-    with cA:
-        if st.button("Yes, Remove Expired Items", key="yes_trash_expired"):
-            msgs = pm.trash_expired_items()
-            st.success("Expired items have been removed.")
-            st.session_state["confirm_trash_expired"] = False
-            st.rerun()
-    with cB:
-        if st.button("Cancel", key="cancel_trash_expired"):
-            st.session_state["confirm_trash_expired"] = False
-
+    if st.session_state.get("confirm_trash_expired"):
+        st.warning("⚠ This will remove ONLY expired items and log them as waste.")
+        cA, cB = st.columns(2)
+        with cA:
+            if st.button("Yes, Remove Expired Items", key="yes_trash_expired"):
+                msgs = pm.trash_expired_items()
+                st.success("Expired items have been removed.")
+                st.session_state["confirm_trash_expired"] = False
+                st.rerun()
+        with cB:
+            if st.button("Cancel", key="cancel_trash_expired"):
+                st.session_state["confirm_trash_expired"] = False
+st.markdown("---")
 pantry_items = pm.get_pantry_items()
 if not pantry_items.empty:
     pantry_items["date_added"] = pd.to_datetime(pantry_items["date_added"])

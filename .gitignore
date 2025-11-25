@@ -219,3 +219,4 @@ models/tj_product_classifier/checkpoint*/**
 archive/
 
 .idea/
+*.flag

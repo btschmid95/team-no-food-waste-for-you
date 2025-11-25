@@ -640,26 +640,15 @@ else:
     for sel_id, pdata in st.session_state.planned_recipes.items():
         rid = pdata["recipe_id"]
         recipe_obj = rm.get_recipe_by_id(rid)
-        category = recommender.normalize_category_label(recipe_obj)
 
-        matched = None
-        lc = category.lower()
-        if "breakfast" in lc:
-            matched = "Breakfast"
-        elif "lunch" in lc:
-            matched = "Lunch"
-        elif "dinner" in lc:
-            matched = "Dinner"
-        elif any(x in lc for x in ["appetizer", "side", "snack"]):
-            matched = "Snack"
-        elif "dessert" in lc:
-            matched = "Dessert"
-        elif any(x in lc for x in ["beverage", "drink", "cocktail"]):
-            matched = "Beverage"
-        else:
-            matched = "Snack"
+        # >>> This is the user's chosen column <<<
+        slot = pdata.get("meal_slot", "Snack")
 
-        grouped[matched].append((sel_id, pdata, recipe_obj))
+        # Safety fallback
+        if slot not in CATEGORY_COLUMNS:
+            slot = "Snack"
+
+        grouped[slot].append((sel_id, pdata, recipe_obj))
 
     cols = st.columns(len(CATEGORY_COLUMNS))
 
