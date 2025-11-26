@@ -66,7 +66,7 @@ def virtual_pantry_to_df(session, vp_state):
             "sub_category": product.sub_category if product else None,
             "amount": data.get("amount", 0),
             "unit": product.unit if product else None,
-            "date_added": None,  # not relevant for virtual state
+            "date_added": None,
             "expiration_date": data.get("expiration_date"),
         })
 
@@ -191,7 +191,6 @@ def compute_optimal_date_for_recipe_no_override(recipe, virtual_state, planned_r
     today = datetime.now().date()
     SEARCH_RANGE = 14
 
-    # find earliest expiration
     exp_dates = []
     for ing in recipe.ingredients:
         pid = getattr(ing, "matched_product_id", None)
@@ -334,7 +333,6 @@ with col2:
 
     import plotly.graph_objects as go
 
-    # Controls
     col_1, col_2 = st.columns(2)
     with col_1:
         include_planned = st.checkbox(
@@ -349,18 +347,15 @@ with col2:
             index=0
         )
 
-    # Days → numeric
     DAYS_TO_SHOW = 7 if forecast_range == "1 Week" else 14
     today = datetime.now().date()
     dates = [today + timedelta(days=i) for i in range(DAYS_TO_SHOW)]
 
-    # Dataframe source
     if include_planned:
         df = virtual_pantry_to_df(session, st.session_state.virtual_pantry)
     else:
         df = pm.get_pantry_items()
 
-    # Colors
     CATEGORY_COLORS = {
         "Fresh Fruits & Veggies": "#69e169",
         "Meat, Seafood & Plant-based": "#f0695a",
@@ -372,7 +367,6 @@ with col2:
         "Fresh Prepared Foods": "#57A444"
     }
 
-    # Compute expiration timeline
     waste_data = {}
     for _, row in df.iterrows():
         exp = row["expiration_date"]
@@ -390,14 +384,13 @@ with col2:
             CATEGORY_COLORS.setdefault(cat, "#cccccc")
             waste_data[cat][idx] += amt
 
-    # --- TOP CHART (stacked area, no x-labels) ---
     fig_waste = go.Figure()
 
     for cat, values in waste_data.items():
         if sum(values) > 0:
             fig_waste.add_trace(
                 go.Scatter(
-                    x=list(range(DAYS_TO_SHOW)),  # no date labels
+                    x=list(range(DAYS_TO_SHOW)),
                     y=values,
                     stackgroup="one",
                     name=cat,
@@ -418,8 +411,6 @@ with col2:
 
     st.plotly_chart(fig_waste, use_container_width=True)
 
-    # ======= MEAL HEATMAP (bottom chart; with grid + labels) =======
-
     display_slots = ["Breakfast", "Lunch", "Dinner", "Snack", "Dessert"]
     matrix = []
     hover_text = []
@@ -431,7 +422,6 @@ with col2:
         for d in dates:
             d_str = str(d)
 
-            # Match recipe to date/slot
             entry = next(
                 (pdata for sel_id, pdata in st.session_state.planned_recipes.items()
                  if pdata.get("planned_for") == d_str and pdata.get("meal_slot") == slot),
@@ -478,7 +468,6 @@ with col2:
         matrix.append(row)
         hover_text.append(hover_row)
 
-    # BOTTOM HEATMAP
     fig = go.Figure(
         data = go.Heatmap(
             z=matrix,
@@ -503,7 +492,6 @@ with col2:
         margin=dict(l=6, r=6, t=6, b=6),
     )
 
-    # **Gridlines for squares**
     fig.update_xaxes(
         showgrid=True,
         gridcolor="#CCCCCC",
@@ -617,7 +605,15 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
                         st.session_state.virtual_pantry = rebuild_virtual_pantry()
                         st.rerun()
 
-                    st.write(f"Score: {rec['score']}")
+                    score = rec["score"]
+
+                    if score > 10:
+                        st.success("**Highly Recommended**")
+                    elif score > 4:
+                        st.success("Recommended")
+                    elif score > 1:
+                        st.warning("Encouraged")
+
                     if matched_rows:
                         st.markdown("## Matched Ingredients")
                         st.markdown("\n".join(matched_rows))
@@ -641,10 +637,8 @@ else:
         rid = pdata["recipe_id"]
         recipe_obj = rm.get_recipe_by_id(rid)
 
-        # >>> This is the user's chosen column <<<
         slot = pdata.get("meal_slot", "Snack")
 
-        # Safety fallback
         if slot not in CATEGORY_COLUMNS:
             slot = "Snack"
 

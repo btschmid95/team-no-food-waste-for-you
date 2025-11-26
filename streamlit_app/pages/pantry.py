@@ -13,8 +13,9 @@ from components.sidebar import render_sidebar
 from utils.session import get_session
 from services.pantry_manager import PantryManager
 from services.product_manager import ProductManager
-from database.tables import PantryItem, TJInventory, Ingredient
-from visuals.waste_prod_vs_time import plot_expiring_food_histogram
+from database.tables import Ingredient
+from visuals.treemap_favorite_foods import plot_consumption_treemap
+
 
 def format_date_added(dt: datetime) -> str:
     if pd.isna(dt):
@@ -29,8 +30,14 @@ def format_time_remaining(expiration: datetime) -> str:
     delta = expiration - now
 
     if delta.total_seconds() < 0:
-        return "Expired"
-
+        abs_delta = abs(delta)
+        days = abs_delta.days
+        hours = abs_delta.seconds // 3600
+        if days >0:
+            return f"EXP: {days} days"
+        if days == 0:
+            return f"EXP: {hours} hour(s) ago"
+        
     days = delta.days
     seconds = delta.seconds
     hours = seconds // 3600
@@ -87,8 +94,6 @@ with header_col2:
     with c3:
         if st.button("⏳ Trash Expired", key="btn_trash_expired"):
             st.session_state["confirm_trash_expired"] = True
-
-    # ⭐ NEW BUTTON: Generate Sample Pantry
     with c4:
         if st.button("🌱 Sample Pantry", key="btn_sample_pantry"):
             st.session_state["confirm_sample_pantry"] = True
@@ -143,7 +148,6 @@ with header_col2:
 
                 st.success("Sample pantry generated successfully!")
 
-                # Display details from the generator
                 for m in msgs:
                     st.write(f"• {m}")
 
@@ -435,17 +439,11 @@ else:
         hide_index=True,
         height=300
     )
-    # st.subheader("Expiration Forecast Histogram")
-    # try:
-    #     fig = plot_expiring_food_histogram(session.bind)
-    #     st.pyplot(fig)
-    # except Exception as e:
-    #     st.warning(f"Histogram unavailable: {e}")
-from visuals.treemap_favorite_foods import plot_consumption_treemap
+
 
 fig = plot_consumption_treemap(session.bind)
 
-st.subheader("🥗 Consumption by Category & Product (Treemap)")
+st.subheader("🥗 Consumption by Category & Product")
 if fig:
     st.plotly_chart(fig, use_container_width=False)
 else:
