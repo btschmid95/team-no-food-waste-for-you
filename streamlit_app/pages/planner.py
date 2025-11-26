@@ -20,7 +20,7 @@ session = get_session()
 rm = RecipeManager(session)
 pm = PantryManager(session)
 recommender = RecipeRecommender(session)
-st.write("DEBUG — planned_recipes:", st.session_state.get("planned_recipes"))
+
 def rebuild_virtual_pantry():
     """
     Build a virtual pantry that mirrors the real pantry structure:
@@ -49,6 +49,10 @@ def rebuild_virtual_pantry():
 
     # Apply recipe consumption
     for sel_id, pdata in planned_sorted:
+        # Skip confirmed recipes — they are already consumed in the real pantry
+        if pdata.get("status") == "confirmed":
+            continue
+
         rid = pdata["recipe_id"]
         recipe = rm.get_recipe_by_id(rid)
         if recipe:
