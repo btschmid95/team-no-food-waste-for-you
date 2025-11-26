@@ -1,23 +1,27 @@
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
+# Normal app import (used by Streamlit)
+try:
+    from visuals.pantry_analytics import (
+        load_pantry_with_category,
+        get_forecast_waste_by_date,
+    )
+except ImportError:
+    # When run directly: python visuals/consumption_vs_waste.py
+    from pantry_analytics import (
+        load_pantry_with_category,
+        get_forecast_waste_by_date,
+    )
 
 
 def plot_consumption_vs_waste(engine, recipe_mgr):
     """
-    Dual-axis line chart:
-    Planned Consumption vs Forecast Waste
+    Waterfall chart:
+    - Waste Generated = pantry items expiring / unused
+    - Waste Avoided   = ingredients used in recipes
     """
-    # Correct imports for new app structure
-    try:
-        from .pantry_analytics import (
-            get_forecast_waste_by_date,
-            load_pantry_with_category,
-        )
-    except ImportError:
-        from visuals.pantry_analytics import (
-            get_forecast_waste_by_date,
-            load_pantry_with_category,
-        )
 
     pantry_df = load_pantry_with_category(engine)
     forecast_df = get_forecast_waste_by_date(pantry_df)
@@ -37,29 +41,42 @@ def plot_consumption_vs_waste(engine, recipe_mgr):
     df["forecast_waste"] = df["forecast_waste"].fillna(0)
     df["planned_consumption"] = df["planned_consumption"].fillna(0)
 
-    fig, ax1 = plt.subplots(figsize=(10, 5))
+    daily_avoided = df[["forecast_waste", "planned_consumption"]].min(axis=1)
+    waste_avoided = daily_avoided.sum()
 
-    ax1.plot(df["date"], df["forecast_waste"], linewidth=2, label="Forecast Waste")
-    ax1.set_xlabel("Date")
-    ax1.set_ylabel("Forecast Waste")
+    total_forecast = df["forecast_waste"].sum()
+    waste_generated = max(total_forecast - waste_avoided, 0)
 
-    ax2 = ax1.twinx()
-    ax2.plot(
-        df["date"],
-        df["planned_consumption"],
-        linestyle="--",
-        linewidth=2,
-        color="orange",
-        label="Planned Consumption",
+    labels = ["Waste Generated", "Waste Avoided"]
+    values = [-waste_generated, waste_avoided]
+
+    base = np.zeros(len(values))
+    for i in range(1, len(values)):
+        base[i] = base[i - 1] + values[i - 1]
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+
+    colors = ["#d62728", "#2ca02c"]
+    ax.bar(range(len(values)), values, bottom=base, tick_label=labels, color=colors)
+
+    ax.axhline(0, color="black", linewidth=1)
+
+    for i, (b, v) in enumerate(zip(base, values)):
+        ax.text(i, b + v / 2, f"{v:+.1f}", ha="center", va="center")
+
+    net = base[-1] + values[-1]
+    ax.text(
+        1,
+        net,
+        f"Net: {net:.1f}",
+        ha="center",
+        va="bottom" if net >= 0 else "top",
+        fontsize=10,
+        fontweight="bold",
     )
-    ax2.set_ylabel("Planned Consumption")
 
-    fig.suptitle("Planned Consumption vs Forecast Waste")
-    fig.autofmt_xdate()
-
-    lines1, labels1 = ax1.get_legend_handles_labels()
-    lines2, labels2 = ax2.get_legend_handles_labels()
-    ax1.legend(lines1 + lines2, labels1 + labels2, loc="upper left")
+    ax.set_ylabel("Quantity (standardized units)")
+    ax.set_title("Waste Generated vs Waste Avoided")
 
     plt.tight_layout()
     return fig
