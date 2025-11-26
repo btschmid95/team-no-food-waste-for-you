@@ -10,53 +10,41 @@ echo.
 REM ============================================================
 REM 0. CHECK PYTHON IS INSTALLED OR FIX PATH
 REM ============================================================
+setlocal EnableDelayedExpansion
+
 echo Checking Python installation...
 python --version >nul 2>&1
 
 IF NOT ERRORLEVEL 1 (
     echo Python detected.
 ) ELSE (
-    echo Python not found in PATH. Attempting auto-detection...
+    echo Python NOT found in PATH. Attempting auto-detection...
 
-    REM Attempt to locate Python under LocalAppData common install
     set "PYTHON_DIR="
+
     for /d %%D in ("%LocalAppData%\Programs\Python\Python*") do (
         set "PYTHON_DIR=%%D"
     )
 
-    REM VALIDATE auto-detected folder
-    if defined PYTHON_DIR if exist "%PYTHON_DIR%\python.exe" (
-        echo Found Python installation at: %PYTHON_DIR%
-        echo Adding to PATH...
+    echo Auto-detected: !PYTHON_DIR!
 
-        setx PATH "%PATH%;%PYTHON_DIR%;%PYTHON_DIR%\Scripts;" >nul
+    if not defined PYTHON_DIR (
+        echo Could not automatically detect python.
+        echo Please enter the folder containing python.exe:
+        set /p PYTHON_DIR="Python install path: "
+    )
 
-        echo PATH updated. Please CLOSE and REOPEN this window, then run again.
+    if exist "!PYTHON_DIR!\python.exe" (
+        echo Adding !PYTHON_DIR! to PATH...
+        setx PATH "%PATH%;!PYTHON_DIR!;!PYTHON_DIR!\Scripts;" >nul
+        echo PATH updated. Please CLOSE and REOPEN CMD.
         pause
         exit /b 1
     ) else (
-        echo Auto-detection failed — Python folder invalid or not found.
-        echo.
-        echo Please enter the folder containing python.exe
-        echo Example:
-        echo   C:\Users\User\AppData\Local\Programs\Python\Python311
-        echo.
-
-        set /p PYTHON_DIR="Python install path: "
-
-        if exist "%PYTHON_DIR%\python.exe" (
-            echo Adding %PYTHON_DIR% to PATH...
-            setx PATH "%PATH%;%PYTHON_DIR%;%PYTHON_DIR%\Scripts;" >nul
-
-            echo PATH updated. Please CLOSE and REOPEN this window, then run again.
-            pause
-            exit /b 1
-        ) else (
-            echo [ERROR] No python.exe found in that folder.
-            echo Setup aborted.
-            pause
-            exit /b 1
-        )
+        echo [ERROR] python.exe NOT found in "!PYTHON_DIR!".
+        echo Setup aborted.
+        pause
+        exit /b 1
     )
 )
 
