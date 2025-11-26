@@ -1,53 +1,6 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-echo ============================================================
-echo STARTING SETUP (DEBUG MODE)
-echo The window will NOT close on errors.
-echo ============================================================
-echo.
-
-REM ============================================================
-REM 0. CHECK PYTHON IS INSTALLED OR FIX PATH
-REM ============================================================
-setlocal EnableDelayedExpansion
-
-echo Checking Python installation...
-python --version >nul 2>&1
-
-IF NOT ERRORLEVEL 1 (
-    echo Python detected.
-) ELSE (
-    echo Python NOT found in PATH. Attempting auto-detection...
-
-    set "PYTHON_DIR="
-
-    for /d %%D in ("%LocalAppData%\Programs\Python\Python*") do (
-        set "PYTHON_DIR=%%D"
-    )
-
-    echo Auto-detected: !PYTHON_DIR!
-
-    if not defined PYTHON_DIR (
-        echo Could not automatically detect python.
-        echo Please enter the folder containing python.exe:
-        set /p PYTHON_DIR="Python install path: "
-    )
-
-    if exist "!PYTHON_DIR!\python.exe" (
-        echo Adding !PYTHON_DIR! to PATH...
-        setx PATH "%PATH%;!PYTHON_DIR!;!PYTHON_DIR!\Scripts;" >nul
-        echo PATH updated. Please CLOSE and REOPEN CMD.
-        pause
-        exit /b 1
-    ) else (
-        echo [ERROR] python.exe NOT found in "!PYTHON_DIR!".
-        echo Setup aborted.
-        pause
-        exit /b 1
-    )
-)
-
 REM ============================================================
 REM 1. CREATE VENV
 REM ============================================================
