@@ -24,7 +24,8 @@ IF NOT ERRORLEVEL 1 (
         set "PYTHON_DIR=%%D"
     )
 
-    if defined PYTHON_DIR (
+    REM VALIDATE auto-detected folder
+    if defined PYTHON_DIR if exist "%PYTHON_DIR%\python.exe" (
         echo Found Python installation at: %PYTHON_DIR%
         echo Adding to PATH...
 
@@ -34,8 +35,13 @@ IF NOT ERRORLEVEL 1 (
         pause
         exit /b 1
     ) else (
-        echo Could not auto-detect Python.
-        echo Please enter the folder containing python.exe (example: C:\Users\User\AppData\Local\Programs\Python\Python311)
+        echo Auto-detection failed — Python folder invalid or not found.
+        echo.
+        echo Please enter the folder containing python.exe
+        echo Example:
+        echo   C:\Users\User\AppData\Local\Programs\Python\Python311
+        echo.
+
         set /p PYTHON_DIR="Python install path: "
 
         if exist "%PYTHON_DIR%\python.exe" (
@@ -54,7 +60,9 @@ IF NOT ERRORLEVEL 1 (
     )
 )
 
+REM ============================================================
 REM 1. CREATE VENV
+REM ============================================================
 echo.
 echo Creating virtual environment...
 python -m venv venv
@@ -64,7 +72,9 @@ IF ERRORLEVEL 1 (
     exit /b 1
 )
 
+REM ============================================================
 REM 2. ACTIVATE VENV
+REM ============================================================
 echo.
 echo Activating virtual environment...
 call venv\Scripts\activate.bat
@@ -74,7 +84,9 @@ IF ERRORLEVEL 1 (
     exit /b 1
 )
 
+REM ============================================================
 REM 3. UPGRADE PIP
+REM ============================================================
 echo.
 echo Upgrading pip...
 python -m pip install --upgrade pip
@@ -84,7 +96,9 @@ IF ERRORLEVEL 1 (
     exit /b 1
 )
 
+REM ============================================================
 REM 4. INSTALL REQUIREMENTS
+REM ============================================================
 echo.
 echo Installing requirements from requirements.txt ...
 echo.
