@@ -7,14 +7,51 @@ echo The window will NOT close on errors.
 echo ============================================================
 echo.
 
-REM 0. VERIFY PYTHON
-echo Checking for Python...
-python --version
-IF ERRORLEVEL 1 (
-    echo [ERROR] Python not found. Install Python from python.org.
-    echo.
-    pause
-    exit /b 1
+REM ============================================================
+REM 0. CHECK PYTHON IS INSTALLED OR FIX PATH
+REM ============================================================
+echo Checking Python installation...
+python --version >nul 2>&1
+
+IF NOT ERRORLEVEL 1 (
+    echo Python detected.
+) ELSE (
+    echo Python not found in PATH. Attempting auto-detection...
+
+    REM Attempt to locate Python under LocalAppData common install
+    set "PYTHON_DIR="
+    for /d %%D in ("%LocalAppData%\Programs\Python\Python*") do (
+        set "PYTHON_DIR=%%D"
+    )
+
+    if defined PYTHON_DIR (
+        echo Found Python installation at: %PYTHON_DIR%
+        echo Adding to PATH...
+
+        setx PATH "%PATH%;%PYTHON_DIR%;%PYTHON_DIR%\Scripts;" >nul
+
+        echo PATH updated. Please CLOSE and REOPEN this window, then run again.
+        pause
+        exit /b 1
+    ) else (
+        echo Could not auto-detect Python.
+        echo Please enter the folder containing python.exe (example: C:\Users\User\AppData\Local\Programs\Python\Python311)
+        set /p PYTHON_DIR="Python install path: "
+
+        if exist "%PYTHON_DIR%\python.exe" (
+            echo Adding %PYTHON_DIR% to PATH...
+            setx PATH "%PATH%;%PYTHON_DIR%;%PYTHON_DIR%\Scripts;" >nul
+
+            echo PATH updated. Please CLOSE and REOPEN this window, then run again.
+            pause
+            exit /b 1
+        ) else (
+            echo [ERROR] No python.exe found in that folder.
+            echo Setup aborted.
+            pause
+            exit /b 1
+        )
+    )
 )
 
 REM 1. CREATE VENV
