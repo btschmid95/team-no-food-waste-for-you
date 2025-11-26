@@ -23,7 +23,6 @@ def plot_consumption_vs_waste(engine, recipe_mgr):
     pantry_df = load_pantry_with_category(engine)
 
     # Forecast waste
-    # Forecast waste
     forecast_df = get_forecast_waste_by_date(pantry_df)
 
     # Planned consumption

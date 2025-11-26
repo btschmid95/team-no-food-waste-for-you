@@ -98,9 +98,8 @@ View your items, quantities, and expiration timelines.
 
 <img src="images/pantry%20contents%20and%20filtering.png" width="700">
 
-## **Category Insights**
-- Total amount by category
-- Items expiring tomorrow or within a week
+## **Category Consumption Insights**
+- Total Category Consumed by Category and product as a treemap.
 
 <img src="images/treemap%20visual%20for%20consumption%20by%20category%20and%20product.png" width="700">
 
