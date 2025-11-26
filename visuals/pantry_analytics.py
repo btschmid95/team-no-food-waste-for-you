@@ -103,12 +103,22 @@ def compute_expiry_buckets(pantry_df, today=None):
         today = pd.Timestamp(datetime.today().date())
 
     df["days_to_expiry"] = (df["expiration_date"] - today).dt.days
-    df = df[df["days_to_expiry"] >= 0]
+    df["expiry_bucket"] = None
+    expired_mask = df["days_to_expiry"] <= 0
+    df.loc[expired_mask, "expiry_bucket"] = "Expired"
 
+    # 2) Bucket only positive days
+    non_expired = df["days_to_expiry"] > 0
     bins = [0, 1, 3, 7, 14, 30, np.inf]
     labels = ["0–1 day", "2–3 days", "4–7 days", "8–14 days", "15–30 days", "30+ days"]
 
-    df["expiry_bucket"] = pd.cut(df["days_to_expiry"], bins=bins, labels=labels)
+    df.loc[non_expired, "expiry_bucket"] = pd.cut(
+        df.loc[non_expired, "days_to_expiry"],
+        bins=bins,
+        labels=labels,
+        right=True,
+        include_lowest=False
+    )
 
     return df
 

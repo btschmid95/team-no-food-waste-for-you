@@ -1,5 +1,10 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(PROJECT_ROOT))
 from database.config import DATABASE_URL
 
 print("DATABASE_URL =", DATABASE_URL)
@@ -63,5 +68,21 @@ def wipe_tables():
         session.close()
 
 
+
+
 if __name__ == "__main__":
-    wipe_tables()
+    #wipe_tables()
+    from pprint import pprint
+    from database.tables import RecipeSelected, Recipe
+    session = Session()
+    rows = session.query(RecipeSelected).all()
+
+    print("RECIPE_SELECTED ROWS:", len(rows))
+    for r in rows:
+        print(
+            r.sel_id,
+            r.recipe_id,
+            "planned:", r.planned_for,
+            "slot:", r.meal_slot,
+            "exists:", bool(session.query(Recipe).get(r.recipe_id))
+        )

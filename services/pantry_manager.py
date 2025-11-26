@@ -379,16 +379,17 @@ class PantryManager:
             for _, row in df.iterrows()
         ]
     
-    def import_state(self, virtual_state: dict):
+    def import_state(self, virtual_state: list):
         """
-        Convert a virtual pantry dict into list-of-dicts format.
+        Convert virtual pantry list-of-dicts into the format used by the recommender.
+        Accepts a list of pantry-item dicts.
         """
         items = []
-        for pid, data in virtual_state.items():
+        for it in virtual_state:
             items.append({
-                "product_id": pid,
-                "amount": data.get("amount", 0),
-                "expiration_date": data.get("expiration_date")
+                "product_id": it["product_id"],
+                "amount": it["amount"],
+                "expiration_date": it["expiration_date"],
             })
         return items
     

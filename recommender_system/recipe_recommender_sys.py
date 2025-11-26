@@ -33,23 +33,37 @@ class RecipeRecommender:
             { product_id, amount, expiration_date, per_unit_score }
         """
 
+        now = datetime.now()
+
+        # Load either the real pantry or the virtual pantry (FEFO list)
         if virtual_state is None:
             items = self.pm.get_all_items()
         else:
             items = self.pm.import_state(virtual_state)
-            now = datetime.now()
+
         scored = []
         for item in items:
-            if item["expiration_date"] is None:
+
+            exp = item.get("expiration_date")
+            if exp is None:
                 continue
-            if item["expiration_date"] < now:
+
+            # Ensure expiration is datetime
+            if isinstance(exp, datetime):
+                exp_dt = exp
+            else:
+                # If it's a date, convert to datetime at midnight
+                exp_dt = datetime.combine(exp, datetime.min.time())
+
+            # Skip expired
+            if exp_dt < now:
                 continue
-            
+
             per_unit = self._compute_waste_score(item)
 
             scored.append({
                 "product_id": item["product_id"],
-                "expiration_date": item["expiration_date"],
+                "expiration_date": exp_dt,
                 "amount": item["amount"],
                 "per_unit_score": per_unit,
             })
@@ -208,21 +222,47 @@ class RecipeRecommender:
             })
         return out
     
-    def _apply_recipe_to_virtual_state(self, recipe: Recipe, state: dict):
-        state = state.copy()
+    def _apply_recipe_to_virtual_state(self, recipe: Recipe, state: list):
+        """
+        Consume ingredients from the virtual pantry FEFO-style.
+        `state` is a LIST of pantry-item dicts:
+        [
+            {"product_id": 141, "amount": 12, "expiration_date": date},
+            {"product_id": 141, "amount": 12, "expiration_date": date},
+            ...
+        ]
+        """
+        # Make copy so original is not mutated
+        new_state = [item.copy() for item in state]
 
         for ing in recipe.ingredients:
             pid = ing.matched_product_id
-            if not pid or pid not in state:
+            required = ing.pantry_amount or 0
+            if not pid or required <= 0:
                 continue
 
-            required = ing.pantry_amount or 0
-            available = state[pid]["amount"]
+            # FEFO items for this product
+            items = [it for it in new_state if it["product_id"] == pid]
 
-            new_amount = max(0, available - required)
-            state[pid]["amount"] = new_amount
+            # Sort FEFO (earliest expiration first)
+            items.sort(key=lambda it: it["expiration_date"] or datetime.max)
 
-        return state
+            for item in items:
+                if required <= 0:
+                    break
+
+                available = item["amount"]
+                if available <= 0:
+                    continue
+
+                used = min(available, required)
+                item["amount"] -= used
+                required -= used
+
+        # Filter out zero-amount items (optional)
+        new_state = [it for it in new_state if it["amount"] > 0]
+
+        return new_state
 
     def _compute_waste_score(self, item):
         """

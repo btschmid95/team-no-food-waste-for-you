@@ -32,7 +32,7 @@ def plot_expiring_food_histogram(engine):
                           values="amount").fillna(0)
 
     pivot = pivot.reindex([
-        "0–1 day", "2–3 days", "4–7 days",
+        "Expired","0–1 day", "2–3 days", "4–7 days",
         "8–14 days", "15–30 days", "30+ days"
     ])
 

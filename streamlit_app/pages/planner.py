@@ -20,43 +20,51 @@ session = get_session()
 rm = RecipeManager(session)
 pm = PantryManager(session)
 recommender = RecipeRecommender(session)
-
+st.write("DEBUG — planned_recipes:", st.session_state.get("planned_recipes"))
 def rebuild_virtual_pantry():
     """
-    Start from the real pantry, then virtually consume ingredients
-    for each planned recipe (in planned date order) to simulate
-    future usage. This state feeds back into the recommender.
+    Build a virtual pantry that mirrors the real pantry structure:
+    a list of individual items, each with its own expiration date.
     """
-    items = recommender.pm.get_all_items()
-    state = {
-        int(item["product_id"]): {
+
+    # Start from real pantry — RETURNING LIST OF ROWS, NOT DICTIONARY
+    items = recommender.pm.get_all_items()  # already a list of dicts:
+    # [{"product_id": 141, "amount": 12, "expiration_date": ...}, ...]
+
+    # Make a deep copy so we don't mutate original pantry list
+    state = [
+        {
+            "product_id": item["product_id"],
             "amount": item["amount"],
             "expiration_date": item["expiration_date"],
         }
         for item in items
-    }
+    ]
 
-    sorted_planned = sorted(
+    # Sort planned recipes by date
+    planned_sorted = sorted(
         st.session_state.planned_recipes.items(),
-        key=lambda kv: kv[1]["planned_for"] or "9999-99-99",
+        key=lambda kv: kv[1]["planned_for"] or "9999-12-31"
     )
 
-    for sel_id, pdata in sorted_planned:
+    # Apply recipe consumption
+    for sel_id, pdata in planned_sorted:
         rid = pdata["recipe_id"]
-        recipe_obj = rm.get_recipe_by_id(rid)
-        if recipe_obj:
-            state = recommender._apply_recipe_to_virtual_state(recipe_obj, state)
+        recipe = rm.get_recipe_by_id(rid)
+        if recipe:
+            state = recommender._apply_recipe_to_virtual_state(recipe, state)
 
     return state
 
 def virtual_pantry_to_df(session, vp_state):
     """
-    Convert st.session_state.virtual_pantry to a full pantry DataFrame,
-    matching the structure returned by PantryManager.get_pantry_items().
+    vp_state is now a LIST of pantry-item dicts.
+    Convert each one to a row, just like real pantry.
     """
     rows = []
 
-    for pid, data in vp_state.items():
+    for item in vp_state:
+        pid = item["product_id"]
         product = session.query(TJInventory).get(pid)
 
         rows.append({
@@ -64,10 +72,10 @@ def virtual_pantry_to_df(session, vp_state):
             "product_name": product.name if product else "Unknown",
             "category": product.category if product else "Other",
             "sub_category": product.sub_category if product else None,
-            "amount": data.get("amount", 0),
+            "amount": item["amount"],
             "unit": product.unit if product else None,
             "date_added": None,
-            "expiration_date": data.get("expiration_date"),
+            "expiration_date": item["expiration_date"],
         })
 
     return pd.DataFrame(rows)
@@ -197,13 +205,20 @@ def compute_optimal_date_for_recipe_no_override(recipe, virtual_state, planned_r
         if not pid:
             continue
 
-        item = virtual_state.get(pid)
-        if not item:
+        entries = [it for it in virtual_state if it["product_id"] == pid]
+
+        if not entries:
             continue
 
-        exp = item.get("expiration_date")
+        # earliest expiration among all FEFO entries
+        exp = min(
+            (it["expiration_date"] for it in entries if it["expiration_date"]),
+            default=None
+        )
+
         if isinstance(exp, datetime):
             exp = exp.date()
+
         if exp:
             exp_dates.append(exp)
 
@@ -355,6 +370,9 @@ with col2:
         df = virtual_pantry_to_df(session, st.session_state.virtual_pantry)
     else:
         df = pm.get_pantry_items()
+    df["expiration_date"] = pd.to_datetime(df["expiration_date"], errors="coerce")
+
+    df = df[df["expiration_date"].dt.date >= today]
 
     CATEGORY_COLORS = {
         "Fresh Fruits & Veggies": "#69e169",
@@ -442,10 +460,19 @@ with col2:
                         pid = getattr(ing, "matched_product_id", None)
                         if not pid: continue
 
-                        vp_item = st.session_state.virtual_pantry.get(pid)
-                        if not vp_item: continue
+                        entries = [
+                            it for it in st.session_state.virtual_pantry
+                            if it["product_id"] == pid
+                        ]
 
-                        exp = vp_item.get("expiration_date")
+                        if not entries:
+                            continue
+
+                        # earliest expiration
+                        exp = min(
+                            (it["expiration_date"] for it in entries if it["expiration_date"]),
+                            default=None
+                        )
                         if isinstance(exp, datetime): exp = exp.date()
                         if exp and exp < d:
                             expired_flag = True
@@ -543,45 +570,48 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
                     matched_rows = []
                     missing_rows = []
 
-                    vp = st.session_state.virtual_pantry
+                    vp = st.session_state.virtual_pantry  # list of dicts
 
                     for ing in recipe_obj.ingredients:
-                        name = getattr(ing, "name", None) \
-                            or getattr(ing, "ingredient_name", None) \
-                            or getattr(ing, "ingredient", None) \
-                            or getattr(ing, "display_name", None) \
+                        name = (
+                            getattr(ing, "name", None)
+                            or getattr(ing, "ingredient_name", None)
+                            or getattr(ing, "ingredient", None)
+                            or getattr(ing, "display_name", None)
                             or "Unknown Ingredient"
+                        )
 
                         needed = ing.pantry_amount or 0
                         unit = ing.pantry_unit or ""
                         pid = getattr(ing, "matched_product_id", None)
 
-
                         if not pid:
                             continue
 
-                        if pid in vp and vp[pid]["amount"] > 0:
-                            pantry_amount = vp[pid]["amount"] or 0
-                            used = min(pantry_amount, needed)
-                            remaining = max(pantry_amount - used, 0)
-                            if remaining >0:
+                        # 🔍 FEFO entries for this product
+                        entries = [it for it in vp if it["product_id"] == pid]
+
+                        if entries:
+                            # Total FEFO amount available
+                            total_amount = sum(it["amount"] for it in entries)
+
+                            used = min(total_amount, needed)
+                            remaining = max(total_amount - used, 0)
+
+                            if remaining > 0:
                                 matched_rows.append(
                                     f"- **{name}** — needs **{needed} {unit}**, "
-                                    f"uses **{used}**/**{round(pantry_amount,2)}**, remaining **{round(remaining,2)}**"
+                                    f"uses **{used}**/**{round(total_amount,2)}**, remaining **{round(remaining,2)}**"
                                 )
                             else:
-                                if pantry_amount == 0:
-                                    matched_rows.append(
-                                        f"- **{name}** — needs **{needed} {unit}**, "
-                                        f"Pantry contains **{pantry_amount}** "
-                                    )
-                                else:
-                                    matched_rows.append(
-                                        f"- **{name}** — needs **{needed} {unit}**, "
-                                        f"uses **{used}**, Nothing Left!"
-                                    )
+                                matched_rows.append(
+                                    f"- **{name}** — needs **{needed} {unit}**, "
+                                    f"uses **{used}**, Nothing Left!"
+                                )
+
                             continue
 
+                        # No entries → missing
                         missing_rows.append(f"- **{name}**")
 
                     if st.button("➕ Add", key=f"catadd_{recipe_id}_{label}_{i}"):
@@ -673,11 +703,21 @@ else:
                         if not pid:
                             continue
 
-                        item = st.session_state.virtual_pantry.get(pid)
-                        if not item:
+                        # Find all virtual pantry entries for this product
+                        entries = [
+                            it for it in st.session_state.virtual_pantry
+                            if it["product_id"] == pid
+                        ]
+
+                        if not entries:
                             continue
 
-                        exp = item.get("expiration_date")
+                        # Earliest expiration among FEFO entries
+                        exp = min(
+                            (it["expiration_date"] for it in entries if it["expiration_date"]),
+                            default=None
+                        )
+
                         if isinstance(exp, datetime):
                             exp = exp.date()
 

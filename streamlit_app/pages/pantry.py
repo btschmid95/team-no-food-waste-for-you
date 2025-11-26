@@ -71,32 +71,27 @@ header_col1, header_col2 = st.columns([10, 4])
 with header_col1:
     st.title("Pantry Dashboard")
 
-with header_col2:
-    st.write("")
-    c1, c2, c3, c4 = st.columns([1, 1, 1, 1])
+with st.sidebar.expander("Pantry Buttons"):
 
-    with c1:
-        if st.button("❌ Clear Pantry", key="btn_clear_all"):
-            st.session_state["confirm_clear_all"] = True
-            st.session_state.planned_recipes = {}
-            st.session_state.virtual_pantry = {}
-            st.success("Pantry and planning queue have been fully cleared.")
-            st.rerun()
 
-    with c2:
-        if st.button("🗑 Trash Pantry", key="btn_trash_all"):
-            st.session_state["confirm_trash_all"] = True
-            st.session_state.planned_recipes = {}
-            st.session_state.virtual_pantry = {}
-            st.success("Pantry and planning queue have been fully cleared.")
-            st.rerun()
+    if st.button("❌ Clear Pantry", key="btn_clear_all"):
+        st.session_state["confirm_clear_all"] = True
+        st.session_state.planned_recipes = {}
+        st.session_state.virtual_pantry = {}
+        st.success("Pantry and planning queue have been fully cleared.")
+        st.rerun()
 
-    with c3:
-        if st.button("⏳ Trash Expired", key="btn_trash_expired"):
-            st.session_state["confirm_trash_expired"] = True
-    with c4:
-        if st.button("🌱 Sample Pantry", key="btn_sample_pantry"):
-            st.session_state["confirm_sample_pantry"] = True
+    if st.button("🗑 Trash Pantry", key="btn_trash_all"):
+        st.session_state["confirm_trash_all"] = True
+        st.session_state.planned_recipes = {}
+        st.session_state.virtual_pantry = {}
+        st.success("Pantry and planning queue have been fully cleared.")
+        st.rerun()
+
+    if st.button("⏳ Trash Expired", key="btn_trash_expired"):
+        st.session_state["confirm_trash_expired"] = True
+    if st.button("🌱 Sample Pantry", key="btn_sample_pantry"):
+        st.session_state["confirm_sample_pantry"] = True
 
     if st.session_state.get("confirm_clear_all"):
         st.error("⚠ This will permanently delete ALL pantry items AND ALL planned recipes.")
@@ -448,3 +443,4 @@ if fig:
     st.plotly_chart(fig, use_container_width=False)
 else:
     st.info("No consumption data available yet!")
+
