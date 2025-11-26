@@ -113,7 +113,10 @@ class PantryManager:
             # Check if ingredient already exists in pantry with sufficient amount
             pantry_items = self.session.query(PantryItem).filter(PantryItem.product_id == ingredient.matched_product_id).all()
             
-            current_amount = sum(item.amount for item in pantry_items) if pantry_items else 0
+            current_amount = sum(
+                item.amount for item in pantry_items
+                if item.expiration_date >= datetime.now()
+            )
             has_enough = current_amount >= ingredient.pantry_amount
 
             if not has_enough:

@@ -37,10 +37,14 @@ class RecipeRecommender:
             items = self.pm.get_all_items()
         else:
             items = self.pm.import_state(virtual_state)
-
+            now = datetime.now()
         scored = []
         for item in items:
-
+            if item["expiration_date"] is None:
+                continue
+            if item["expiration_date"] < now:
+                continue
+            
             per_unit = self._compute_waste_score(item)
 
             scored.append({
