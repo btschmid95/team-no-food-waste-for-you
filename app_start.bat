@@ -1,9 +1,23 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-REM ============================================================
+echo ============================================================
+echo STARTING SETUP (DEBUG MODE)
+echo The window will NOT close on errors.
+echo ============================================================
+echo.
+
+REM 0. VERIFY PYTHON
+echo Checking for Python...
+python --version
+IF ERRORLEVEL 1 (
+    echo [ERROR] Python not found. Install Python from python.org.
+    echo.
+    pause
+    exit /b 1
+)
+
 REM 1. CREATE VENV
-REM ============================================================
 echo.
 echo Creating virtual environment...
 python -m venv venv
@@ -13,9 +27,7 @@ IF ERRORLEVEL 1 (
     exit /b 1
 )
 
-REM ============================================================
 REM 2. ACTIVATE VENV
-REM ============================================================
 echo.
 echo Activating virtual environment...
 call venv\Scripts\activate.bat
@@ -25,9 +37,7 @@ IF ERRORLEVEL 1 (
     exit /b 1
 )
 
-REM ============================================================
 REM 3. UPGRADE PIP
-REM ============================================================
 echo.
 echo Upgrading pip...
 python -m pip install --upgrade pip
@@ -37,9 +47,7 @@ IF ERRORLEVEL 1 (
     exit /b 1
 )
 
-REM ============================================================
 REM 4. INSTALL REQUIREMENTS
-REM ============================================================
 echo.
 echo Installing requirements from requirements.txt ...
 echo.
