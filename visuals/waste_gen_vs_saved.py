@@ -1,80 +1,13 @@
-# import matplotlib.pyplot as plt
-# import numpy as np
-# import sys
-# from pathlib import Path
-# import pandas as pd
-#
-# # Make repo root importable
-# ROOT = Path(__file__).resolve().parents[2]
-# if str(ROOT) not in sys.path:
-#     sys.path.append(str(ROOT))
-#
-# def plot_waste_waterfall(engine):
-#     from visuals.pantry_analytics import compute_waste_summary_from_events
-#
-#     waste_summary = compute_waste_summary_from_events(engine)
-#     """
-#     Visual 3:
-#     Waterfall-style bar chart of realized vs avoided waste by category.
-#     """
-#     df = waste_summary.copy()
-#     df = df.sort_values("realized_waste", ascending=False)
-#
-#     steps = []
-#     labels = []
-#
-#     cumulative = 0
-#
-#     steps.append(0)
-#     labels.append("Start")
-#
-#     for _, row in df.iterrows():
-#         cat = row["category"]
-#         realized = row["realized_waste"]
-#         avoided = row["avoided_waste"]
-#
-#         # negative bar = realized waste
-#         steps.append(-realized)
-#         labels.append(f"{cat} wasted")
-#
-#         # positive bar = avoided waste (currently 0, but kept for future use)
-#         if avoided != 0:
-#             steps.append(avoided)
-#             labels.append(f"{cat} avoided")
-#
-#     x = np.arange(len(labels))
-#
-#     fig, ax = plt.subplots(figsize=(10, 5))
-#
-#     prev = 0
-#     for i, step in enumerate(steps):
-#         color = "red" if step < 0 else "green"
-#         ax.bar(x[i], step, bottom=prev, color=color)
-#         prev += step
-#
-#     ax.set_xticks(x)
-#     ax.set_xticklabels(labels, rotation=45, ha="right")
-#     ax.set_ylabel("Waste (amount units)")
-#     ax.set_title("Realized vs Avoided Waste by Category (Simple Approximation)")
-#     plt.tight_layout()
-#     return fig
-
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
 from pathlib import Path
-import pandas as pd
 
-# ---------------------------------------------------------------------
-# Make repo root importable (for running this file directly)
-# For .../team-no-food-waste-for-you/visuals/waste_gen_vs_saved.py
-# parents[0] = visuals/, parents[1] = repo root
-# ---------------------------------------------------------------------
+# Make repo root importable
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-# Try both styles in case "visuals" is or isn't treated as a package
 try:
     from visuals.pantry_analytics import compute_waste_summary_from_events
 except ImportError:
@@ -83,80 +16,75 @@ except ImportError:
 
 def plot_waste_waterfall(engine) -> plt.Figure:
     """
-    Stacked bar chart of realized vs saved waste by category.
+    Overall waste vs saved (waste avoided) chart.
 
-    (We keep the function name 'plot_waste_waterfall' so the rest of
-    the app doesn't need to change, but it's now a stacked bar chart.)
+    - Total Wasted       = sum of trash events
+    - Total Saved (Used) = sum of avoid events
+
+    Visual:
+      * One bar going DOWN from 0 (wasted, red)
+      * One bar going UP from 0 (saved, green)
     """
     waste_summary = compute_waste_summary_from_events(engine)
 
     if waste_summary.empty:
         fig, ax = plt.subplots(figsize=(8, 4))
         ax.text(
-            0.5, 0.5,
+            0.5,
+            0.5,
             "No waste data available",
-            ha="center", va="center", fontsize=12
+            ha="center",
+            va="center",
+            fontsize=12,
         )
         ax.axis("off")
         return fig
 
-    df = waste_summary.copy()
+    # Sum across categories to get overall totals
+    total_wasted = float(waste_summary["realized_waste"].fillna(0).sum())
+    total_saved = float(waste_summary["avoided_waste"].fillna(0).sum())
 
-    # Sort by realized waste so biggest categories come first
-    df = df.sort_values("realized_waste", ascending=False)
+    if total_wasted == 0 and total_saved == 0:
+        fig, ax = plt.subplots(figsize=(8, 4))
+        ax.text(
+            0.5,
+            0.5,
+            "No realized or avoided waste recorded yet.",
+            ha="center",
+            va="center",
+            fontsize=12,
+        )
+        ax.axis("off")
+        return fig
 
-    categories = df["category"].tolist()
-    wasted = df["realized_waste"].fillna(0).astype(float).to_numpy()
-    saved = df["avoided_waste"].fillna(0).astype(float).to_numpy()
+    # Make wasted negative so it points DOWN
+    wasted_bar = -total_wasted
+    saved_bar = total_saved
 
-    x = np.arange(len(categories))
+    labels = ["Realized Waste", "Avoided Waste (Food Used)"]
+    values = [wasted_bar, saved_bar]
+    colors = ["red", "green"]
+    x = np.arange(len(labels))
 
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, ax = plt.subplots(figsize=(8, 5))
 
-    # Bottom segment: wasted (red)
-    ax.bar(x, wasted, color="red", label="Wasted")
+    ax.bar(x, values, color=colors)
 
-    # Top segment: saved (green), stacked on wasted
-    ax.bar(x, saved, bottom=wasted, color="green", label="Saved")
+    # Symmetric y-limits so up/down are visually balanced
+    max_val = max(total_wasted, total_saved)
+    ax.set_ylim(-max_val * 1.2, max_val * 1.2)
+
+    ax.axhline(0, color="black", linewidth=1)
 
     ax.set_xticks(x)
-    ax.set_xticklabels(categories, rotation=45, ha="right")
-    ax.set_ylabel("Amount (units)")
-    ax.set_title("Realized vs Saved Waste by Category (Stacked)")
+    ax.set_xticklabels(labels, rotation=0, ha="center")
+    ax.set_ylabel("Amount (pantry units)")
+    ax.set_title("Overall Food Wasted vs Food Used")
 
-    ax.legend(loc="upper right")
+    # Legend
+    # waste_patch = plt.Rectangle((0, 0), 1, 1, color="red", label="Realized Waste")
+    # saved_patch = plt.Rectangle((0, 0), 1, 1, color="green", label="Avoided Waste")
+    # ax.legend(handles=[waste_patch, saved_patch], loc="upper right")
+
     plt.tight_layout()
-
     return fig
-
-
-# ----- Standalone test so you can run: python visuals/waste_gen_vs_saved.py -----
-if __name__ == "__main__":
-    # Example fake data to visualize layout
-    example = pd.DataFrame(
-        {
-            "category": ["Produce", "Dairy", "Frozen"],
-            "realized_waste": [10, 5, 2],
-            "avoided_waste": [3, 0, 1],
-        }
-    )
-
-    # Plot using the same logic but without needing a DB engine
-    df = example.sort_values("realized_waste", ascending=False)
-    categories = df["category"].tolist()
-    wasted = df["realized_waste"].fillna(0).astype(float).to_numpy()
-    saved = df["avoided_waste"].fillna(0).astype(float).to_numpy()
-
-    x = np.arange(len(categories))
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.bar(x, wasted, color="red", label="Wasted")
-    ax.bar(x, saved, bottom=wasted, color="green", label="Saved")
-
-    ax.set_xticks(x)
-    ax.set_xticklabels(categories, rotation=45, ha="right")
-    ax.set_ylabel("Amount (units)")
-    ax.set_title("Standalone Test: Realized vs Saved Waste (Stacked)")
-    ax.legend(loc="upper right")
-    plt.tight_layout()
-    plt.show()

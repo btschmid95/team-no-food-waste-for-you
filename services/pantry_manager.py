@@ -537,36 +537,6 @@ class PantryManager:
         return messages
 
 
-    def trash_expired_items(self):
-        now = datetime.now()   # precise timestamp
-        messages = []
-
-        expired_items = (
-            self.session.query(PantryItem)
-            .filter(PantryItem.expiration_date < now)
-            .all()
-        )
-
-        print("Now:", now)
-        print("Expired:", [ (pi.pantry_id, pi.expiration_date) for pi in expired_items ])
-
-        if not expired_items:
-            return ["No expired items found."]
-
-        for pi in expired_items:
-            event = PantryEvent(
-                pantry_id=pi.pantry_id,
-                event_type="trash",
-                amount=pi.amount,
-                unit=pi.unit,
-                recipe_selection_id=None
-            )
-            self.session.add(event)
-            self.session.delete(pi)
-
-        self.session.commit()
-
-        return [f"Removed {len(expired_items)} expired item(s)."]
 
 
 
@@ -890,8 +860,54 @@ class PantryManager:
         self.session.commit()
         return messages
 
+    def trash_expired_items(self):
+        """
+        Trash ONLY expired items:
 
-    
+        - Expired = expiration_date < now
+        - Log a PantryEvent for each (event_type='trash_expired')
+        - Remove the item from the pantry
+        """
+
+        now = datetime.now()
+
+        # 1) Find expired pantry items
+        expired_items = (
+            self.session.query(PantryItem)
+            .filter(PantryItem.expiration_date.isnot(None))
+            .filter(PantryItem.expiration_date < now)
+            .all()
+        )
+
+        if not expired_items:
+            return ["No expired items found."]
+
+        messages = []
+
+        for item in expired_items:
+            amount = item.amount or 0
+            unit = item.unit
+            product_name = item.product.name if item.product else "Unknown item"
+
+            # 2) Log waste event so visuals can see it
+            if amount > 0:
+                evt = PantryEvent(
+                    pantry_id=item.pantry_id,
+                    event_type="trash_expired",
+                    amount=amount,
+                    unit=unit,
+                )
+                self.session.add(evt)
+
+            # 3) Remove item from pantry
+            self.session.delete(item)
+
+            messages.append(f"Trashed {amount} {unit} of {product_name} (expired).")
+
+        self.session.commit()
+        return messages
+
+
 if __name__ == "__main__":
     pantry_ids = set(item.product_id for item in session.query(PantryItem).all())
     inventory_ids = set(item.product_id for item in session.query(TJInventory).all())
