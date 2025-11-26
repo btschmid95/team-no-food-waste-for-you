@@ -459,32 +459,34 @@ class PantryManager:
 
     def clear_pantry(self):
         """
-        Completely remove ALL pantry items and ALL planned recipes.
-        Logs a trash event for each pantry item removed.
+        Completely reset pantry state:
+        - Delete ALL pantry items
+        - Delete ALL planned recipes
+        - Delete ALL pantry events (consume, trash, avoid)
         """
 
         messages = []
 
-        # 1. Log and delete pantry items
+        # 1. Delete all events FIRST (to avoid FK issues)
+        events = self.session.query(PantryEvent).all()
+        num_events = len(events)
+        for ev in events:
+            self.session.delete(ev)
+        messages.append(f"Deleted {num_events} pantry events.")
+
+        # 2. Delete pantry items
         pantry_items = self.session.query(PantryItem).all()
+        num_items = len(pantry_items)
         for pi in pantry_items:
-            event = PantryEvent(
-                pantry_id=pi.pantry_id,
-                event_type="trash",
-                amount=pi.amount,
-                unit=pi.unit,
-                recipe_selection_id=None
-            )
-            self.session.add(event)
-
             self.session.delete(pi)
-            messages.append(f"Removed {pi.amount} {pi.unit} of product_id={pi.product_id}")
+        messages.append(f"Deleted {num_items} pantry items.")
 
-        # 2. Delete all planned recipes
+        # 3. Delete planned recipes
         planned = self.session.query(RecipeSelected).all()
+        num_planned = len(planned)
         for p in planned:
             self.session.delete(p)
-        messages.append("All planned recipes cleared.")
+        messages.append(f"Deleted {num_planned} planned recipes.")
 
         self.session.commit()
 
@@ -661,9 +663,6 @@ class PantryManager:
         # Load full Trader Joe's inventory
         inv = pd.read_sql("SELECT * FROM tj_inventory", self.session.bind)
 
-        # ----------------------------------------
-        # 1. SAMPLE MEATS — pick 2 shortest shelf life
-        # ----------------------------------------
         meats = inv[inv["category"] == "Meat, Seafood & Plant-based"].copy()
 
         if meats.empty:

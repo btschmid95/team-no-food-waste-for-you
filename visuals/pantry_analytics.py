@@ -136,3 +136,58 @@ def load_recipe_product_data(engine):
 
     return recipes, products, ing
 
+def compute_consumption_by_category(engine):
+    """
+    Returns a dataframe with:
+    category, product_name, total_consumed, unit
+    """
+
+    q = """
+        SELECT 
+            ti.category,
+            ti.name AS product_name,
+            ti.unit,
+            pe.amount,
+            pe.event_type
+        FROM pantry_event pe
+        JOIN pantry p ON pe.pantry_id = p.pantry_id
+        JOIN tj_inventory ti ON p.product_id = ti.product_id
+        WHERE pe.event_type = 'consume'
+    """
+
+    df = pd.read_sql(q, engine)
+
+    if df.empty:
+        return pd.DataFrame(columns=["category", "product_name", "unit", "total_consumed"])
+
+    grouped = (
+        df.groupby(["category", "product_name", "unit"], as_index=False)["amount"]
+          .sum()
+          .rename(columns={"amount": "total_consumed"})
+    )
+
+    grouped["category"] = grouped["category"].fillna("Unknown").str.strip()
+
+    return grouped
+
+def create_treemap_dataframe(consumption_df):
+
+    if consumption_df.empty:
+        return pd.DataFrame(columns=["ROOT", "All Food", "category", "product", "value", "unit"])
+
+    df = consumption_df.copy()
+
+    treemap_df = pd.DataFrame({
+        "ROOT": ["All Food"] * len(df),
+        "All Food": df["category"],
+        "category": df["category"],
+        "product": df["product_name"],
+        "unit": df["unit"],
+        "value": df["total_consumed"]
+    })
+
+    return treemap_df
+
+
+
+

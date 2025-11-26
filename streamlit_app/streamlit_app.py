@@ -58,25 +58,60 @@ total_items = session.query(PantryItem).count()
 planned_recipes = session.query(RecipeSelected).count()
 
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("Total Pantry Items", total_items)
-col2.metric("Recipes Planned", planned_recipes)
+def metric_tile(label: str, value: str, subvalue: str = ""):
+    return f"""
+        <div style="
+            padding: 12px;
+            border-radius: 10px;
+            background-color: #f6f6f6;
+            border: 1px solid #ddd;
+            min-height: 90px;
+        ">
+            <div style="font-size: 0.8rem; opacity: 0.6;">
+                {label}
+            </div>
+            <div style="font-size: 1.4rem; font-weight: 700; margin-top: 4px;">
+                {value}
+            </div>
+            {f'<div style="font-size: 0.85rem; opacity: 0.7;">{subvalue}</div>' if subvalue else ""}
+        </div>
+    """
 
+# --- Total Pantry Items ---
+col1.markdown(
+    metric_tile("Total Pantry Items", str(total_items)),
+    unsafe_allow_html=True
+)
+
+# --- Recipes Planned ---
+col2.markdown(
+    metric_tile("Recipes Planned", str(planned_recipes)),
+    unsafe_allow_html=True
+)
+
+# --- Next Meal Planned ---
 next_meal = (
     session.query(RecipeSelected)
     .filter(RecipeSelected.planned_for.isnot(None))
     .order_by(RecipeSelected.planned_for.asc())
     .first()
 )
+
 if next_meal:
     next_recipe = session.query(Recipe).filter_by(recipe_id=next_meal.recipe_id).first()
-    col3.metric(
-        "Next Meal Planned",
-        next_recipe.title if next_recipe else "Unknown",
-        next_meal.planned_for.strftime("%b %d, %Y")
+    title = next_recipe.title if next_recipe else "Unknown"
+    date = next_meal.planned_for.strftime("%b %d, %Y")
+    col3.markdown(
+        metric_tile("Next Meal Planned", title, date),
+        unsafe_allow_html=True
     )
 else:
-    col3.metric("No meals currently planned!", "")
+    col3.markdown(
+        metric_tile("Next Meal Planned", "No meals planned!"),
+        unsafe_allow_html=True
+    )
 
+# --- Meals Planned This Week ---
 from datetime import datetime, timedelta
 today = datetime.now().date()
 end_of_week = today + timedelta(days=7)
@@ -90,7 +125,10 @@ weekly_count = (
     .count()
 )
 
-col4.metric("Meals Planned This Week", weekly_count)
+col4.markdown(
+    metric_tile("Meals Planned This Week", str(weekly_count)),
+    unsafe_allow_html=True
+)
 st.markdown("## Waste & Pantry Analytics")
 
 col1, col2 = st.columns(2)

@@ -435,10 +435,18 @@ else:
         hide_index=True,
         height=300
     )
-    st.subheader("Expiration Forecast Histogram")
-    try:
-        fig = plot_expiring_food_histogram(session.bind)
-        st.pyplot(fig)
-    except Exception as e:
-        st.warning(f"Histogram unavailable: {e}")
+    # st.subheader("Expiration Forecast Histogram")
+    # try:
+    #     fig = plot_expiring_food_histogram(session.bind)
+    #     st.pyplot(fig)
+    # except Exception as e:
+    #     st.warning(f"Histogram unavailable: {e}")
+from visuals.treemap_favorite_foods import plot_consumption_treemap
 
+fig = plot_consumption_treemap(session.bind)
+
+st.subheader("🥗 Consumption by Category & Product (Treemap)")
+if fig:
+    st.plotly_chart(fig, use_container_width=False)
+else:
+    st.info("No consumption data available yet!")
