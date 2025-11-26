@@ -113,50 +113,18 @@ def plot_waste_waterfall(engine) -> plt.Figure:
 
     fig, ax = plt.subplots(figsize=(10, 5))
 
-    # Bottom segment: wasted (red)
+    # Bottom segment: wasted (red)S
     ax.bar(x, wasted, color="red", label="Wasted")
 
     # Top segment: saved (green), stacked on wasted
-    ax.bar(x, saved, bottom=wasted, color="green", label="Saved")
+    ax.bar(x, saved, bottom=wasted, color="green", label="Avoided Waste (Food Used)")
 
     ax.set_xticks(x)
     ax.set_xticklabels(categories, rotation=45, ha="right")
     ax.set_ylabel("Amount (units)")
-    ax.set_title("Realized vs Saved Waste by Category (Stacked)")
+    ax.set_title("Realized vs Avoided Waste by Category (Stacked)")
 
     ax.legend(loc="upper right")
     plt.tight_layout()
 
     return fig
-
-
-# ----- Standalone test so you can run: python visuals/waste_gen_vs_saved.py -----
-if __name__ == "__main__":
-    # Example fake data to visualize layout
-    example = pd.DataFrame(
-        {
-            "category": ["Produce", "Dairy", "Frozen"],
-            "realized_waste": [10, 5, 2],
-            "avoided_waste": [3, 0, 1],
-        }
-    )
-
-    # Plot using the same logic but without needing a DB engine
-    df = example.sort_values("realized_waste", ascending=False)
-    categories = df["category"].tolist()
-    wasted = df["realized_waste"].fillna(0).astype(float).to_numpy()
-    saved = df["avoided_waste"].fillna(0).astype(float).to_numpy()
-
-    x = np.arange(len(categories))
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.bar(x, wasted, color="red", label="Wasted")
-    ax.bar(x, saved, bottom=wasted, color="green", label="Avoided Waste (used food)")
-
-    ax.set_xticks(x)
-    ax.set_xticklabels(categories, rotation=45, ha="right")
-    ax.set_ylabel("Amount (units)")
-    ax.set_title("Standalone Test: Realized vs Avoided Waste (Stacked)")
-    ax.legend(loc="upper right")
-    plt.tight_layout()
-    plt.show()
