@@ -151,12 +151,12 @@ if __name__ == "__main__":
 
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.bar(x, wasted, color="red", label="Wasted")
-    ax.bar(x, saved, bottom=wasted, color="green", label="Saved")
+    ax.bar(x, saved, bottom=wasted, color="green", label="Avoided Waste (used food)")
 
     ax.set_xticks(x)
     ax.set_xticklabels(categories, rotation=45, ha="right")
     ax.set_ylabel("Amount (units)")
-    ax.set_title("Standalone Test: Realized vs Saved Waste (Stacked)")
+    ax.set_title("Standalone Test: Realized vs Avoided Waste (Stacked)")
     ax.legend(loc="upper right")
     plt.tight_layout()
     plt.show()

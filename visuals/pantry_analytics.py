@@ -20,10 +20,10 @@ def compute_waste_summary_from_events(engine):
             pe.event_type,
             p.pantry_id,
             p.product_id,
-            ti.category
+            COALESCE(ti.category, 'Uncategorized') AS category
         FROM pantry_event pe
         JOIN pantry p ON pe.pantry_id = p.pantry_id
-        JOIN tj_inventory ti ON p.product_id = ti.product_id
+        LEFT JOIN tj_inventory ti ON p.product_id = ti.product_id
     """, engine)
 
     if events.empty:
