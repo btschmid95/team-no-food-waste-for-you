@@ -9,20 +9,23 @@ from visuals.consumption_vs_waste import (
     plot_consumption_vs_waste,
 )
 from visuals.waste_gen_vs_saved import (
-    compute_waste_summary_from_pantry,
-    plot_waste_waterfall,
+    plot_waste_waterfall,   # now works off PantryEvent + TJInventory
 )
 from visuals.recipe_ingredient_overlap import (
-    load_recipe_ingredient_data,
+    load_recipe_product_data,    # updated to use Recipe + Ingredient + TJInventory
     build_recipe_ingredient_graph,
     plot_recipe_overlap_network,
 )
 
 
+# ----------------------------
 # DB connection + cached data
+# ----------------------------
 @st.cache_resource
-### UPDATE! WHERE IS COOKBOOK????
 def get_engine():
+    # NOTE: 'cookbook.db' is the SQLite DATABASE FILE, not a table name.
+    # All tables (recipe, ingredient, pantry, tj_inventory, pantry_event, etc.)
+    # live inside this single file.
     return create_engine("sqlite:///cookbook.db")
 
 
@@ -34,11 +37,20 @@ def get_pantry_df():
 
 @st.cache_data
 def get_recipe_data():
+    """
+    Uses the new Ingredient-based schema:
+      - recipe
+      - ingredient
+      - tj_inventory
+      - (plus any mapping logic inside load_recipe_product_data)
+    """
     engine = get_engine()
-    return load_recipe_ingredient_data(engine)
+    return load_recipe_product_data(engine)
 
 
+# ----------------------------
 # Streamlit layout
+# ----------------------------
 st.set_page_config(page_title="Pantry Planner Dashboard", layout="wide")
 
 st.title("Pantry Planner Dashboard")
@@ -82,29 +94,26 @@ elif view.startswith("Visual 2"):
 elif view.startswith("Visual 3"):
     st.subheader("Visual 3 – Waste Generated vs Saved")
 
-    if pantry_df.empty:
-        st.info("No pantry data available.")
-    else:
-        waste_summary = compute_waste_summary_from_pantry(pantry_df)
-        if waste_summary.empty:
-            st.info("No realized waste found yet.")
-        else:
-            fig = plot_waste_waterfall(waste_summary)
-            st.pyplot(fig)
+    # plot_waste_waterfall(engine) internally calls compute_waste_summary_from_events(engine)
+    # and handles the "no data" case (shows "No waste data available.")
+    fig = plot_waste_waterfall(engine)
+    st.pyplot(fig)
 
 
 # VISUAL 4
 else:
     st.subheader("Visual 4 – Recipe–Ingredient Overlap")
 
-    recipes_df, ingredients_df, inv_idx_df = get_recipe_data()
+    # New schema: recipes, products, and recipe→ingredient→product mapping
+    recipes_df, products_df, recipe_ing_map = get_recipe_data()
 
-    if recipes_df.empty or ingredients_df.empty or inv_idx_df.empty:
-        st.info("Recipe or ingredient data is missing.")
+    if recipes_df.empty or recipe_ing_map.empty:
+        st.info("Recipe or ingredient/product mapping data is missing.")
     else:
-        G = build_recipe_ingredient_graph(recipes_df, ingredients_df, inv_idx_df)
+        # build_recipe_ingredient_graph should now accept:
+        #   (recipes_df, products_df, recipe_ing_map)
+        G = build_recipe_ingredient_graph(recipes_df, products_df, recipe_ing_map)
 
-        #  Slider to control how many recipes are shown
         sample_n = st.slider(
             "Number of recipes to show in the network",
             min_value=10,

@@ -1,64 +1,3 @@
-# import matplotlib.pyplot as plt
-# import numpy as np
-# import sys
-# from pathlib import Path
-# import pandas as pd
-#
-# # Make repo root importable
-# ROOT = Path(__file__).resolve().parents[2]
-# if str(ROOT) not in sys.path:
-#     sys.path.append(str(ROOT))
-#
-# def plot_waste_waterfall(engine):
-#     from visuals.pantry_analytics import compute_waste_summary_from_events
-#
-#     waste_summary = compute_waste_summary_from_events(engine)
-#     """
-#     Visual 3:
-#     Waterfall-style bar chart of realized vs avoided waste by category.
-#     """
-#     df = waste_summary.copy()
-#     df = df.sort_values("realized_waste", ascending=False)
-#
-#     steps = []
-#     labels = []
-#
-#     cumulative = 0
-#
-#     steps.append(0)
-#     labels.append("Start")
-#
-#     for _, row in df.iterrows():
-#         cat = row["category"]
-#         realized = row["realized_waste"]
-#         avoided = row["avoided_waste"]
-#
-#         # negative bar = realized waste
-#         steps.append(-realized)
-#         labels.append(f"{cat} wasted")
-#
-#         # positive bar = avoided waste (currently 0, but kept for future use)
-#         if avoided != 0:
-#             steps.append(avoided)
-#             labels.append(f"{cat} avoided")
-#
-#     x = np.arange(len(labels))
-#
-#     fig, ax = plt.subplots(figsize=(10, 5))
-#
-#     prev = 0
-#     for i, step in enumerate(steps):
-#         color = "red" if step < 0 else "green"
-#         ax.bar(x[i], step, bottom=prev, color=color)
-#         prev += step
-#
-#     ax.set_xticks(x)
-#     ax.set_xticklabels(labels, rotation=45, ha="right")
-#     ax.set_ylabel("Waste (amount units)")
-#     ax.set_title("Realized vs Avoided Waste by Category (Simple Approximation)")
-#     plt.tight_layout()
-#     return fig
-
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
@@ -83,48 +22,78 @@ except ImportError:
 
 def plot_waste_waterfall(engine) -> plt.Figure:
     """
-    Stacked bar chart of realized vs saved waste by category.
+    Overall waterfall chart of food wasted vs food used (waste avoided).
 
-    (We keep the function name 'plot_waste_waterfall' so the rest of
-    the app doesn't need to change, but it's now a stacked bar chart.)
+    Uses pantry_event + pantry + tj_inventory via
+    compute_waste_summary_from_events(engine).
+
+    Bars:
+      - Total Wasted  (down from zero)
+      - Total Saved   (up toward zero from wasted baseline)
     """
     waste_summary = compute_waste_summary_from_events(engine)
 
     if waste_summary.empty:
         fig, ax = plt.subplots(figsize=(8, 4))
         ax.text(
-            0.5, 0.5,
+            0.5,
+            0.5,
             "No waste data available",
-            ha="center", va="center", fontsize=12
+            ha="center",
+            va="center",
+            fontsize=12,
         )
         ax.axis("off")
         return fig
 
-    df = waste_summary.copy()
+    # Sum across all categories to get overall totals
+    total_wasted = float(waste_summary["realized_waste"].fillna(0).sum())
+    total_saved = float(waste_summary["avoided_waste"].fillna(0).sum())
 
-    # Sort by realized waste so biggest categories come first
-    df = df.sort_values("realized_waste", ascending=False)
+    # If we truly have nothing, bail out nicely
+    if total_wasted == 0 and total_saved == 0:
+        fig, ax = plt.subplots(figsize=(8, 4))
+        ax.text(
+            0.5,
+            0.5,
+            "No realized or avoided waste recorded yet.",
+            ha="center",
+            va="center",
+            fontsize=12,
+        )
+        ax.axis("off")
+        return fig
 
-    categories = df["category"].tolist()
-    wasted = df["realized_waste"].fillna(0).astype(float).to_numpy()
-    saved = df["avoided_waste"].fillna(0).astype(float).to_numpy()
+    # Waterfall steps (relative changes)
+    # negative = wasted, positive = saved
+    steps = [-total_wasted, total_saved]
+    labels = ["Total Wasted", "Total Saved (Food Used)"]
+    colors = ["red", "green"]
 
-    x = np.arange(len(categories))
+    x = np.arange(len(steps))
 
     fig, ax = plt.subplots(figsize=(10, 5))
 
-    # Bottom segment: wasted (red)S
-    ax.bar(x, wasted, color="red", label="Wasted")
+    cumulative = 0.0
+    for i, (step, label, color) in enumerate(zip(steps, labels, colors)):
+        # Each bar starts at current cumulative level
+        bottom = cumulative
+        ax.bar(x[i], step, bottom=bottom, color=color)
+        cumulative += step
 
-    # Top segment: saved (green), stacked on wasted
-    ax.bar(x, saved, bottom=wasted, color="green", label="Avoided Waste (Food Used)")
-
+    # Formatting
     ax.set_xticks(x)
-    ax.set_xticklabels(categories, rotation=45, ha="right")
-    ax.set_ylabel("Amount (units)")
-    ax.set_title("Realized vs Avoided Waste by Category (Stacked)")
+    ax.set_xticklabels(labels, rotation=0, ha="center")
+    ax.set_ylabel("Amount (pantry units)")
+    ax.set_title("Overall Waste vs Food Used (Waterfall)")
 
-    ax.legend(loc="upper right")
+    # Add horizontal line at 0 for reference
+    ax.axhline(0, color="black", linewidth=1)
+
+    # Legend (color meaning)
+    waste_patch = plt.Rectangle((0, 0), 1, 1, color="red", label="Wasted")
+    saved_patch = plt.Rectangle((0, 0), 1, 1, color="green", label="Saved (Waste Avoided)")
+    ax.legend(handles=[waste_patch, saved_patch], loc="upper right")
+
     plt.tight_layout()
-
     return fig

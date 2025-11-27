@@ -11,7 +11,7 @@ from visuals.waste_prod_vs_time import plot_expiring_food_histogram
 from visuals.consumption_vs_waste import plot_consumption_vs_waste
 from visuals.waste_gen_vs_saved import plot_waste_waterfall
 from visuals.recipe_ingredient_overlap import (
-    build_recipe_product_graph,
+    build_recipe_ingredient_graph,
     plot_recipe_overlap_network
 )
 
