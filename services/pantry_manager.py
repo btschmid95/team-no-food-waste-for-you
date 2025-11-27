@@ -536,20 +536,19 @@ class PantryManager:
 
         return messages
 
-    def trash_expired_items(self):
-        """
-        Remove all expired items from the pantry.
-        Logs PantryEvent(event_type='trash') for each expired item.
-        """
 
-        today = datetime.now().date()
+    def trash_expired_items(self):
+        now = datetime.now()   # precise timestamp
         messages = []
 
         expired_items = (
             self.session.query(PantryItem)
-            .filter(PantryItem.expiration_date < today)
+            .filter(PantryItem.expiration_date < now)
             .all()
         )
+
+        print("Now:", now)
+        print("Expired:", [ (pi.pantry_id, pi.expiration_date) for pi in expired_items ])
 
         if not expired_items:
             return ["No expired items found."]
@@ -563,17 +562,13 @@ class PantryManager:
                 recipe_selection_id=None
             )
             self.session.add(event)
-
             self.session.delete(pi)
-
-            messages.append(
-                f"Trashed expired item: {pi.amount} {pi.unit} of product_id={pi.product_id}"
-            )
 
         self.session.commit()
 
-        messages.append(f"Removed {len(expired_items)} expired item(s).")
-        return messages
+        return [f"Removed {len(expired_items)} expired item(s)."]
+
+
 
     def remove_related_planned_recipes(self, product_id):
         """
@@ -654,16 +649,91 @@ class PantryManager:
 
         inv = pd.read_sql("SELECT * FROM tj_inventory", self.session.bind)
 
-        meats = inv[inv["category"] == "Meat, Seafood & Plant-based"].copy()
+        # ------------------------------------------------------------
+        # Precompute a product_id -> category map for quick lookups
+        # ------------------------------------------------------------
+        product_category = {
+            int(row.product_id): row.category
+            for _, row in inv[["product_id", "category"]].iterrows()
+        }
 
-        if meats.empty:
-            return ["ERROR: No meat items in TJInventory"]
+        # ============================================================
+        # 1. Pick THREE recipes: Breakfast, Lunch, Dinner
+        #    Dinner is biased to contain a Meat/Seafood/Plant-based ingredient
+        # ============================================================
 
-        meats = meats.sort_values("shelf_life_days", ascending=True)
-        chosen_meats = meats.head(2)
+        def pick_recipe_by_keyword(keyword, require_meat=False):
+            """
+            Pick a recipe whose Recipe.category contains `keyword`
+            and that has at least one matched ingredient.
 
-        # Insert adjusted meat items with forced expiration
-        for _, row in chosen_meats.iterrows():
+            If require_meat=True, prefer recipes that have at least one
+            ingredient whose product category == 'Meat, Seafood & Plant-based'.
+            """
+            q = (
+                self.session.query(Recipe)
+                .filter(Recipe.category.ilike(f"%{keyword}%"))
+                .join(Ingredient)
+                .filter(Ingredient.matched_product_id != None)
+            )
+            recipes = q.all()
+            if not recipes:
+                return None
+
+            if not require_meat:
+                # Just return the first matching recipe (or you could randomize)
+                return recipes[0]
+
+            # Prefer recipes that actually use a meat/seafood/plant-based product
+            meat_recipes = []
+            for r in recipes:
+                for ing in r.ingredients:
+                    pid = getattr(ing, "matched_product_id", None)
+                    if pid and product_category.get(int(pid)) == "Meat, Seafood & Plant-based":
+                        meat_recipes.append(r)
+                        break
+
+            if meat_recipes:
+                return meat_recipes[0]   # or random choice if you like
+            else:
+                # Fallback: no meat-using recipe found in this category
+                return recipes[0]
+
+        breakfast_recipe = pick_recipe_by_keyword("breakfast")
+        lunch_recipe     = pick_recipe_by_keyword("lunch")
+        # 👇 Dinner is *required* to use a meat/seafood/plant-based product if possible
+        dinner_recipe    = pick_recipe_by_keyword("dinner", require_meat=True)
+
+        recipes = [r for r in [breakfast_recipe, lunch_recipe, dinner_recipe] if r]
+
+        if not recipes:
+            return ["ERROR: No breakfast/lunch/dinner recipes exist with mapped ingredients."]
+
+        for r in recipes:
+            messages.append(f"Chosen recipe: {r.title}")
+
+        # ============================================================
+        # Collect all recipe ingredient product_ids
+        # ============================================================
+
+        all_recipe_ing_ids = set()
+        for r in recipes:
+            for ing in r.ingredients:
+                if ing.matched_product_id:
+                    all_recipe_ing_ids.add(int(ing.matched_product_id))
+
+        # ============================================================
+        # 2. Add TWO expired items NOT used in ANY recipe
+        # ============================================================
+
+        expired_candidates = inv[~inv["product_id"].isin(all_recipe_ing_ids)]
+
+        if expired_candidates.empty:
+            return ["ERROR: No non-recipe items available to create expired test items"]
+
+        expired_sample = expired_candidates.head(2)
+
+        for _, row in expired_sample.iterrows():
             expiration = datetime.now() - timedelta(hours=12)
             date_added = datetime.now() - timedelta(days=2, hours=12)
 
@@ -676,67 +746,71 @@ class PantryManager:
                     expiration_date=expiration,
                 )
             )
-
             messages.append(
-                f"Added MEAT item '{row['name']}' (forced expiring in 12 hours)"
+                f"Added EXPIRED test item '{row['name']}' (forced expired)"
             )
 
-        # Pick ANY recipe using meat
-        meat_ids = {int(x) for x in chosen_meats["product_id"].values}
+            # ============================================================
+            # 3. Add recipe ingredients for ALL THREE RECIPES
+            #    ALL will expire within 4–32 hours
+            #    Ensure one Meat/Seafood ingredient is included (already handled)
+            # ============================================================
 
-        recipe_candidates = (
-            self.session.query(Recipe)
-            .join(Ingredient)
-            .filter(Ingredient.matched_product_id.in_(meat_ids))
-            .all()
-        )
+            # Collect all ingredient objects for selected recipes
+            all_ing_objs = []
+            for recipe in recipes:
+                ing_list = (
+                    self.session.query(Ingredient)
+                    .filter(Ingredient.recipe_id == recipe.recipe_id)
+                    .all()
+                )
+                all_ing_objs.extend(ing_list)
 
-        if recipe_candidates:
-            recipe_choice = recipe_candidates[0]
-            messages.append(
-                f"Chosen recipe using meat: {recipe_choice.title} (recipe_id={recipe_choice.recipe_id})"
-            )
-        else:
-            recipe_choice = None
-            messages.append("WARNING: No recipes found with chosen meat items.")
+            # Only keep mapped ingredients
+            all_ing_objs = [ing for ing in all_ing_objs if ing.matched_product_id]
 
-        # Add recipe ingredients
-        if recipe_choice:
-            ingredients = (
-                self.session.query(Ingredient)
-                .filter(Ingredient.recipe_id == recipe_choice.recipe_id)
-                .all()
-            )
+            # Identify meat-category ingredients
+            meat_ing_objs = [
+                ing for ing in all_ing_objs
+                if product_category.get(int(ing.matched_product_id)) == "Meat, Seafood & Plant-based"
+            ]
 
-            for ing in ingredients:
-                if not ing.matched_product_id or not ing.pantry_amount:
-                    continue
+            # We will artificially expire EVERYTHING in this window
+            def random_expiration():
+                hours = int(rng.integers(4, 33))   # 4–32 hours
+                return datetime.now() + timedelta(hours=hours), hours
 
+            # Insert all recipe ingredients as pantry items
+            for ing in all_ing_objs:
+                pid = int(ing.matched_product_id)
                 product = (
                     self.session.query(TJInventory)
-                    .filter_by(product_id=ing.matched_product_id)
+                    .filter_by(product_id=pid)
                     .first()
                 )
                 if not product:
                     continue
 
-                expiration = datetime.now() + timedelta(days=product.shelf_life_days)
+                expiration, hrs = random_expiration()
+                date_added = datetime.now() - timedelta(hours=int(rng.integers(0, 5)))
 
                 self.session.add(
                     PantryItem(
                         product_id=product.product_id,
                         amount=product.quantity,
                         unit=product.unit,
-                        date_added=datetime.now(),
+                        date_added=date_added,
                         expiration_date=expiration,
                     )
                 )
 
-                messages.append(f"Added RECIPE ingredient '{product.name}'")
+                messages.append(
+                    f"Added RECIPE ingredient '{product.name}' — expires in {hrs}h"
+                )
+        # ============================================================
+        # 4. Add random items (normal)
+        # ============================================================
 
-        # ----------------------------------------
-        # Helper: standard sampling
-        # ----------------------------------------
         def add_random_items(category_name, count):
             subset = inv[inv["category"] == category_name]
             if subset.empty:
@@ -746,12 +820,8 @@ class PantryManager:
             sample = subset.sample(n=min(count, len(subset)), random_state=seed)
 
             for _, row in sample.iterrows():
-
-                # Randomly choose how many hours ago the item was added (0–48 hours)
-                hours_back = int(rng.integers(0, 49))  # inclusive of 48h
+                hours_back = int(rng.integers(0, 49))
                 date_added = datetime.now() - timedelta(hours=hours_back)
-
-                # Expiration depends on that earlier purchase time
                 expiration = date_added + timedelta(days=row.shelf_life_days)
 
                 self.session.add(
@@ -768,13 +838,24 @@ class PantryManager:
                     f"Added {category_name} item '{row['name']}' (added {hours_back}h ago)"
                 )
 
-        # ----------------------------------------
-        # Helper: add backdated (likely expired) items
-        # ----------------------------------------
+        add_random_items("Fresh Fruits & Veggies", 10)
+        add_random_items("Bakery", 4)
+        add_random_items("For the Pantry", 4)
+        add_random_items("From The Freezer", 5)
+        add_random_items("Dairy & Eggs", 3)
+
+        # ============================================================
+        # 5. Add backdated items NOT used in any recipe
+        # ============================================================
+
         def add_backdated_items(category_name, count):
-            subset = inv[inv["category"] == category_name]
+            subset = inv[
+                (inv["category"] == category_name)
+                & (~inv["product_id"].isin(all_recipe_ing_ids))
+            ]
+
             if subset.empty:
-                messages.append(f"WARNING: No items in '{category_name}'")
+                messages.append(f"WARNING: No valid backdated '{category_name}' items")
                 return
 
             sample = subset.sample(n=min(count, len(subset)), random_state=seed + 99)
@@ -782,7 +863,6 @@ class PantryManager:
             for _, row in sample.iterrows():
                 hours_back = int(rng.integers(24, 73))
                 date_added = datetime.now() - timedelta(hours=hours_back)
-
                 expiration = date_added + timedelta(days=row.shelf_life_days)
 
                 self.session.add(
@@ -800,19 +880,17 @@ class PantryManager:
                     f"Added BACKDATED {category_name} item '{row['name']}' {status}"
                 )
 
-        # 4. Add normal category samples
-        add_random_items("Fresh Fruits & Veggies", 10)
-        add_random_items("Bakery", 4)
-        add_random_items("For the Pantry", 4)
-        add_random_items("From The Freezer", 5)
-        add_random_items("Dairy & Eggs", 3)
-
-        # 5. Add intentionally backdated samples
         add_backdated_items("Meat, Seafood & Plant-based", 2)
         add_backdated_items("Fresh Fruits & Veggies", 2)
 
+        # ============================================================
+        # 6. Commit
+        # ============================================================
+
         self.session.commit()
         return messages
+
+
     
 if __name__ == "__main__":
     pantry_ids = set(item.product_id for item in session.query(PantryItem).all())

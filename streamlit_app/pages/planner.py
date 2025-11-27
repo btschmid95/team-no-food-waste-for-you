@@ -28,9 +28,10 @@ def rebuild_virtual_pantry():
     """
 
     # Start from real pantry — RETURNING LIST OF ROWS, NOT DICTIONARY
-    items = recommender.pm.get_all_items()  # already a list of dicts:
-    # [{"product_id": 141, "amount": 12, "expiration_date": ...}, ...]
-
+    items = [
+        it for it in recommender.pm.get_all_items()
+        if it["expiration_date"] and it["expiration_date"] > datetime.now()
+    ]
     # Make a deep copy so we don't mutate original pantry list
     state = [
         {
@@ -61,12 +62,17 @@ def rebuild_virtual_pantry():
     return state
 
 def virtual_pantry_to_df(session, vp_state):
-    """
-    vp_state is now a LIST of pantry-item dicts.
-    Convert each one to a row, just like real pantry.
-    """
-    rows = []
 
+    # Always return a DataFrame with the expected columns
+    base_columns = [
+        "product_id", "product_name", "category", "sub_category",
+        "amount", "unit", "date_added", "expiration_date",
+    ]
+
+    if not vp_state:
+        return pd.DataFrame([], columns=base_columns)
+
+    rows = []
     for item in vp_state:
         pid = item["product_id"]
         product = session.query(TJInventory).get(pid)
@@ -82,7 +88,14 @@ def virtual_pantry_to_df(session, vp_state):
             "expiration_date": item["expiration_date"],
         })
 
-    return pd.DataFrame(rows)
+    df = pd.DataFrame(rows)
+
+    # Guarantee the columns (in case of mismatches)
+    for col in base_columns:
+        if col not in df.columns:
+            df[col] = None
+
+    return df
 
 def load_planned_recipes_from_db(session):
     """Load DB rows into session_state.planned_recipes."""
@@ -209,8 +222,13 @@ def compute_optimal_date_for_recipe_no_override(recipe, virtual_state, planned_r
         if not pid:
             continue
 
-        entries = [it for it in virtual_state if it["product_id"] == pid]
-
+        now = datetime.now()
+        entries = [
+            it for it in virtual_state
+            if it["product_id"] == pid
+            and it["expiration_date"]
+            and it["expiration_date"] > now
+        ]
         if not entries:
             continue
 
@@ -344,7 +362,7 @@ with col1:
         max_missing = st.selectbox(
             "Max Missing Ingredients",
             [0, 1, 2, 3,4,5,10],
-            index=1,
+            index=0,
         )
         
 with col2:
@@ -374,7 +392,18 @@ with col2:
         df = virtual_pantry_to_df(session, st.session_state.virtual_pantry)
     else:
         df = pm.get_pantry_items()
+    # --- ensure required columns exist ---
+    for col in ["expiration_date", "category", "amount"]:
+        if col not in df.columns:
+            df[col] = None
+
+    # --- if fully empty, skip the visual gracefully ---
     df["expiration_date"] = pd.to_datetime(df["expiration_date"], errors="coerce")
+
+    # Now check if any usable expiration dates remain
+    if df["expiration_date"].isna().all():
+        st.info("No upcoming expiring items.")
+        df = df.iloc[0:0]
 
     df = df[df["expiration_date"].dt.date >= today]
 

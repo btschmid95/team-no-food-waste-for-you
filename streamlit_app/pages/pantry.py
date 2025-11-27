@@ -356,7 +356,7 @@ with col3:
                 pantry_items["pantry_id"] == p, "product_name"
             ].values[0]
         )
-
+    
     if st.button("Remove"):
         msg = pm.remove_item(pid)
 
@@ -379,34 +379,34 @@ with col3:
         st.session_state.virtual_pantry = {}
         st.rerun()
 
-        if st.button("Trash"):
-            msg = pm.trash_item(pid)
+    if st.button("Trash"):
+        msg = pm.trash_item(pid)
 
-            trashed_product_id = pantry_items.loc[
-                pantry_items["pantry_id"] == pid, "product_id"
-            ].values[0]
+        trashed_product_id = pantry_items.loc[
+            pantry_items["pantry_id"] == pid, "product_id"
+        ].values[0]
 
-            removed_ids = []
-            for sel_id, pdata in list(st.session_state.planned_recipes.items()):
-                rid = pdata["recipe_id"]
+        removed_ids = []
+        for sel_id, pdata in list(st.session_state.planned_recipes.items()):
+            rid = pdata["recipe_id"]
 
-                ingredients = session.query(Ingredient).filter(
-                    Ingredient.recipe_id == rid
-                ).all()
+            ingredients = session.query(Ingredient).filter(
+                Ingredient.recipe_id == rid
+            ).all()
 
-                for ing in ingredients:
-                    if ing.matched_product_id == trashed_product_id:
-                        removed_ids.append(sel_id)
-                        del st.session_state.planned_recipes[sel_id]
-                        break
+            for ing in ingredients:
+                if ing.matched_product_id == trashed_product_id:
+                    removed_ids.append(sel_id)
+                    del st.session_state.planned_recipes[sel_id]
+                    break
 
-            if removed_ids:
-                st.info(f"{msg} Also removed {len(removed_ids)} planned recipe(s).")
-            else:
-                st.success(msg)
+        if removed_ids:
+            st.info(f"{msg} Also removed {len(removed_ids)} planned recipe(s).")
+        else:
+            st.success(msg)
 
-            st.session_state.virtual_pantry = {}
-            st.rerun()
+        st.session_state.virtual_pantry = {}
+        st.rerun()
 
 st.markdown("## Pantry Insights")
 
