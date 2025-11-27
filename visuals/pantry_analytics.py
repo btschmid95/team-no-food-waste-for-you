@@ -43,8 +43,10 @@ def compute_waste_summary_from_events(engine):
     events["amount"] = pd.to_numeric(events["amount"], errors="coerce")
     events = events[events["amount"].notna()]
 
+    TRASH_EVENTS = ("trash", "trash_expired")
+
     wasted = (
-        events[events["event_type"] == "trash"]
+        events[events["event_type"].isin(TRASH_EVENTS)]
         .groupby("category", as_index=False)["amount"]
         .sum()
         .rename(columns={"amount": "realized_waste"})

@@ -7,6 +7,7 @@ if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
 # --- VISUALS (Your Imports Kept Exactly As-Is) ---
+from visuals.pantry_analytics import load_pantry_with_category
 from visuals.waste_prod_vs_time import plot_expiring_food_histogram
 from visuals.consumption_vs_waste import plot_consumption_vs_waste
 from visuals.waste_gen_vs_saved import plot_waste_waterfall
@@ -47,7 +48,7 @@ engine = get_engine()
 
 recipe_mgr = RecipeManager(session)
 pantry_mgr = PantryManager(session)
-
+pantry_df = load_pantry_with_category(engine)
 # --- Home Page ---
 st.title("🏠 Home Dashboard")
 
@@ -140,7 +141,7 @@ with col1:
 
 with col2:
     st.markdown("### Consumption vs Waste Over Time")
-    fig2 = plot_consumption_vs_waste(engine, recipe_mgr)
+    fig2 = plot_consumption_vs_waste(pantry_df, engine)
     st.pyplot(fig2)
 
 st.markdown("---")
@@ -155,7 +156,7 @@ with col3:
 with col4:
     st.markdown("### Recipe–Product Overlap Network")
     recipes_df, products_df, recipe_ing_map = load_recipe_product_data(engine)
-    G = build_recipe_product_graph(recipes_df, products_df, recipe_ing_map)
+    G = build_recipe_ingredient_graph(recipes_df, products_df, recipe_ing_map)
     fig4 = plot_recipe_overlap_network(G, sample_n_recipes=30)
     st.pyplot(fig4)
 
