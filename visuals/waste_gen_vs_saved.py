@@ -2,18 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 from pathlib import Path
-import pandas as pd
 
-# ---------------------------------------------------------------------
-# Make repo root importable (for running this file directly)
-# For .../team-no-food-waste-for-you/visuals/waste_gen_vs_saved.py
-# parents[0] = visuals/, parents[1] = repo root
-# ---------------------------------------------------------------------
+# Make repo root importable
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-# Try both styles in case "visuals" is or isn't treated as a package
 try:
     from visuals.pantry_analytics import compute_waste_summary_from_events
 except ImportError:
@@ -22,14 +16,14 @@ except ImportError:
 
 def plot_waste_waterfall(engine) -> plt.Figure:
     """
-    Overall waterfall chart of food wasted vs food used (waste avoided).
+    Overall waste vs saved (waste avoided) chart.
 
-    Uses pantry_event + pantry + tj_inventory via
-    compute_waste_summary_from_events(engine).
+    - Total Wasted       = sum of trash events
+    - Total Saved (Used) = sum of avoid events
 
-    Bars:
-      - Total Wasted  (down from zero)
-      - Total Saved   (up toward zero from wasted baseline)
+    Visual:
+      * One bar going DOWN from 0 (wasted, red)
+      * One bar going UP from 0 (saved, green)
     """
     waste_summary = compute_waste_summary_from_events(engine)
 
@@ -46,11 +40,10 @@ def plot_waste_waterfall(engine) -> plt.Figure:
         ax.axis("off")
         return fig
 
-    # Sum across all categories to get overall totals
+    # Sum across categories to get overall totals
     total_wasted = float(waste_summary["realized_waste"].fillna(0).sum())
     total_saved = float(waste_summary["avoided_waste"].fillna(0).sum())
 
-    # If we truly have nothing, bail out nicely
     if total_wasted == 0 and total_saved == 0:
         fig, ax = plt.subplots(figsize=(8, 4))
         ax.text(
@@ -64,36 +57,34 @@ def plot_waste_waterfall(engine) -> plt.Figure:
         ax.axis("off")
         return fig
 
-    # Waterfall steps (relative changes)
-    # negative = wasted, positive = saved
-    steps = [-total_wasted, total_saved]
-    labels = ["Total Wasted", "Total Saved (Food Used)"]
+    # Make wasted negative so it points DOWN
+    wasted_bar = -total_wasted
+    saved_bar = total_saved
+
+    labels = ["Realized Waste", "Avoided Waste (Food Used)"]
+    values = [wasted_bar, saved_bar]
     colors = ["red", "green"]
+    x = np.arange(len(labels))
 
-    x = np.arange(len(steps))
+    fig, ax = plt.subplots(figsize=(8, 5))
 
-    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.bar(x, values, color=colors)
 
-    cumulative = 0.0
-    for i, (step, label, color) in enumerate(zip(steps, labels, colors)):
-        # Each bar starts at current cumulative level
-        bottom = cumulative
-        ax.bar(x[i], step, bottom=bottom, color=color)
-        cumulative += step
+    # Symmetric y-limits so up/down are visually balanced
+    max_val = max(total_wasted, total_saved)
+    ax.set_ylim(-max_val * 1.2, max_val * 1.2)
 
-    # Formatting
+    ax.axhline(0, color="black", linewidth=1)
+
     ax.set_xticks(x)
     ax.set_xticklabels(labels, rotation=0, ha="center")
     ax.set_ylabel("Amount (pantry units)")
-    ax.set_title("Overall Waste vs Food Used (Waterfall)")
+    ax.set_title("Overall Food Wasted vs Food Used")
 
-    # Add horizontal line at 0 for reference
-    ax.axhline(0, color="black", linewidth=1)
-
-    # Legend (color meaning)
-    waste_patch = plt.Rectangle((0, 0), 1, 1, color="red", label="Wasted")
-    saved_patch = plt.Rectangle((0, 0), 1, 1, color="green", label="Saved (Waste Avoided)")
-    ax.legend(handles=[waste_patch, saved_patch], loc="upper right")
+    # Legend
+    # waste_patch = plt.Rectangle((0, 0), 1, 1, color="red", label="Realized Waste")
+    # saved_patch = plt.Rectangle((0, 0), 1, 1, color="green", label="Avoided Waste")
+    # ax.legend(handles=[waste_patch, saved_patch], loc="upper right")
 
     plt.tight_layout()
     return fig

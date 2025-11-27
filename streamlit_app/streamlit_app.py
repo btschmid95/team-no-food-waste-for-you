@@ -141,7 +141,7 @@ with col1:
 
 with col2:
     st.markdown("### Consumption vs Waste Over Time")
-    fig2 = plot_consumption_vs_waste(pantry_df, engine)
+    fig2 = plot_consumption_vs_waste(engine, recipe_mgr)
     st.pyplot(fig2)
 
 st.markdown("---")

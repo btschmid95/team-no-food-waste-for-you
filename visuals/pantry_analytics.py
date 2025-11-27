@@ -288,3 +288,27 @@ def get_planned_consumption_by_date(engine):
     df["planned_consumption"] = pd.to_numeric(df["planned_consumption"], errors="coerce").fillna(0)
 
     return df
+
+def compute_actual_consumption_over_time(engine):
+    """
+    Daily actual consumption from pantry_event:
+
+    - event_type = 'consume'
+    - groups by DATE(timestamp)
+    """
+    q = """
+        SELECT 
+            DATE(timestamp) AS date,
+            SUM(amount) AS consumption
+        FROM pantry_event
+        WHERE event_type = 'consume'
+        GROUP BY DATE(timestamp)
+    """
+
+    df = pd.read_sql(q, engine)
+
+    if df.empty:
+        return pd.DataFrame({"date": [], "consumption": []})
+
+    df["date"] = pd.to_datetime(df["date"])
+    return df

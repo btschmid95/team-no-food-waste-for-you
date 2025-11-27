@@ -8,153 +8,121 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-
-def plot_consumption_vs_waste(pantry_df, engine):
-    """
-    Visual 2: Dual-axis line chart.
-
-    Shows the interaction between:
-      - Forecast Waste (from pantry expirations)
-      - Actual Consumption (from pantry_event 'consume')
-      - Planned Consumption via recipes (from recipe_selected + ingredient)
-
-    Variables:
-      - Consumption via Recipe at time X
-      - Waste
-      - Time
-    """
-    from .pantry_analytics import (
+try:
+    from visuals.pantry_analytics import (
+        load_pantry_with_category,
         get_forecast_waste_by_date,
-        get_planned_consumption_by_date,
+    )
+except ImportError:
+    from pantry_analytics import (
+        load_pantry_with_category,
+        get_forecast_waste_by_date,
     )
 
-    # -----------------------------
-    # 1) Forecast waste (from pantry)
-    # -----------------------------
-    if pantry_df.empty:
-        fig, ax = plt.subplots(figsize=(10, 5))
-        ax.text(
-            0.5,
-            0.5,
-            "No pantry data available.\nAdd items to view forecast.",
-            ha="center",
-            va="center",
-            fontsize=12,
-        )
-        ax.set_axis_off()
-        return fig
 
-    forecast_df = get_forecast_waste_by_date(pantry_df)
-    if forecast_df.empty:
-        forecast_df = pd.DataFrame(columns=["date", "forecast_waste"])
-    forecast_df["date"] = pd.to_datetime(forecast_df["date"], errors="coerce")
-
-    # -----------------------------
-    # 2) Actual consumption (events)
-    # -----------------------------
-    cons_q = """
-        SELECT 
-            DATE(pe.timestamp) AS date,
-            SUM(pe.amount)     AS total_consumed
-        FROM pantry_event pe
-        WHERE pe.event_type = 'consume'
-        GROUP BY DATE(pe.timestamp)
-        ORDER BY DATE(pe.timestamp)
+def plot_consumption_vs_waste(engine, recipe_mgr):
     """
-    cons_df = pd.read_sql(cons_q, engine)
+    Visual 2:
+    Planned Consumption vs Forecast Unplanned Waste (next 30 days).
 
-    if cons_df.empty:
-        cons_df = pd.DataFrame(columns=["date", "total_consumed"])
+    - Forecast waste is computed from pantry expirations.
+    - Planned consumption comes from recipe_mgr.get_planned_consumption_by_date().
+    - Unplanned waste = max(forecast_waste - planned_consumption, 0).
+    """
 
-    cons_df["date"] = pd.to_datetime(cons_df["date"], errors="coerce")
-    cons_df["total_consumed"] = pd.to_numeric(cons_df["total_consumed"], errors="coerce").fillna(0)
-    cons_df = cons_df.rename(columns={"total_consumed": "actual_consumption"})
-
-    # -----------------------------
-    # 3) Planned consumption (recipes)
-    # -----------------------------
-    planned_df = get_planned_consumption_by_date(engine)
-    if planned_df.empty:
-        planned_df = pd.DataFrame(columns=["date", "planned_consumption"])
-    planned_df["date"] = pd.to_datetime(planned_df["date"], errors="coerce")
-    planned_df["planned_consumption"] = pd.to_numeric(
-        planned_df["planned_consumption"], errors="coerce"
-    ).fillna(0)
-
-    # -----------------------------
-    # 4) Merge all three timelines
-    # -----------------------------
-    df = (
-        forecast_df.merge(cons_df, on="date", how="outer")
-                   .merge(planned_df, on="date", how="outer")
-                   .sort_values("date")
-    )
-
-    # Restrict to next 30 days horizon
-    horizon = pd.Timestamp.today() + pd.Timedelta(days=30)
-    df = df[df["date"] <= horizon]
-
-    df["forecast_waste"] = df.get("forecast_waste", 0).fillna(0)
-    df["actual_consumption"] = df.get("actual_consumption", 0).fillna(0)
-    df["planned_consumption"] = df.get("planned_consumption", 0).fillna(0)
-
-    if df.empty:
-        fig, ax = plt.subplots(figsize=(10, 5))
+    # ---------- 1) Load pantry + forecast waste ----------
+    pantry_df = load_pantry_with_category(engine)
+    if pantry_df is None or pantry_df.empty:
+        fig, ax = plt.subplots(figsize=(8, 4))
         ax.text(
-            0.5,
-            0.5,
-            "No forecast, consumption, or planned data available.",
-            ha="center",
-            va="center",
-            fontsize=12,
+            0.5, 0.5,
+            "No pantry data available.",
+            ha="center", va="center", fontsize=12
         )
-        ax.set_axis_off()
+        ax.axis("off")
         return fig
 
-    # -----------------------------
-    # 5) Plot: dual-axis line chart
-    # -----------------------------
+    forecast_df = get_forecast_waste_by_date(pantry_df)  # date, forecast_waste
+
+    # ---------- 2) Planned consumption from recipes ----------
+    cons_df = recipe_mgr.get_planned_consumption_by_date()  # date, planned_consumption
+
+    if forecast_df.empty and cons_df.empty:
+        fig, ax = plt.subplots(figsize=(8, 4))
+        ax.text(
+            0.5, 0.5,
+            "No forecast waste or planned consumption\nfor the upcoming period.",
+            ha="center", va="center", fontsize=12
+        )
+        ax.axis("off")
+        return fig
+
+    # Ensure datetime
+    if not forecast_df.empty:
+        forecast_df["date"] = pd.to_datetime(forecast_df["date"])
+    if not cons_df.empty:
+        cons_df["date"] = pd.to_datetime(cons_df["date"])
+
+    # ---------- 3) Merge + restrict to next 30 days ----------
+    df = (
+        pd.merge(forecast_df, cons_df, on="date", how="outer")
+          .sort_values("date")
+    )
+
+    today = pd.Timestamp.today().normalize()
+    horizon_end = today + pd.Timedelta(days=30)
+    mask = (df["date"] >= today) & (df["date"] <= horizon_end)
+    if mask.any():
+        df = df[mask]
+
+    df["forecast_waste"] = df["forecast_waste"].fillna(0)
+    df["planned_consumption"] = df["planned_consumption"].fillna(0)
+
+    # ---------- 4) Compute unplanned waste ----------
+    df["unplanned_waste"] = (df["forecast_waste"] - df["planned_consumption"]).clip(lower=0)
+
+    if (df["unplanned_waste"] == 0).all() and (df["planned_consumption"] == 0).all():
+        fig, ax = plt.subplots(figsize=(8, 4))
+        ax.text(
+            0.5, 0.5,
+            "No unplanned waste or planned consumption\nin the next 30 days.",
+            ha="center", va="center", fontsize=12
+        )
+        ax.axis("off")
+        return fig
+
+    # ---------- 5) Plot: unplanned waste vs planned consumption ----------
     fig, ax1 = plt.subplots(figsize=(10, 5))
 
-    # Left axis: Waste forecast
-    line_waste, = ax1.plot(
+    # Left axis: unplanned waste
+    ax1.plot(
         df["date"],
-        df["forecast_waste"],
-        label="Forecast Waste",
+        df["unplanned_waste"],
+        label="Forecasted Waste",
         linewidth=2,
     )
     ax1.set_xlabel("Date")
-    ax1.set_ylabel("Forecast Waste (pantry units)")
+    ax1.set_ylabel("Forecasted Waste (pantry units)")
 
-    # Right axis: consumption (actual + planned)
+    # Right axis: planned consumption
     ax2 = ax1.twinx()
-
-    line_actual, = ax2.plot(
-        df["date"],
-        df["actual_consumption"],
-        linestyle="-",
-        linewidth=2,
-        color="orange",
-        label="Actual Consumption",
-    )
-
-    line_planned, = ax2.plot(
+    ax2.plot(
         df["date"],
         df["planned_consumption"],
         linestyle="--",
         linewidth=2,
-        color="green",
+        color="orange",
         label="Planned Consumption",
     )
-    ax2.set_ylabel("Consumption (pantry units)")
+    ax2.set_ylabel("Planned Consumption (pantry units)")
 
-    fig.suptitle("Consumption vs Forecast Waste (Next 30 Days)")
+    fig.suptitle("Planned Consumption vs Forecasted Waste (Food Without a Recipe)")
     fig.autofmt_xdate()
 
     # Combined legend
-    lines = [line_waste, line_actual, line_planned]
-    labels = [l.get_label() for l in lines]
-    ax1.legend(lines, labels, loc="upper left")
+    lines1, labels1 = ax1.get_legend_handles_labels()
+    lines2, labels2 = ax2.get_legend_handles_labels()
+    ax1.legend(lines1 + lines2, labels1 + labels2, loc="upper left")
 
     plt.tight_layout()
     return fig
