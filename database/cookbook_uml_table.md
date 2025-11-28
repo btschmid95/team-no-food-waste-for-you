@@ -1,7 +1,8 @@
+```mermaid
 classDiagram
 
   class recipe {
-    +INTEGER recipe_id PK
+    +INTEGER recipe_id
     +TEXT title
     +TEXT url
     +TEXT image_url
@@ -11,25 +12,25 @@ classDiagram
   }
 
   class ingredient {
-    +INTEGER ingredient_id PK
-    +INTEGER recipe_id FK
+    +INTEGER ingredient_id
+    +INTEGER recipe_id
     +TEXT raw_text
     +TEXT name
     +TEXT norm_name
-    +FLOAT amount
+    +REAL amount
     +TEXT unit
-    +INTEGER matched_product_id FK
-    +FLOAT pantry_amount
+    +INTEGER matched_product_id
+    +REAL pantry_amount
     +TEXT pantry_unit
   }
 
   class tj_inventory {
-    +INTEGER product_id PK
+    +INTEGER product_id
     +TEXT name
     +TEXT norm_name
     +TEXT unit
-    +FLOAT quantity
-    +FLOAT price
+    +REAL quantity
+    +REAL price
     +TEXT url
     +TEXT category
     +TEXT sub_category
@@ -37,34 +38,34 @@ classDiagram
   }
 
   class pantry {
-    +INTEGER pantry_id PK
-    +INTEGER product_id FK
-    +FLOAT amount
+    +INTEGER pantry_id
+    +INTEGER product_id
+    +REAL amount
     +TEXT unit
     +DATETIME date_added
     +DATETIME expiration_date
   }
 
   class pantry_event {
-    +INTEGER id PK
-    +INTEGER pantry_id FK
+    +INTEGER id
+    +INTEGER pantry_id
     +DATETIME timestamp
     +TEXT event_type
-    +FLOAT amount
+    +REAL amount
     +TEXT unit
-    +INTEGER recipe_selection_id FK
+    +INTEGER recipe_selection_id
   }
 
   class recipe_recommended {
-    +INTEGER id PK
-    +INTEGER recipe_id FK
+    +INTEGER id
+    +INTEGER recipe_id
     +DATETIME recommended_at
-    +FLOAT score
+    +REAL score
   }
 
   class recipe_selected {
-    +INTEGER sel_id PK
-    +INTEGER recipe_id FK
+    +INTEGER sel_id
+    +INTEGER recipe_id
     +DATETIME selected_at
     +DATETIME planned_for
     +DATETIME cooked_at
@@ -72,34 +73,35 @@ classDiagram
   }
 
   class ingredient_parse_meta {
-    +INTEGER id PK
-    +INTEGER ingredient_id FK
+    +INTEGER id
+    +INTEGER ingredient_id
     +TEXT raw_text
     +TEXT parsed_name
-    +FLOAT amount
+    +REAL amount
     +TEXT amount_unit
     +TEXT subcat_1
-    +FLOAT subcat_1_score
+    +REAL subcat_1_score
     +TEXT maincat_1
     +TEXT subcat_2
-    +FLOAT subcat_2_score
+    +REAL subcat_2_score
     +TEXT maincat_2
     +TEXT subcat_3
-    +FLOAT subcat_3_score
+    +REAL subcat_3_score
     +TEXT maincat_3
     +TEXT preparation
-    +FLOAT preparation_confidence
+    +REAL preparation_confidence
     +TEXT recipe_title
     +TEXT recipe_category
     +DATETIME created_at
   }
 
-  %% Relationships
-  recipe "1" --> "many" ingredient : has
-  ingredient "many" --> "1" tj_inventory : matches
-  pantry "many" --> "1" tj_inventory : contains
-  pantry_event "many" --> "1" pantry : event_for
-  pantry_event "many" --> "1" recipe_selected : caused_by
-  recipe_selected "many" --> "1" recipe : selects
-  recipe_recommended "many" --> "1" recipe : recommends
-  ingredient_parse_meta "many" --> "1" ingredient : parses
+  recipe "1" --> "many" ingredient
+  ingredient "many" --> "1" tj_inventory : matched_product
+  pantry "many" --> "1" tj_inventory : product
+  pantry_event "many" --> "1" pantry : pantry_item
+  recipe_selected "many" --> "1" recipe
+  pantry_event "many" --> "1" recipe_selected : recipe_selection
+  recipe_recommended "many" --> "1" recipe
+  ingredient_parse_meta "many" --> "1" ingredient
+
+```
