@@ -144,8 +144,7 @@ def load_data():
 
 def populate_database(recipe_df, products_df):
     session = Session()
-
-    # 1. Insert PRODUCTS
+    
     for _, row in products_df.iterrows():
         product_name = row.get("product_name")
 

@@ -1,8 +1,6 @@
 import streamlit as st
 
 def render_sidebar():
-    #st.sidebar.title("🍽️ Navigation")
-
     st.sidebar.page_link('streamlit_app.py', label='Home')
     
     st.sidebar.page_link("pages/pantry.py", label="Pantry Dashboard")

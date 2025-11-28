@@ -275,9 +275,11 @@ class RecipeRecommender:
 
         if not exp or amt <= 0:
             return 0
+        
+        delta = exp - datetime.now()
+        seconds_remaining = delta.total_seconds()
 
-        days_remaining = (exp - datetime.now()).days
-        if days_remaining < 0:
+        if seconds_remaining <= 0:
             return 0
 
         product = (
@@ -288,7 +290,9 @@ class RecipeRecommender:
         category = (product.sub_category or product.category or "").lower()
         mult = CATEGORY_MULTIPLIERS.get(category, CATEGORY_MULTIPLIERS["other"])
 
-        urgency = 1 / max(days_remaining, 1)
+        hours_remaining = seconds_remaining / 3600
+        urgency = 1 / (hours_remaining)
+
         return urgency * mult
     
     def normalize_category_label(self, recipe: Recipe):

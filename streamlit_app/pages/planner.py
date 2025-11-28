@@ -26,13 +26,11 @@ def rebuild_virtual_pantry():
     Build a virtual pantry that mirrors the real pantry structure:
     a list of individual items, each with its own expiration date.
     """
-
-    # Start from real pantry — RETURNING LIST OF ROWS, NOT DICTIONARY
     items = [
         it for it in recommender.pm.get_all_items()
         if it["expiration_date"] and it["expiration_date"] > datetime.now()
     ]
-    # Make a deep copy so we don't mutate original pantry list
+
     state = [
         {
             "product_id": item["product_id"],
@@ -41,16 +39,12 @@ def rebuild_virtual_pantry():
         }
         for item in items
     ]
-
-    # Sort planned recipes by date
     planned_sorted = sorted(
         st.session_state.planned_recipes.items(),
         key=lambda kv: kv[1]["planned_for"] or "9999-12-31"
     )
 
-    # Apply recipe consumption
     for sel_id, pdata in planned_sorted:
-        # Skip confirmed recipes — they are already consumed in the real pantry
         if pdata.get("status") == "confirmed":
             continue
 
@@ -62,8 +56,6 @@ def rebuild_virtual_pantry():
     return state
 
 def virtual_pantry_to_df(session, vp_state):
-
-    # Always return a DataFrame with the expected columns
     base_columns = [
         "product_id", "product_name", "category", "sub_category",
         "amount", "unit", "date_added", "expiration_date",
@@ -90,7 +82,6 @@ def virtual_pantry_to_df(session, vp_state):
 
     df = pd.DataFrame(rows)
 
-    # Guarantee the columns (in case of mismatches)
     for col in base_columns:
         if col not in df.columns:
             df[col] = None
@@ -232,7 +223,6 @@ def compute_optimal_date_for_recipe_no_override(recipe, virtual_state, planned_r
         if not entries:
             continue
 
-        # earliest expiration among all FEFO entries
         exp = min(
             (it["expiration_date"] for it in entries if it["expiration_date"]),
             default=None
@@ -392,15 +382,12 @@ with col2:
         df = virtual_pantry_to_df(session, st.session_state.virtual_pantry)
     else:
         df = pm.get_pantry_items()
-    # --- ensure required columns exist ---
     for col in ["expiration_date", "category", "amount"]:
         if col not in df.columns:
             df[col] = None
 
-    # --- if fully empty, skip the visual gracefully ---
     df["expiration_date"] = pd.to_datetime(df["expiration_date"], errors="coerce")
 
-    # Now check if any usable expiration dates remain
     if df["expiration_date"].isna().all():
         st.info("No upcoming expiring items.")
         df = df.iloc[0:0]
@@ -501,7 +488,6 @@ with col2:
                         if not entries:
                             continue
 
-                        # earliest expiration
                         exp = min(
                             (it["expiration_date"] for it in entries if it["expiration_date"]),
                             default=None
@@ -603,7 +589,7 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
                     matched_rows = []
                     missing_rows = []
 
-                    vp = st.session_state.virtual_pantry  # list of dicts
+                    vp = st.session_state.virtual_pantry
 
                     for ing in recipe_obj.ingredients:
                         name = (
@@ -621,11 +607,9 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
                         if not pid:
                             continue
 
-                        # 🔍 FEFO entries for this product
                         entries = [it for it in vp if it["product_id"] == pid]
 
                         if entries:
-                            # Total FEFO amount available
                             total_amount = sum(it["amount"] for it in entries)
 
                             used = min(total_amount, needed)
@@ -644,7 +628,6 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
 
                             continue
 
-                        # No entries → missing
                         missing_rows.append(f"- **{name}**")
 
                     if st.button("➕ Add", key=f"catadd_{recipe_id}_{label}_{i}"):
@@ -670,11 +653,11 @@ for tab, (label, keyword) in zip(tabs, CATEGORIES.items()):
 
                     score = rec["score"]
 
-                    if score > 10:
+                    if score > 1.2:
                         st.success("**Highly Recommended**")
-                    elif score > 4:
+                    elif score > .75:
                         st.success("Recommended")
-                    elif score > 1:
+                    elif score > .5:
                         st.warning("Encouraged")
 
                     if matched_rows:
@@ -736,7 +719,6 @@ else:
                         if not pid:
                             continue
 
-                        # Find all virtual pantry entries for this product
                         entries = [
                             it for it in st.session_state.virtual_pantry
                             if it["product_id"] == pid
@@ -745,7 +727,6 @@ else:
                         if not entries:
                             continue
 
-                        # Earliest expiration among FEFO entries
                         exp = min(
                             (it["expiration_date"] for it in entries if it["expiration_date"]),
                             default=None

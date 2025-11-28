@@ -8,7 +8,7 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]  # the repo's root directory
+ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
@@ -39,7 +39,6 @@ class PantryManager:
             return f"Error: Product {product_id} not found"
         planned_date = None
         if planned_date:
-            # planned_date might be a date; normalize to datetime
             if isinstance(planned_date, datetime):
                 date_purchased = planned_date
             else:
@@ -79,12 +78,9 @@ class PantryManager:
             return f"Pantry item {pantry_id} not found"
 
         product_id = pantry_item.product_id
-
-        # Delete pantry item
         self.session.delete(pantry_item)
         self.session.commit()
 
-        # Remove related planned recipes
         removed_recipes = self.remove_related_planned_recipes(product_id)
 
         if removed_recipes:
@@ -110,7 +106,6 @@ class PantryManager:
             needed = ingredient.pantry_amount
             if pid is None or needed is None:
                 continue
-            # Check if ingredient already exists in pantry with sufficient amount
             pantry_items = self.session.query(PantryItem).filter(PantryItem.product_id == ingredient.matched_product_id).all()
             
             current_amount = sum(
@@ -120,10 +115,7 @@ class PantryManager:
             has_enough = current_amount >= ingredient.pantry_amount
 
             if not has_enough:
-                # Calculate how much more we need
                 needed_amount = ingredient.pantry_amount - current_amount
-
-                # Get product from TJ inventory
                 tj_product = self.session.query(TJInventory).filter(TJInventory.product_id == ingredient.matched_product_id).first()
 
                 if tj_product:
@@ -150,27 +142,23 @@ class PantryManager:
             items = self.get_needed_recipe_items(recipe_id)
             all_items.extend(items)
 
-        # Combine duplicates by product name, summing needed amounts
         combined_items = {}
         for item in all_items:
             product_name = item['product_name']
             
             if product_name in combined_items:
-                # Product already in list, add to needed amount
                 combined_items[product_name]['total_needed'] += item['needed_amount']
             else:
-                # New product, add to combined list
                 combined_items[product_name] = {
                     'ingredient_name': item['ingredient_name'],
                     'product_name': item['product_name'],
-                    'product_id': item['product_id'],      # ✅ keep product_id
-                    'amount': item['amount'],              # Amount per product
+                    'product_id': item['product_id'],
+                    'amount': item['amount'],
                     'unit': item['unit'],
                     'total_needed': item['needed_amount']
                 }
 
         
-        # Calculate combined grocery list
         combined_grocery_list = []
         for item in combined_items.values():        
             quantity = math.ceil(item['total_needed'] / item['amount'])
@@ -199,11 +187,10 @@ class PantryManager:
 
         for item in grocery_list:
             product_id = item["product_id"]
-            amount_per_package = item["amount"]   # how much 1 unit contributes
+            amount_per_package = item["amount"]
             unit = item["unit"]
             qty = item["quantity"]
 
-            # Look up the Trader Joe's product directly by product_id
             tj_product = (
                 self.session.query(TJInventory)
                 .filter(TJInventory.product_id == product_id)
@@ -216,9 +203,7 @@ class PantryManager:
                     f"({item.get('product_name', 'Unknown')})"
                 )
                 continue
-
-            # Purchase date = planned_date if provided, else "now"
-            planned_date = None # note to self, update this in the future to account for a "shopping list"
+            planned_date = None
             if planned_date:
                 if isinstance(planned_date, datetime):
                     date_purchased = planned_date
@@ -227,7 +212,6 @@ class PantryManager:
             else:
                 date_purchased = datetime.now()
 
-            # Expiration date based on shelf life
             shelf_days = tj_product.shelf_life_days or 0
             expiration_date = date_purchased + timedelta(days=shelf_days)
 
@@ -275,18 +259,15 @@ class PantryManager:
             amount_needed = ingredient.pantry_amount
             items_used = []
             
-            # Use items starting with oldest (earliest expiration)
             for pantry_item in pantry_items:
                 if amount_needed <= 0:
                     break
                 
                 if pantry_item.amount <= amount_needed:
-                    # Use entire item
                     amount_needed -= pantry_item.amount
                     items_used.append(pantry_item.amount)
                     self.session.delete(pantry_item)
                 else:
-                    # Use partial amount
                     pantry_item.amount -= amount_needed
                     items_used.append(amount_needed)
                     amount_needed = 0
@@ -433,17 +414,15 @@ class PantryManager:
                 ) <= timedelta(days=2)
 
                 if expiring_soon:
-                    # Log avoided waste event
                     avoid_event = PantryEvent(
                         pantry_id=pi.pantry_id,
-                        event_type="avoid",   # <-- new event type
+                        event_type="avoid",
                         amount=used,
                         unit=pi.unit,
                         recipe_selection_id=sel_id
                     )
                     self.session.add(avoid_event)
 
-                # Log event
                 event = PantryEvent(
                     pantry_id=pi.pantry_id,
                     event_type="consume",
@@ -453,7 +432,6 @@ class PantryManager:
                 )
                 self.session.add(event)
 
-                # Remove or update PantryItem
                 if used == pi.amount:
                     self.session.delete(pi)
                 else:
@@ -471,21 +449,18 @@ class PantryManager:
 
         messages = []
 
-        # 1. Delete all events FIRST (to avoid FK issues)
         events = self.session.query(PantryEvent).all()
         num_events = len(events)
         for ev in events:
             self.session.delete(ev)
         messages.append(f"Deleted {num_events} pantry events.")
 
-        # 2. Delete pantry items
         pantry_items = self.session.query(PantryItem).all()
         num_items = len(pantry_items)
         for pi in pantry_items:
             self.session.delete(pi)
         messages.append(f"Deleted {num_items} pantry items.")
 
-        # 3. Delete planned recipes
         planned = self.session.query(RecipeSelected).all()
         num_planned = len(planned)
         for p in planned:
@@ -511,7 +486,6 @@ class PantryManager:
         items = q.all()
 
         for pi in items:
-            # Log the trash event
             event = PantryEvent(
                 pantry_id=pi.pantry_id,
                 event_type="trash",
@@ -543,7 +517,6 @@ class PantryManager:
         """
         removed = []
 
-        # Find all planned/confirmed recipes
         planned = self.session.query(RecipeSelected).all()
 
         for p in planned:
@@ -554,7 +527,6 @@ class PantryManager:
                 .all()
             )
 
-            # Does this recipe rely on the removed product?
             for ing in ingredients:
                 if ing.matched_product_id == product_id:
                     removed.append(p.sel_id)
@@ -583,7 +555,6 @@ class PantryManager:
 
         product_id = pantry_item.product_id
 
-        # Log trash event
         event = PantryEvent(
             pantry_id=pantry_item.pantry_id,
             event_type="trash",
@@ -592,12 +563,9 @@ class PantryManager:
             recipe_selection_id=None
         )
         self.session.add(event)
-
-        # Remove pantry item
         self.session.delete(pantry_item)
         self.session.commit()
 
-        # Remove any planned recipes that need this ingredient
         removed_recipes = self.remove_related_planned_recipes(product_id)
 
         if removed_recipes:
@@ -614,19 +582,10 @@ class PantryManager:
         messages = []
 
         inv = pd.read_sql("SELECT * FROM tj_inventory", self.session.bind)
-
-        # ------------------------------------------------------------
-        # Precompute a product_id -> category map for quick lookups
-        # ------------------------------------------------------------
         product_category = {
             int(row.product_id): row.category
             for _, row in inv[["product_id", "category"]].iterrows()
         }
-
-        # ============================================================
-        # 1. Pick THREE recipes: Breakfast, Lunch, Dinner
-        #    Dinner is biased to contain a Meat/Seafood/Plant-based ingredient
-        # ============================================================
 
         def pick_recipe_by_keyword(keyword, require_meat=False):
             """
@@ -647,10 +606,8 @@ class PantryManager:
                 return None
 
             if not require_meat:
-                # Just return the first matching recipe (or you could randomize)
                 return recipes[0]
 
-            # Prefer recipes that actually use a meat/seafood/plant-based product
             meat_recipes = []
             for r in recipes:
                 for ing in r.ingredients:
@@ -660,14 +617,12 @@ class PantryManager:
                         break
 
             if meat_recipes:
-                return meat_recipes[0]   # or random choice if you like
+                return meat_recipes[0]
             else:
-                # Fallback: no meat-using recipe found in this category
                 return recipes[0]
 
         breakfast_recipe = pick_recipe_by_keyword("breakfast")
         lunch_recipe     = pick_recipe_by_keyword("lunch")
-        # 👇 Dinner is *required* to use a meat/seafood/plant-based product if possible
         dinner_recipe    = pick_recipe_by_keyword("dinner", require_meat=True)
 
         recipes = [r for r in [breakfast_recipe, lunch_recipe, dinner_recipe] if r]
@@ -678,19 +633,11 @@ class PantryManager:
         for r in recipes:
             messages.append(f"Chosen recipe: {r.title}")
 
-        # ============================================================
-        # Collect all recipe ingredient product_ids
-        # ============================================================
-
         all_recipe_ing_ids = set()
         for r in recipes:
             for ing in r.ingredients:
                 if ing.matched_product_id:
                     all_recipe_ing_ids.add(int(ing.matched_product_id))
-
-        # ============================================================
-        # 2. Add TWO expired items NOT used in ANY recipe
-        # ============================================================
 
         expired_candidates = inv[~inv["product_id"].isin(all_recipe_ing_ids)]
 
@@ -716,13 +663,6 @@ class PantryManager:
                 f"Added EXPIRED test item '{row['name']}' (forced expired)"
             )
 
-            # ============================================================
-            # 3. Add recipe ingredients for ALL THREE RECIPES
-            #    ALL will expire within 4–32 hours
-            #    Ensure one Meat/Seafood ingredient is included (already handled)
-            # ============================================================
-
-            # Collect all ingredient objects for selected recipes
             all_ing_objs = []
             for recipe in recipes:
                 ing_list = (
@@ -732,21 +672,17 @@ class PantryManager:
                 )
                 all_ing_objs.extend(ing_list)
 
-            # Only keep mapped ingredients
             all_ing_objs = [ing for ing in all_ing_objs if ing.matched_product_id]
 
-            # Identify meat-category ingredients
             meat_ing_objs = [
                 ing for ing in all_ing_objs
                 if product_category.get(int(ing.matched_product_id)) == "Meat, Seafood & Plant-based"
             ]
 
-            # We will artificially expire EVERYTHING in this window
             def random_expiration():
-                hours = int(rng.integers(4, 33))   # 4–32 hours
+                hours = int(rng.integers(4, 33))
                 return datetime.now() + timedelta(hours=hours), hours
 
-            # Insert all recipe ingredients as pantry items
             for ing in all_ing_objs:
                 pid = int(ing.matched_product_id)
                 product = (
@@ -773,9 +709,6 @@ class PantryManager:
                 messages.append(
                     f"Added RECIPE ingredient '{product.name}' — expires in {hrs}h"
                 )
-        # ============================================================
-        # 4. Add random items (normal)
-        # ============================================================
 
         def add_random_items(category_name, count):
             subset = inv[inv["category"] == category_name]
@@ -809,10 +742,6 @@ class PantryManager:
         add_random_items("For the Pantry", 4)
         add_random_items("From The Freezer", 5)
         add_random_items("Dairy & Eggs", 3)
-
-        # ============================================================
-        # 5. Add backdated items NOT used in any recipe
-        # ============================================================
 
         def add_backdated_items(category_name, count):
             subset = inv[
@@ -849,11 +778,8 @@ class PantryManager:
         add_backdated_items("Meat, Seafood & Plant-based", 2)
         add_backdated_items("Fresh Fruits & Veggies", 2)
 
-        # ============================================================
-        # 6. Commit
-        # ============================================================
-
         self.session.commit()
+
         return messages
 
     def trash_expired_items(self):
@@ -867,7 +793,6 @@ class PantryManager:
 
         now = datetime.now()
 
-        # 1) Find expired pantry items
         expired_items = (
             self.session.query(PantryItem)
             .filter(PantryItem.expiration_date.isnot(None))
@@ -885,7 +810,6 @@ class PantryManager:
             unit = item.unit
             product_name = item.product.name if item.product else "Unknown item"
 
-            # 2) Log waste event so visuals can see it
             if amount > 0:
                 evt = PantryEvent(
                     pantry_id=item.pantry_id,
@@ -893,9 +817,8 @@ class PantryManager:
                     amount=amount,
                     unit=unit,
                 )
+                
                 self.session.add(evt)
-
-            # 3) Remove item from pantry
             self.session.delete(item)
 
             messages.append(f"Trashed {amount} {unit} of {product_name} (expired).")

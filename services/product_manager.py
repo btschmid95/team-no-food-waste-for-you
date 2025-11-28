@@ -120,12 +120,10 @@ class ProductManager:
         if not product:
             return f"Product {product_id} not found."
 
-        # Apply updates
         for key, value in updates.items():
             if hasattr(product, key):
                 setattr(product, key, value)
 
-        # If name changed, re-normalize
         if "name" in updates:
             product.norm_name = normalize(updates["name"])
 
@@ -167,11 +165,10 @@ class ProductManager:
         out = []
 
         for p in products:
-            # Pull ingredient-level pantry mappings (guaranteed at least 1)
             ing = next((i for i in p.ingredients if i.pantry_amount is not None), None)
 
             if ing is None:
-                continue  # should not happen, but safe
+                continue
 
             out.append({
                 "product_id": p.product_id,
