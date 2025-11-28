@@ -19,3 +19,45 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+-------------------------
+Third-Party Licenses
+-------------------------
+
+Ingredient Parser (c) 2021 Tom Strange — MIT License
+Copyright (c) 2021 Tom Strange
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-------------------------
+Trader Joe’s Data
+-------------------------
+This project makes use of product names, product attributes, and recipe text obtained by scraping publicly accessible pages on TraderJoes.com and related Trader Joe’s online communities.
+All such information, including but not limited to product names, product descriptions, quantities, images, and recipe text, is the property of Trader Joe’s Company.
+
+Trader Joe’s retains all copyrights and ownership over its website content.
+Our use of this information is strictly:
+
+non-commercial,
+
+for research, educational, and demonstrative purposes, and
+
+subject to the Trader Joe’s Terms of Use, including restrictions on reproduction, redistribution, and commercial use of their content.
+
+No portion of Trader Joe’s content is redistributed by this project in a way intended to substitute for or replicate Trader Joe’s products, branding, or online materials. Users of this software are responsible for ensuring that their use of Trader Joe’s content complies with Trader Joe’s Terms of Use:
+© Trader Joe’s Company — All rights reserved.
+
+This project does not claim any affiliation with or endorsement by Trader Joe’s.
+
+-------------------------
+USDA / FSIS FoodKeeper Data
+-------------------------
+This project incorporates shelf-life and food-safety information derived from the FSIS FoodKeeper dataset, provided by the U.S. Department of Agriculture (USDA) Food Safety & Inspection Service.
+
+Dataset source: “FSIS FoodKeeper Data” — https://catalog.data.gov/dataset/fsis-foodkeeper-data
+
+This data is a U.S. Government work and is provided under terms governed by the USDA and Data.gov. No endorsement by USDA is implied.
