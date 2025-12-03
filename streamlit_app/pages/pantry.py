@@ -345,7 +345,7 @@ with col3:
 
     st.markdown("---")
     st.subheader("🗑 Manage Items")
-
+    pid = None
     if pantry_items.empty:
         st.info("No items to modify.")
     else:
@@ -358,23 +358,26 @@ with col3:
         )
     
     if st.button("Remove"):
-        msg = pm.remove_item(pid)
+        if pid:
+            msg = pm.remove_item(pid)
 
-        removed_ids = []
-        for sel_id, pdata in list(st.session_state.planned_recipes.items()):
-            rid = pdata["recipe_id"]
+            removed_ids = []
+            for sel_id, pdata in list(st.session_state.planned_recipes.items()):
+                rid = pdata["recipe_id"]
 
-            ingredients = session.query(Ingredient).filter(Ingredient.recipe_id == rid).all()
-            for ing in ingredients:
-                if ing.matched_product_id == pantry_items.loc[
-                    pantry_items["pantry_id"] == pid, "product_id"
-                ].values[0]:
-                    removed_ids.append(sel_id)
-                    del st.session_state.planned_recipes[sel_id]
-                    break
+                ingredients = session.query(Ingredient).filter(Ingredient.recipe_id == rid).all()
+                for ing in ingredients:
+                    if ing.matched_product_id == pantry_items.loc[
+                        pantry_items["pantry_id"] == pid, "product_id"
+                    ].values[0]:
+                        removed_ids.append(sel_id)
+                        del st.session_state.planned_recipes[sel_id]
+                        break
+            if removed_ids:
+                st.info(f"Removed {len(removed_ids)} planned recipe(s) because they needed this item.")
 
-        if removed_ids:
-            st.info(f"Removed {len(removed_ids)} planned recipe(s) because they needed this item.")
+        else:
+            st.write("No items!")
 
         st.session_state.virtual_pantry = {}
         st.rerun()

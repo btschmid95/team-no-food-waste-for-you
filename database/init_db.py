@@ -1,3 +1,5 @@
+## Code for database structure and archetecture was developed with assistence using Chat-GPT for structure, logic, and consistency ## 
+
 from sqlalchemy import create_engine
 import sys
 from pathlib import Path

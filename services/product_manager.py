@@ -1,3 +1,5 @@
+## Code for product_manager.py was quality checked using Chat-GPT to assist with logic and consistency ## 
+
 from pathlib import Path
 import sys
 

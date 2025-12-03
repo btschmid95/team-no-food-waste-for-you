@@ -1,3 +1,5 @@
+## Code for pantry_manager.py was quality checked using Chat-GPT to assist with logic and consistency ## 
+
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
@@ -817,7 +819,7 @@ class PantryManager:
                     amount=amount,
                     unit=unit,
                 )
-                
+
                 self.session.add(evt)
             self.session.delete(item)
 
