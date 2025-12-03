@@ -175,13 +175,14 @@ Example recommended recipe:
 
 # 🤖 Recipe Recommender Logic
 
-A core focus of the project is computing a **Waste-Risk Score** for each recipe.
+A core focus of the project is computing a **Waste-Risk Score** for each recipe. Each item in the pantry has a live waste risk score associated with it based on its category and its time until expiration.
 
 ## **1. Item-Level Scoring**
 ```
 0 if expired OR if no shelf life exists
-Score = urgency * category_multiplier
-urgency = 1 / max(time_remaining, 1)
+urgency = 1 / num_hours_remaining
+pantry_item_score = urgency * category_multiplier
+
 ```
 This prioritizes items closer to expiring and categories with higher waste impact.
 

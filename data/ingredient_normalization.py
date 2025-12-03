@@ -13,8 +13,6 @@ def get_sql_table(input):
 
 
 def normalize(text):
-    units = r'\b(?:lb|lbs|pounds?|oz|ounces?|kg|g|grams?|tsp.|ct|count)\b|%'
-    packaging = r'\b(?:concentrate|packet(?:s)?|pouch(?:es)?|bottle|jar|tub|container|bag|box|carton|pack(?:s)?)\b'
     fluff = r'\b(?:organic|favorite|fresh|freeze-dried|large|les|natural|petite|petites|raw|teeny|tiny)\b'
     allowed_tokens = {'?', '!', '&', 'with', 'and', 'or', 'in'}
 
@@ -22,20 +20,6 @@ def normalize(text):
     nltk.download('punkt_tab')
     nltk.download('averaged_perceptron_tagger')
     nltk.download('averaged_perceptron_tagger_eng')
-
-    text = text.replace("TJ’s", "TJ's").replace("TJ's", "").replace("Joe's", "").replace("Joseph's", "").split(',')[0].strip()
-
-    # Removes parentheses and contents
-    text = re.sub(r'\([^)]*\)', '', text)
-
-    # Remove standalone numbers
-    text = re.sub(r'\b\d+(\.\d+)?\b', '', text)
-
-    # Remove units
-    text = re.sub(units, '', text, flags = re.I)
-
-    # Remove packaging words
-    text = re.sub(packaging, '', text, flags = re.I)
 
     # Remove words like 'organic' or 'fresh'
     text = re.sub(fluff, '', text, flags = re.I)
